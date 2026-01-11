@@ -17,3 +17,5 @@ __pycache__/
 
 # Project Specific
 /Policies/
+/Updates/
+_Notes.md
