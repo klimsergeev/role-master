@@ -18,7 +18,7 @@
 **Оптимальная**: Gemini 2.5 Pro
 **Минимальная**: Gemini 2.5 Flash
 
-**Input/Output**: Большой input (HTML-страницы) → Средний output (JSON). Цена input важнее.
+**Input/Output**: Большой input (HTML-страницы) →  Средний output (JSON). Цена input важнее.
 
 *Почему Gemini оптимальная: веб-доступ, большой контекст (до 1M токенов) для длинных HTML. Flash справится с простыми задачами.*
 
