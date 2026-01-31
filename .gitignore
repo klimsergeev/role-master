@@ -19,3 +19,7 @@ __pycache__/
 /Policies/
 /Updates/
 _Notes.md
+
+# Agent-Specific
+.cursor/
+.claude/
