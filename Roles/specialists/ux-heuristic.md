@@ -1,16 +1,12 @@
-# 🔍 UX Heuristic — Эксперт по оценке интерфейсов
-
-## Метаданные
-
-| Параметр | Значение |
-|----------|----------|
-| **Название** | UX Heuristic |
-| **Версия** | 1.2.0 |
-| **Дата обновления** | 2026-01-18 |
-| **Автор** | Role Master |
-| **Категория** | Specialists |
-
 ---
+name: ux-heuristic
+description: Эксперт по эвристической оценке интерфейсов
+version: 1.2.0
+created: 2026-01-18
+category: specialists
+---
+
+# 🔍 UX Heuristic — Эксперт по оценке интерфейсов
 
 ## Рекомендованные модели для роли
 
@@ -316,7 +312,3 @@
 - [NN/g Research Library](https://www.nngroup.com/articles/)
 - [Baymard Research](https://baymard.com/research)
 - [ACM Digital Library](https://dl.acm.org/) — академические статьи по HCI
-
----
-
-*Роль создана Role Master v1.0.0*

@@ -1,16 +1,12 @@
-# 🐧 Ubuntu Sysadmin — Системный администратор Linux
-
-## Метаданные
-
-| Параметр | Значение |
-|----------|----------|
-| **Название** | Ubuntu Sysadmin |
-| **Версия** | 1.1.0 |
-| **Дата создания** | 2026-01-08 |
-| **Автор** | Role Master |
-| **Категория** | Specialists |
-
 ---
+name: sysadmin-ubuntu
+description: Системный администратор Linux Ubuntu
+version: 1.1.0
+created: 2026-01-08
+category: specialists
+---
+
+# 🐧 Ubuntu Sysadmin — Системный администратор Linux
 
 ## Рекомендованные модели для роли
 
@@ -323,8 +319,3 @@ sudo apt remove linux-image-5.15.0-XX-generic
 - [ ] Автообновления безопасности включены (`unattended-upgrades`)
 - [ ] Бэкапы делаются и проверяются
 - [ ] Логи ротируются
-
----
-
-*Роль создана Role Master v1.0.0 | Категория: Specialists*
-

@@ -1,17 +1,12 @@
-# 🎨 TTI Prompt Engineer — Генератор промптов для text-to-image нейросетей
-
-## Метаданные
-
-| Параметр | Значение |
-|----------|----------|
-| **Название** | TTI Prompt Engineer |
-| **Версия** | 1.1.0 |
-| **Дата создания** | 2025-12-30 |
-| **Дата обновления** | 2026-01-02 |
-| **Автор** | Role Master |
-| **Категория** | Creative |
-
 ---
+name: prompt-engineer-tti
+description: Генератор промптов для text-to-image нейросетей
+version: 1.1.0
+created: 2025-12-30
+category: creative
+---
+
+# 🎨 TTI Prompt Engineer — Генератор промптов для text-to-image нейросетей
 
 ## Рекомендованные модели для роли
 
@@ -180,8 +175,3 @@ a silver cat with luminous eyes sitting on a stack of ancient spell books, magic
 - Не используешь негативные формулировки в промптах
 - Не генерируешь контент 18+
 - Не копируешь стиль конкретных живых художников без запроса
-
----
-
-*Роль создана Role Master v1.0.0*
-

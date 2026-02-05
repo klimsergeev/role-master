@@ -1,16 +1,12 @@
-# 🤖 Telegram Bot Developer — Python-разработчик ботов
-
-## Метаданные
-
-| Параметр | Значение |
-|----------|----------|
-| **Название** | Telegram Bot Developer |
-| **Версия** | 1.1.0 |
-| **Дата создания** | 2026-01-08 |
-| **Автор** | Role Master |
-| **Категория** | Specialists |
-
 ---
+name: telegram-developer
+description: Python-разработчик Telegram-ботов на aiogram
+version: 1.1.0
+created: 2026-01-08
+category: specialists
+---
+
+# 🤖 Telegram Bot Developer — Python-разработчик ботов
 
 ## Рекомендованные модели для роли
 
@@ -252,8 +248,3 @@ async def process_age(message: Message, state: FSMContext) -> None:
 - **DevOps** → базово (Docker, systemd), сложное — к специалисту
 - **ML/AI в боте** → могу интегрировать API, но не обучаю модели
 - **Другие мессенджеры** → только Telegram
-
----
-
-*Роль создана Role Master v1.0.0 | Категория: Specialists*
-

@@ -31,53 +31,55 @@
 ## 📋 Каталог ролей
 
 
-### 🎭 Мета-роли (роли для создания ролей)
+### 🎭 Мета-роли
 
 | Роль | Файл | Описание |
 |------|------|----------|
-| **🎯 Prompt Engineer** | `meta/prompt-engineer-claude.md` | Инженер промптов для Claude |
-| **🎭 Role Master** | `meta/role-master.md` | Мастер создания ролей для AI-агентов |
+| **---** | `meta/prompt-engineer-claude.md` | — |
+| **---** | `meta/role-master.md` | — |
 
 ### 🤖 Помощники и ассистенты
 
 | Роль | Файл | Описание |
 |------|------|----------|
-| **💬 Advisor** | `assistants/advisor.md` | Лаконичный ассистент |
-| **📊 Data Aggregator** | `assistants/data-aggregator.md` | Извлечение структурированных данных |
-| **📋 Project Logger** | `assistants/project-logger.md` | Секретарь проектной документации |
-| **🔬 Research Analyst** | `assistants/research-analyst.md` | Аналитик-исследователь |
+| **---** | `assistants/advisor.md` | — |
+| **---** | `assistants/data-aggregator.md` | — |
+| **---** | `assistants/message-writer.md` | — |
+| **---** | `assistants/project-logger.md` | — |
+| **---** | `assistants/research-analyst.md` | — |
 
-### 🔧 Специалисты (код-ревью, аналитика и т.д.)
-
-| Роль | Файл | Описание |
-|------|------|----------|
-| **💻 Frontend Developer** | `specialists/frontend-developer.md` | Опытный Фронтенд-Разработчик |
-| **🎯 PRD Writer** | `specialists/prd-writer.md` | Эксперт по формализации продуктовых требований |
-| **🧪 QA Engineer** | `specialists/qa-engineer.md` | Тестировщик веб-приложений на Playwright |
-| **🐧 Ubuntu Sysadmin** | `specialists/sysadmin-ubuntu.md` | Системный администратор Linux |
-| **🤖 Telegram Bot Developer** | `specialists/telegram-developer.md` | Python-разработчик ботов |
-| **🔍 UX Heuristic** | `specialists/ux-heuristic.md` | Эксперт по оценке интерфейсов |
-| **✍️ UX Writer** | `specialists/ux-writer.md` | Редактор интерфейсных текстов |
-
-### 🎨 Креативные роли (копирайтинг, brainstorming)
+### 🔧 Специалисты
 
 | Роль | Файл | Описание |
 |------|------|----------|
-| **🍌 TTI Prompt Engineer (Nano Banana)** | `creative/prompt-engineer-tti-nanobanana.md` | Промпты для Figma AI |
-| **🎨 TTI Prompt Engineer** | `creative/prompt-engineer-tti.md` | Генератор промптов для text-to-image нейросетей |
+| **---** | `specialists/frontend-developer.md` | — |
+| **---** | `specialists/prd-writer.md` | — |
+| **---** | `specialists/product-designer.md` | — |
+| **---** | `specialists/qa-engineer.md` | — |
+| **---** | `specialists/sysadmin-ubuntu.md` | — |
+| **---** | `specialists/telegram-developer.md` | — |
+| **---** | `specialists/ux-heuristic.md` | — |
+| **---** | `specialists/ux-writer.md` | — |
+
+### 🎨 Креативные роли
+
+| Роль | Файл | Описание |
+|------|------|----------|
+| **---** | `creative/prompt-engineer-tti-nanobanana.md` | — |
+| **---** | `creative/prompt-engineer-tti.md` | — |
 
 ### 📝 Шаблоны для создания новых ролей
 
 | Роль | Файл | Описание |
 |------|------|----------|
-| **[Эмоджи] [Название]** | `templates/role-template.md` | [Краткий слоган] |
+| **---** | `templates/role-template.md` | — |
 
 ---
 
 ## 📊 Статистика
 
-- **Всего ролей:** 16
-- **Последнее обновление:** 2026-01-31 21:40
+- **Всего ролей:** 18
+- **Последнее обновление:** 2026-02-05 22:52
 
 ---
 

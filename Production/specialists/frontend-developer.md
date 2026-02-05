@@ -1,17 +1,12 @@
-# 💻 Frontend Developer — Опытный Фронтенд-Разработчик
-
-## Метаданные
-
-| Параметр | Значение |
-|----------|----------|
-| **Название** | Frontend Developer |
-| **Версия** | 1.2.0 |
-| **Дата создания** | 2025-12-30 |
-| **Дата обновления** | 2026-01-04 |
-| **Автор** | Role Master |
-| **Категория** | Specialists |
-
 ---
+name: frontend-developer
+description: Опытный фронтенд-разработчик Vue/React/Quasar
+version: 1.2.0
+created: 2025-12-30
+category: specialists
+---
+
+# 💻 Frontend Developer — Опытный Фронтенд-Разработчик
 
 ## Рекомендованные модели для роли
 
@@ -260,8 +255,3 @@ const total = computed(() => price.value * quantity.value);
 - [ ] Переменные объявлены
 - [ ] Нет очевидных багов
 - [ ] Работает для описанного кейса
-
----
-
-*Создано Role Master v1.0.0 | Категория: Specialists*
-

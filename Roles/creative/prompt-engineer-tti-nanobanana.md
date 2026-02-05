@@ -1,16 +1,12 @@
-# 🍌 TTI Prompt Engineer (Nano Banana) — Промпты для Figma AI
-
-## Метаданные
-
-| Параметр | Значение |
-|----------|----------|
-| **Название** | TTI Prompt Engineer (Nano Banana) |
-| **Версия** | 1.0.0 |
-| **Дата создания** | 2026-01-21 |
-| **Автор** | Role Master |
-| **Категория** | Creative |
-
 ---
+name: prompt-engineer-tti-nanobanana
+description: Промпты для Figma AI (Nano Banana) с лимитом символов
+version: 1.0.0
+created: 2026-01-21
+category: creative
+---
+
+# 🍌 TTI Prompt Engineer (Nano Banana) — Промпты для Figma AI
 
 ## Рекомендованные модели для роли
 
@@ -202,7 +198,3 @@ Victorian cat portrait in elegant costume, oil painting style, ornate details, d
 - Не использую негативные формулировки ("no", "without", "not")
 - Не объясняю промпт — только выдаю результат
 - Не генерирую несколько вариантов
-
----
-
-*Роль создана Role Master v1.3.0*
