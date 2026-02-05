@@ -1,12 +1,16 @@
 #!/bin/bash
 
 # =============================================================================
-# publish.sh — Скрипт публикации ролей из /Roles в /Production
+# publish.sh — Скрипт публикации ролей из /Roles в /Production и Claude Skills
 # =============================================================================
 #
 # Использование:
 #   ./scripts/publish.sh          — публикует все роли
 #   ./scripts/publish.sh --dry    — показывает что будет скопировано (без изменений)
+#
+# Назначения:
+#   1. /Production — для внешних AI-агентов (read-only library)
+#   2. ~/.claude/skills — для Claude AI (формат {name}/SKILL.md)
 #
 # =============================================================================
 
@@ -26,6 +30,7 @@ PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 SOURCE_DIR="$PROJECT_ROOT/Roles"
 TARGET_DIR="$PROJECT_ROOT/Production"
 README_FILE="$TARGET_DIR/README.md"
+SKILLS_DIR="$HOME/.claude/skills"
 
 # Проверка аргументов
 DRY_RUN=false
@@ -55,8 +60,8 @@ fi
 # Считаем файлы до синхронизации
 BEFORE_COUNT=$(find "$TARGET_DIR" -name "*.md" ! -name "README.md" 2>/dev/null | wc -l | tr -d ' ')
 
-# Список категорий (папок)
-CATEGORIES="meta assistants specialists creative templates"
+# Список категорий (папок) — без templates (шаблоны не публикуются)
+CATEGORIES="meta assistants specialists creative"
 
 echo -e "${BLUE}📁 Синхронизация категорий:${NC}"
 
@@ -107,6 +112,30 @@ for category in $CATEGORIES; do
     fi
 done
 
+# Удаляем папки в Production, которые не входят в CATEGORIES
+if [[ -d "$TARGET_DIR" ]]; then
+    for dir in "$TARGET_DIR"/*/; do
+        if [[ -d "$dir" ]]; then
+            dir_name=$(basename "$dir")
+            is_valid_category=false
+            
+            for category in $CATEGORIES; do
+                if [[ "$dir_name" == "$category" ]]; then
+                    is_valid_category=true
+                    break
+                fi
+            done
+            
+            if [[ "$is_valid_category" == false ]]; then
+                echo -e "   ${YELLOW}✗${NC} /$dir_name — удаляю (не в списке категорий)"
+                if [[ "$DRY_RUN" == false ]]; then
+                    rm -rf "$dir"
+                fi
+            fi
+        fi
+    done
+fi
+
 echo ""
 
 # =============================================================================
@@ -118,9 +147,102 @@ get_category_desc() {
         "assistants")  echo "🤖 Помощники и ассистенты" ;;
         "specialists") echo "🔧 Специалисты" ;;
         "creative")    echo "🎨 Креативные роли" ;;
-        "templates")   echo "📝 Шаблоны для создания новых ролей" ;;
         *)             echo "$1" ;;
     esac
+}
+
+# =============================================================================
+# Синхронизация в Claude Skills (~/.claude/skills)
+# =============================================================================
+
+# Извлекает name из frontmatter или использует имя файла
+get_role_name() {
+    local file="$1"
+    local name=""
+    
+    # Пробуем извлечь name из frontmatter (между ---)
+    if head -1 "$file" 2>/dev/null | grep -q '^---'; then
+        name=$(sed -n '2,/^---$/p' "$file" 2>/dev/null | grep '^name:' | sed 's/^name:[[:space:]]*//' | tr -d '\r')
+    fi
+    
+    # Если не нашли, используем имя файла без расширения
+    if [[ -z "$name" ]]; then
+        name=$(basename "$file" .md)
+    fi
+    
+    echo "$name"
+}
+
+# Синхронизирует роли в Claude Skills
+sync_to_skills() {
+    echo -e "${BLUE}🎯 Синхронизация в Claude Skills:${NC}"
+    echo "   Назначение: $SKILLS_DIR"
+    echo ""
+    
+    # Создаём директорию skills если не существует
+    if [[ ! -d "$SKILLS_DIR" ]]; then
+        if [[ "$DRY_RUN" == false ]]; then
+            mkdir -p "$SKILLS_DIR"
+        fi
+    fi
+    
+    # Собираем список актуальных role-names
+    local ACTIVE_ROLES=""
+    local SYNCED_COUNT=0
+    
+    for category in $CATEGORIES; do
+        local SOURCE_CAT="$SOURCE_DIR/$category"
+        
+        if [[ -d "$SOURCE_CAT" ]]; then
+            # Находим все .md файлы и обрабатываем через while read для путей с пробелами
+            while IFS= read -r -d '' file; do
+                if [[ -n "$file" ]]; then
+                    local role_name=$(get_role_name "$file")
+                    ACTIVE_ROLES="$ACTIVE_ROLES $role_name"
+                    
+                    local skill_dir="$SKILLS_DIR/$role_name"
+                    local skill_file="$skill_dir/SKILL.md"
+                    
+                    if [[ "$DRY_RUN" == false ]]; then
+                        mkdir -p "$skill_dir"
+                        cp "$file" "$skill_file"
+                    fi
+                    
+                    echo -e "   ${GREEN}✓${NC} $role_name -> $role_name/SKILL.md"
+                    SYNCED_COUNT=$((SYNCED_COUNT + 1))
+                fi
+            done < <(find "$SOURCE_CAT" -name "*.md" -type f -print0 2>/dev/null)
+        fi
+    done
+    
+    # Удаляем устаревшие skills
+    if [[ -d "$SKILLS_DIR" ]]; then
+        for skill_folder in "$SKILLS_DIR"/*/; do
+            if [[ -d "$skill_folder" ]]; then
+                local folder_name=$(basename "$skill_folder")
+                
+                # Проверяем, есть ли эта роль в актуальных
+                local is_active=false
+                for active_role in $ACTIVE_ROLES; do
+                    if [[ "$folder_name" == "$active_role" ]]; then
+                        is_active=true
+                        break
+                    fi
+                done
+                
+                if [[ "$is_active" == false ]]; then
+                    echo -e "   ${YELLOW}✗${NC} $folder_name (удалён)"
+                    if [[ "$DRY_RUN" == false ]]; then
+                        rm -rf "$skill_folder"
+                    fi
+                fi
+            fi
+        done
+    fi
+    
+    echo ""
+    echo "   Синхронизировано: $SYNCED_COUNT ролей"
+    echo ""
 }
 
 # =============================================================================
@@ -299,6 +421,9 @@ HEADER
 FOOTER
 }
 
+# Синхронизируем в Claude Skills
+sync_to_skills
+
 # Генерируем README
 if [[ "$DRY_RUN" == false ]]; then
     echo -e "${BLUE}📝 Генерация README.md с каталогом ролей...${NC}"
@@ -329,3 +454,4 @@ fi
 
 echo ""
 echo "📍 Production: $TARGET_DIR"
+echo "📍 Claude Skills: $SKILLS_DIR"
