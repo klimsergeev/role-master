@@ -56,6 +56,7 @@
 | **---** | `specialists/prd-writer.md` | — |
 | **---** | `specialists/product-designer.md` | — |
 | **---** | `specialists/qa-engineer.md` | — |
+| **---** | `specialists/seo-specialist.md` | — |
 | **---** | `specialists/sysadmin-ubuntu.md` | — |
 | **---** | `specialists/telegram-developer.md` | — |
 | **---** | `specialists/ux-heuristic.md` | — |
@@ -71,8 +72,8 @@
 
 ## 📊 Статистика
 
-- **Всего ролей:** 16
-- **Последнее обновление:** 2026-02-05 23:13
+- **Всего ролей:** 17
+- **Последнее обновление:** 2026-02-07 00:06
 
 ---
 

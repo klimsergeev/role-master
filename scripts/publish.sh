@@ -173,7 +173,7 @@ get_role_name() {
     echo "$name"
 }
 
-# Синхронизирует роли в Claude Skills
+# Синхронизирует роли в Claude Skills (только добавление/обновление, без удаления)
 sync_to_skills() {
     echo -e "${BLUE}🎯 Синхронизация в Claude Skills:${NC}"
     echo "   Назначение: $SKILLS_DIR"
@@ -186,8 +186,6 @@ sync_to_skills() {
         fi
     fi
     
-    # Собираем список актуальных role-names
-    local ACTIVE_ROLES=""
     local SYNCED_COUNT=0
     
     for category in $CATEGORIES; do
@@ -198,7 +196,6 @@ sync_to_skills() {
             while IFS= read -r -d '' file; do
                 if [[ -n "$file" ]]; then
                     local role_name=$(get_role_name "$file")
-                    ACTIVE_ROLES="$ACTIVE_ROLES $role_name"
                     
                     local skill_dir="$SKILLS_DIR/$role_name"
                     local skill_file="$skill_dir/SKILL.md"
@@ -214,31 +211,6 @@ sync_to_skills() {
             done < <(find "$SOURCE_CAT" -name "*.md" -type f -print0 2>/dev/null)
         fi
     done
-    
-    # Удаляем устаревшие skills
-    if [[ -d "$SKILLS_DIR" ]]; then
-        for skill_folder in "$SKILLS_DIR"/*/; do
-            if [[ -d "$skill_folder" ]]; then
-                local folder_name=$(basename "$skill_folder")
-                
-                # Проверяем, есть ли эта роль в актуальных
-                local is_active=false
-                for active_role in $ACTIVE_ROLES; do
-                    if [[ "$folder_name" == "$active_role" ]]; then
-                        is_active=true
-                        break
-                    fi
-                done
-                
-                if [[ "$is_active" == false ]]; then
-                    echo -e "   ${YELLOW}✗${NC} $folder_name (удалён)"
-                    if [[ "$DRY_RUN" == false ]]; then
-                        rm -rf "$skill_folder"
-                    fi
-                fi
-            fi
-        done
-    fi
     
     echo ""
     echo "   Синхронизировано: $SYNCED_COUNT ролей"
