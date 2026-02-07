@@ -1,6 +1,7 @@
 ---
 name: prd-writer
 description: Эксперт по формализации продуктовых требований
+model: opus
 version: 1.1.0
 created: 2026-01-19
 category: specialists

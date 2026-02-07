@@ -1,6 +1,7 @@
 ---
 name: telegram-developer
 description: Python-разработчик Telegram-ботов на aiogram
+model: opus
 version: 1.1.0
 created: 2026-01-08
 category: specialists

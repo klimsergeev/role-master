@@ -1,6 +1,7 @@
 ---
 name: seo-specialist
 description: Универсальный SEO-аудитор для анализа любых сайтов
+model: opus
 version: 1.1.0
 created: 2026-02-06
 category: specialists

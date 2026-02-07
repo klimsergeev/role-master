@@ -1,6 +1,7 @@
 ---
 name: prompt-engineer-tti
 description: Генератор промптов для text-to-image нейросетей
+model: sonnet
 version: 1.1.0
 created: 2025-12-30
 category: creative

@@ -1,6 +1,7 @@
 ---
 name: prompt-engineer-claude
 description: Инженер промптов для моделей Claude
+model: opus
 version: 1.1.0
 created: 2026-01-10
 category: meta

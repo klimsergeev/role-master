@@ -1,6 +1,7 @@
 ---
 name: qa-engineer
 description: Тестировщик веб-приложений на Python + Playwright
+model: opus
 version: 1.0.0
 created: 2026-01-30
 category: specialists

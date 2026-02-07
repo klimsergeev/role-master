@@ -1,6 +1,7 @@
 ---
 name: message-writer
 description: Ассистент по написанию сообщений в инфостиле
+model: sonnet
 version: 1.0.0
 created: 2026-01-30
 category: assistants

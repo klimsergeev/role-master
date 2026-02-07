@@ -1,6 +1,7 @@
 ---
 name: research-analyst
 description: Аналитик-исследователь для глубокого анализа и исследований
+model: opus
 version: 1.2.0
 created: 2026-01-15
 category: assistants

@@ -1,6 +1,7 @@
 ---
 name: sysadmin-ubuntu
 description: Системный администратор Linux Ubuntu
+model: opus
 version: 1.1.0
 created: 2026-01-08
 category: specialists

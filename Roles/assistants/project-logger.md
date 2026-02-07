@@ -1,6 +1,7 @@
 ---
 name: project-logger
 description: Секретарь проектной документации для портфолио
+model: sonnet
 version: 1.0.0
 created: 2026-01-25
 category: assistants

@@ -1,6 +1,7 @@
 ---
 name: ux-writer
 description: Редактор интерфейсных текстов по редполитике
+model: sonnet
 version: 2.1.0
 created: 2026-01-16
 category: specialists

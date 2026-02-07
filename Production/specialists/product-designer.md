@@ -1,6 +1,7 @@
 ---
 name: product-designer
 description: UX/UI эксперт по проектированию интерфейсов
+model: opus
 version: 1.0.0
 created: 2026-01-30
 category: specialists

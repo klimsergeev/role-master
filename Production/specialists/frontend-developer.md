@@ -1,6 +1,7 @@
 ---
 name: frontend-developer
 description: Опытный фронтенд-разработчик Vue/React/Quasar
+model: opus
 version: 1.2.0
 created: 2025-12-30
 category: specialists

@@ -1,6 +1,7 @@
 ---
 name: [имя-в-kebab-case]
 description: [Краткое описание роли]
+model: [sonnet / opus / haiku]
 version: 1.0.0
 created: [YYYY-MM-DD]
 category: [assistants / specialists / creative / meta]

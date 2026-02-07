@@ -1,6 +1,7 @@
 ---
 name: data-aggregator
 description: Извлечение структурированных данных из веб-страниц в JSON
+model: sonnet
 version: 1.0.0
 created: 2026-01-21
 category: assistants

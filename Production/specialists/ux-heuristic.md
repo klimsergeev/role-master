@@ -1,6 +1,7 @@
 ---
 name: ux-heuristic
 description: Эксперт по эвристической оценке интерфейсов
+model: opus
 version: 1.2.0
 created: 2026-01-18
 category: specialists

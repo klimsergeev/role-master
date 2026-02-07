@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # =============================================================================
-# publish.sh — Скрипт публикации ролей из /Roles в /Production и Claude Skills
+# publish.sh — Скрипт публикации ролей из /Roles в /Production и Claude Agents
 # =============================================================================
 #
 # Использование:
@@ -10,7 +10,7 @@
 #
 # Назначения:
 #   1. /Production — для внешних AI-агентов (read-only library)
-#   2. ~/.claude/skills — для Claude AI (формат {name}/SKILL.md)
+#   2. ~/.claude/agents — для Claude Code (формат agent-{name}.md)
 #   3. /Dialog — заглушки с инструкцией загрузки роли с GitHub
 #
 # =============================================================================
@@ -31,8 +31,8 @@ PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 SOURCE_DIR="$PROJECT_ROOT/Roles"
 TARGET_DIR="$PROJECT_ROOT/Production"
 README_FILE="$TARGET_DIR/README.md"
-SKILLS_DIR="$HOME/.claude/skills"
 DIALOG_DIR="$PROJECT_ROOT/Dialog"
+AGENTS_DIR="$HOME/.claude/agents"
 
 # Проверка аргументов
 DRY_RUN=false
@@ -154,68 +154,69 @@ get_category_desc() {
 }
 
 # =============================================================================
-# Синхронизация в Claude Skills (~/.claude/skills)
+# Вспомогательные функции
 # =============================================================================
 
 # Извлекает name из frontmatter или использует имя файла
 get_role_name() {
     local file="$1"
     local name=""
-    
+
     # Пробуем извлечь name из frontmatter (между ---)
     if head -1 "$file" 2>/dev/null | grep -q '^---'; then
         name=$(sed -n '2,/^---$/p' "$file" 2>/dev/null | grep '^name:' | sed 's/^name:[[:space:]]*//' | tr -d '\r')
     fi
-    
+
     # Если не нашли, используем имя файла без расширения
     if [[ -z "$name" ]]; then
         name=$(basename "$file" .md)
     fi
-    
+
     echo "$name"
 }
 
-# Синхронизирует роли в Claude Skills (только добавление/обновление, без удаления)
-sync_to_skills() {
-    echo -e "${BLUE}🎯 Синхронизация в Claude Skills:${NC}"
-    echo "   Назначение: $SKILLS_DIR"
+# =============================================================================
+# Синхронизация в Claude Agents (~/.claude/agents)
+# =============================================================================
+
+# Синхронизирует роли в Claude Agents (формат agent-{name}.md)
+sync_to_agents() {
+    echo -e "${BLUE}🤖 Синхронизация в Claude Agents:${NC}"
+    echo "   Назначение: $AGENTS_DIR"
     echo ""
-    
-    # Создаём директорию skills если не существует
-    if [[ ! -d "$SKILLS_DIR" ]]; then
+
+    # Создаём директорию agents если не существует
+    if [[ ! -d "$AGENTS_DIR" ]]; then
         if [[ "$DRY_RUN" == false ]]; then
-            mkdir -p "$SKILLS_DIR"
+            mkdir -p "$AGENTS_DIR"
         fi
     fi
-    
+
     local SYNCED_COUNT=0
-    
+
     for category in $CATEGORIES; do
         local SOURCE_CAT="$SOURCE_DIR/$category"
-        
+
         if [[ -d "$SOURCE_CAT" ]]; then
             # Находим все .md файлы и обрабатываем через while read для путей с пробелами
             while IFS= read -r -d '' file; do
                 if [[ -n "$file" ]]; then
                     local role_name=$(get_role_name "$file")
-                    
-                    local skill_dir="$SKILLS_DIR/$role_name"
-                    local skill_file="$skill_dir/SKILL.md"
-                    
+                    local agent_file="$AGENTS_DIR/agent-$role_name.md"
+
                     if [[ "$DRY_RUN" == false ]]; then
-                        mkdir -p "$skill_dir"
-                        cp "$file" "$skill_file"
+                        cp "$file" "$agent_file"
                     fi
-                    
-                    echo -e "   ${GREEN}✓${NC} $role_name -> $role_name/SKILL.md"
+
+                    echo -e "   ${GREEN}✓${NC} $role_name -> agent-$role_name.md"
                     SYNCED_COUNT=$((SYNCED_COUNT + 1))
                 fi
             done < <(find "$SOURCE_CAT" -name "*.md" -type f -print0 2>/dev/null)
         fi
     done
-    
+
     echo ""
-    echo "   Синхронизировано: $SYNCED_COUNT ролей"
+    echo "   Синхронизировано: $SYNCED_COUNT агентов"
     echo ""
 }
 
@@ -533,8 +534,8 @@ HEADER
 FOOTER
 }
 
-# Синхронизируем в Claude Skills
-sync_to_skills
+# Синхронизируем в Claude Agents
+sync_to_agents
 
 # Синхронизируем заглушки в Dialog
 sync_to_dialog
@@ -569,5 +570,5 @@ fi
 
 echo ""
 echo "📍 Production: $TARGET_DIR"
-echo "📍 Claude Skills: $SKILLS_DIR"
+echo "📍 Claude Agents: $AGENTS_DIR"
 echo "📍 Dialog: $DIALOG_DIR"
