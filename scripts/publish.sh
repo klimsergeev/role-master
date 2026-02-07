@@ -11,6 +11,7 @@
 # Назначения:
 #   1. /Production — для внешних AI-агентов (read-only library)
 #   2. ~/.claude/skills — для Claude AI (формат {name}/SKILL.md)
+#   3. /Dialog — заглушки с инструкцией загрузки роли с GitHub
 #
 # =============================================================================
 
@@ -31,6 +32,7 @@ SOURCE_DIR="$PROJECT_ROOT/Roles"
 TARGET_DIR="$PROJECT_ROOT/Production"
 README_FILE="$TARGET_DIR/README.md"
 SKILLS_DIR="$HOME/.claude/skills"
+DIALOG_DIR="$PROJECT_ROOT/Dialog"
 
 # Проверка аргументов
 DRY_RUN=false
@@ -218,6 +220,144 @@ sync_to_skills() {
 }
 
 # =============================================================================
+# Синхронизация в Dialog (заглушки для загрузки ролей с GitHub)
+# =============================================================================
+
+# Генерирует файл-заглушку с инструкцией загрузки роли
+generate_dialog_file() {
+    local category="$1"
+    local filename="$2"
+
+    cat << DIALOGEOF
+# Project Instructions
+
+## Инициализация разговора
+
+В начале каждого разговора **обязательно** выполни:
+
+### 1. Приложенные файлы проекта
+- Прочитай **все** файлы, приложенные к этому проекту
+- Примени их инструкции как системные правила на весь разговор
+
+### 2. Загрузка роли
+- Загрузи файл роли по ссылке: \`https://raw.githubusercontent.com/klimsergeev/role-master/main/Production/${category}/${filename}\`
+- Прочитай содержимое полностью
+- Примени все инструкции из файла как системные правила на весь разговор
+
+### 3. Подтверждение
+- Подтверди кратко: «Роль \`[name]\` загружена, версия [version]. Файлы проекта прочитаны.»
+
+Если ссылка недоступна — сообщи пользователю и спроси, предоставить ли роль вручную.
+
+## Приоритет инструкций
+
+1. Инструкции из приложенных файлов проекта
+2. Инструкции из загруженной роли
+3. Инструкции из этого документа
+4. Общие настройки Claude
+DIALOGEOF
+}
+
+# Синхронизирует заглушки в Dialog (полная синхронизация с удалением)
+sync_to_dialog() {
+    echo -e "${BLUE}📎 Синхронизация в Dialog (заглушки для Claude):${NC}"
+    echo "   Назначение: $DIALOG_DIR"
+    echo ""
+
+    # Создаём директорию если не существует
+    if [[ ! -d "$DIALOG_DIR" ]]; then
+        if [[ "$DRY_RUN" == false ]]; then
+            mkdir -p "$DIALOG_DIR"
+        fi
+    fi
+
+    local SYNCED_COUNT=0
+
+    for category in $CATEGORIES; do
+        local SOURCE_CAT="$SOURCE_DIR/$category"
+        local DIALOG_CAT="$DIALOG_DIR/$category"
+
+        if [[ -d "$SOURCE_CAT" ]]; then
+            local FILE_COUNT=$(find "$SOURCE_CAT" -name "*.md" -type f 2>/dev/null | wc -l | tr -d ' ')
+
+            if [[ "$FILE_COUNT" -gt 0 ]]; then
+                if [[ "$DRY_RUN" == false ]]; then
+                    mkdir -p "$DIALOG_CAT"
+                fi
+
+                # Генерируем заглушки
+                while IFS= read -r -d '' file; do
+                    if [[ -n "$file" ]]; then
+                        local filename=$(basename "$file")
+                        local dialog_file="$DIALOG_CAT/$filename"
+
+                        if [[ "$DRY_RUN" == false ]]; then
+                            generate_dialog_file "$category" "$filename" > "$dialog_file"
+                        fi
+
+                        echo -e "   ${GREEN}✓${NC} $category/$filename"
+                        SYNCED_COUNT=$((SYNCED_COUNT + 1))
+                    fi
+                done < <(find "$SOURCE_CAT" -name "*.md" -type f -print0 2>/dev/null)
+
+                # Удаляем файлы из Dialog, которых нет в источнике
+                if [[ -d "$DIALOG_CAT" && "$DRY_RUN" == false ]]; then
+                    while IFS= read -r -d '' dialog_file; do
+                        local fname=$(basename "$dialog_file")
+                        if [[ ! -f "$SOURCE_CAT/$fname" ]]; then
+                            rm -f "$dialog_file"
+                            echo -e "   ${YELLOW}✗${NC} $category/$fname (удалён)"
+                        fi
+                    done < <(find "$DIALOG_CAT" -name "*.md" -type f -print0 2>/dev/null)
+                fi
+            else
+                # Пустая категория — удаляем из Dialog
+                if [[ -d "$DIALOG_CAT" ]]; then
+                    echo -e "   ${YELLOW}✗${NC} /$category — удаляю пустую папку"
+                    if [[ "$DRY_RUN" == false ]]; then
+                        rm -rf "$DIALOG_CAT"
+                    fi
+                fi
+            fi
+        else
+            # Категория не существует — удаляем из Dialog
+            if [[ -d "$DIALOG_CAT" ]]; then
+                echo -e "   ${YELLOW}✗${NC} /$category — удаляю (нет в источнике)"
+                if [[ "$DRY_RUN" == false ]]; then
+                    rm -rf "$DIALOG_CAT"
+                fi
+            fi
+        fi
+    done
+
+    # Удаляем папки в Dialog, которые не входят в CATEGORIES
+    if [[ -d "$DIALOG_DIR" ]]; then
+        for dir in "$DIALOG_DIR"/*/; do
+            if [[ -d "$dir" ]]; then
+                local dname=$(basename "$dir")
+                local is_valid=false
+                for category in $CATEGORIES; do
+                    if [[ "$dname" == "$category" ]]; then
+                        is_valid=true
+                        break
+                    fi
+                done
+                if [[ "$is_valid" == false ]]; then
+                    echo -e "   ${YELLOW}✗${NC} /$dname — удаляю (не в списке категорий)"
+                    if [[ "$DRY_RUN" == false ]]; then
+                        rm -rf "$dir"
+                    fi
+                fi
+            fi
+        done
+    fi
+
+    echo ""
+    echo "   Синхронизировано: $SYNCED_COUNT файлов"
+    echo ""
+}
+
+# =============================================================================
 # Генерация README.md с каталогом ролей
 # =============================================================================
 
@@ -396,6 +536,9 @@ FOOTER
 # Синхронизируем в Claude Skills
 sync_to_skills
 
+# Синхронизируем заглушки в Dialog
+sync_to_dialog
+
 # Генерируем README
 if [[ "$DRY_RUN" == false ]]; then
     echo -e "${BLUE}📝 Генерация README.md с каталогом ролей...${NC}"
@@ -427,3 +570,4 @@ fi
 echo ""
 echo "📍 Production: $TARGET_DIR"
 echo "📍 Claude Skills: $SKILLS_DIR"
+echo "📍 Dialog: $DIALOG_DIR"
