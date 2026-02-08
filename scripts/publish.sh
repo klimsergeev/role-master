@@ -191,6 +191,24 @@ get_role_name() {
     echo "$name"
 }
 
+# Извлекает description из frontmatter
+get_role_description() {
+    local file="$1"
+    local description=""
+
+    # Пробуем извлечь description из frontmatter (между ---)
+    if head -1 "$file" 2>/dev/null | grep -q '^---'; then
+        description=$(sed -n '2,/^---$/p' "$file" 2>/dev/null | grep '^description:' | sed 's/^description:[[:space:]]*//' | tr -d '\r')
+    fi
+
+    # Если не нашли, ставим прочерк
+    if [[ -z "$description" ]]; then
+        description="—"
+    fi
+
+    echo "$description"
+}
+
 # =============================================================================
 # Синхронизация в Claude Agents (~/.claude/agents)
 # =============================================================================
@@ -518,15 +536,9 @@ HEADER
                         local filename=$(basename "$file")
                         local relative_path="Agents/${category}/${filename}"
 
-                        # Извлекаем название из первой строки (# Название)
-                        local title=$(head -1 "$file" | sed 's/^#[[:space:]]*//' | sed 's/—.*//' | sed 's/[[:space:]]*$//')
-
-                        # Извлекаем краткое описание (после — в заголовке)
-                        local description=$(head -1 "$file" | grep -o '—.*' | sed 's/^—[[:space:]]*//' | sed 's/[[:space:]]*$//')
-
-                        if [[ -z "$description" ]]; then
-                            description="—"
-                        fi
+                        # Извлекаем название и описание из YAML frontmatter
+                        local title=$(get_role_name "$file")
+                        local description=$(get_role_description "$file")
 
                         echo "| **${title}** | \`${relative_path}\` | ${description} |"
                     fi
@@ -560,15 +572,9 @@ HEADER
                     local filename=$(basename "$file")
                     local relative_path="Skills/${filename}"
 
-                    # Извлекаем название из первой строки (# Название)
-                    local title=$(head -1 "$file" | sed 's/^#[[:space:]]*//' | sed 's/—.*//' | sed 's/[[:space:]]*$//')
-
-                    # Извлекаем краткое описание (после — в заголовке)
-                    local description=$(head -1 "$file" | grep -o '—.*' | sed 's/^—[[:space:]]*//' | sed 's/[[:space:]]*$//')
-
-                    if [[ -z "$description" ]]; then
-                        description="—"
-                    fi
+                    # Извлекаем название и описание из YAML frontmatter
+                    local title=$(get_role_name "$file")
+                    local description=$(get_role_description "$file")
 
                     echo "| **${title}** | \`${relative_path}\` | ${description} |"
                 fi
@@ -598,6 +604,20 @@ HEADER
     echo "/Production"
     echo "├── /Agents              # Роли по категориям"
 
+    # Собираем активные категории
+    local active_cats=""
+    local last_cat=""
+    for category in $CATEGORIES; do
+        TARGET_CAT="$AGENTS_TARGET_DIR/$category"
+        if [[ -d "$TARGET_CAT" ]]; then
+            local count=$(find "$TARGET_CAT" -name "*.md" -type f 2>/dev/null | wc -l | tr -d ' ')
+            if [[ "$count" -gt 0 ]]; then
+                active_cats="$active_cats $category"
+                last_cat="$category"
+            fi
+        fi
+    done
+
     # Показываем категории ролей
     for category in $CATEGORIES; do
         TARGET_CAT="$AGENTS_TARGET_DIR/$category"
@@ -611,12 +631,16 @@ HEADER
                     "specialists") cat_comment="Специалисты" ;;
                     "creative")    cat_comment="Креативные роли" ;;
                 esac
-                echo "│   └── /${category}    # ${cat_comment}"
+                if [[ "$category" == "$last_cat" ]]; then
+                    echo "│   └── /${category}    # ${cat_comment}"
+                else
+                    echo "│   ├── /${category}    # ${cat_comment}"
+                fi
             fi
         fi
     done
 
-    echo "├── /Dialog              # Заглушки для Claude"
+    echo "├── /Dialog              # Загрузчики ролей для диалоговых ассистентов"
     echo "└── /Skills              # Скиллы (справочники)"
     echo "\`\`\`"
 

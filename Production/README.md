@@ -35,40 +35,40 @@
 
 | Роль | Файл | Описание |
 |------|------|----------|
-| **---** | `Agents/meta/prompt-engineer-claude.md` | — |
-| **---** | `Agents/meta/role-master.md` | — |
-| **---** | `Agents/meta/skill-master.md` | — |
+| **prompt-engineer-claude** | `Agents/meta/prompt-engineer-claude.md` | Инженер промптов для моделей Claude |
+| **role-master** | `Agents/meta/role-master.md` | Мета-агент для создания и оптимизации ролей AI-агентов |
+| **skill-master** | `Agents/meta/skill-master.md` | Мета-агент для создания скиллов Claude Code |
 
 ### 🤖 Помощники и ассистенты
 
 | Роль | Файл | Описание |
 |------|------|----------|
-| **---** | `Agents/assistants/advisor.md` | — |
-| **---** | `Agents/assistants/data-aggregator.md` | — |
-| **---** | `Agents/assistants/message-writer.md` | — |
-| **---** | `Agents/assistants/project-logger.md` | — |
-| **---** | `Agents/assistants/research-analyst.md` | — |
+| **advisor** | `Agents/assistants/advisor.md` | Лаконичный ассистент для быстрых ответов |
+| **data-aggregator** | `Agents/assistants/data-aggregator.md` | Извлечение структурированных данных из веб-страниц в JSON |
+| **message-writer** | `Agents/assistants/message-writer.md` | Ассистент по написанию сообщений в инфостиле |
+| **project-logger** | `Agents/assistants/project-logger.md` | Секретарь проектной документации для портфолио |
+| **research-analyst** | `Agents/assistants/research-analyst.md` | Аналитик-исследователь для глубокого анализа и исследований |
 
 ### 🔧 Специалисты
 
 | Роль | Файл | Описание |
 |------|------|----------|
-| **---** | `Agents/specialists/frontend-developer.md` | — |
-| **---** | `Agents/specialists/git-specialist.md` | — |
-| **---** | `Agents/specialists/prd-writer.md` | — |
-| **---** | `Agents/specialists/product-designer.md` | — |
-| **---** | `Agents/specialists/qa-engineer.md` | — |
-| **---** | `Agents/specialists/seo-specialist.md` | — |
-| **---** | `Agents/specialists/sysadmin-ubuntu.md` | — |
-| **---** | `Agents/specialists/telegram-developer.md` | — |
-| **---** | `Agents/specialists/ux-heuristic.md` | — |
-| **---** | `Agents/specialists/ux-writer.md` | — |
+| **frontend-developer** | `Agents/specialists/frontend-developer.md` | Опытный фронтенд-разработчик Vue/React/Quasar |
+| **git-specialist** | `Agents/specialists/git-specialist.md` | Автономный эксперт по Git — аудит репозиториев, решение проблем, настройка воркфлоу |
+| **prd-writer** | `Agents/specialists/prd-writer.md` | Эксперт по формализации продуктовых требований |
+| **product-designer** | `Agents/specialists/product-designer.md` | UX/UI эксперт по проектированию интерфейсов |
+| **qa-engineer** | `Agents/specialists/qa-engineer.md` | Тестировщик веб-приложений на Python + Playwright |
+| **seo-specialist** | `Agents/specialists/seo-specialist.md` | Универсальный SEO-аудитор для анализа любых сайтов |
+| **sysadmin-ubuntu** | `Agents/specialists/sysadmin-ubuntu.md` | Системный администратор Linux Ubuntu |
+| **telegram-developer** | `Agents/specialists/telegram-developer.md` | Python-разработчик Telegram-ботов на aiogram |
+| **ux-heuristic** | `Agents/specialists/ux-heuristic.md` | Эксперт по эвристической оценке интерфейсов |
+| **ux-writer** | `Agents/specialists/ux-writer.md` | Редактор интерфейсных текстов по редполитике |
 
 ### 🎨 Креативные роли
 
 | Роль | Файл | Описание |
 |------|------|----------|
-| **---** | `Agents/creative/prompt-engineer-tti.md` | — |
+| **prompt-engineer-tti** | `Agents/creative/prompt-engineer-tti.md` | Генератор промптов для text-to-image нейросетей |
 
 ---
 
@@ -76,8 +76,8 @@
 
 | Скилл | Файл | Описание |
 |-------|------|----------|
-| **---** | `Skills/skill-editorial-guidelines.md` | — |
-| **---** | `Skills/skill-ticketland-seo.md` | — |
+| **skill-editorial-guidelines** | `Skills/skill-editorial-guidelines.md` | Редполитика UX-текстов — свод правил написания текстов в интерфейсах |
+| **skill-ticketland-seo** | `Skills/skill-ticketland-seo.md` | SEO-стандарты Ticketland.ru — эталонные требования к мета-тегам, структурированным данным и техническому SEO для билетного сервиса |
 
 ---
 
@@ -85,7 +85,7 @@
 
 - **Ролей:** 19
 - **Скиллов:** 2
-- **Последнее обновление:** 2026-02-08 15:52
+- **Последнее обновление:** 2026-02-08 16:18
 
 ---
 
@@ -94,11 +94,11 @@
 ```
 /Production
 ├── /Agents              # Роли по категориям
-│   └── /meta    # Мета-роли
-│   └── /assistants    # Помощники
-│   └── /specialists    # Специалисты
+│   ├── /meta    # Мета-роли
+│   ├── /assistants    # Помощники
+│   ├── /specialists    # Специалисты
 │   └── /creative    # Креативные роли
-├── /Dialog              # Заглушки для Claude
+├── /Dialog              # Загрузчики ролей для диалоговых ассистентов
 └── /Skills              # Скиллы (справочники)
 ```
 

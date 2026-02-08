@@ -42,7 +42,7 @@
 │
 ├── /Production             ← Опубликованные файлы (READ-ONLY)
 │   ├── /Agents             # Роли по категориям
-│   ├── /Dialog             # Заглушки для Claude Projects
+│   ├── /Dialog             # Загрузчики ролей для диалоговых ассистентов
 │   ├── /Skills             # Скиллы
 │   └── README.md           # Каталог всех ролей и скиллов
 │
@@ -99,9 +99,9 @@
 
 Полный каталог: **[Production/README.md](Production/README.md)**
 
-### Для Claude Projects
+### Для диалоговых ассистентов (Claude.ai, ChatGPT, Gemini)
 
-Используйте заглушки из `Production/Dialog/` — они содержат инструкции для загрузки роли с GitHub.
+Используйте файлы из `Production/Dialog/` — они содержат инструкции для автоматической загрузки актуальной версии роли из GitHub репозитория.
 
 ### Для Claude Code
 
