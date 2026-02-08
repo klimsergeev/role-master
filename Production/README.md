@@ -54,7 +54,7 @@
 | Роль | Файл | Описание |
 |------|------|----------|
 | **frontend-developer** | `Agents/specialists/frontend-developer.md` | Опытный фронтенд-разработчик Vue/React/Quasar |
-| **git-specialist** | `Agents/specialists/git-specialist.md` | Автономный эксперт по Git — аудит репозиториев, решение проблем, настройка воркфлоу |
+| **git-specialist** | `Agents/specialists/git-ops.md` | Автономный эксперт по Git — аудит репозиториев, решение проблем, настройка воркфлоу |
 | **prd-writer** | `Agents/specialists/prd-writer.md` | Эксперт по формализации продуктовых требований |
 | **product-designer** | `Agents/specialists/product-designer.md` | UX/UI эксперт по проектированию интерфейсов |
 | **qa-engineer** | `Agents/specialists/qa-engineer.md` | Тестировщик веб-приложений на Python + Playwright |
@@ -86,7 +86,7 @@
 
 - **Ролей:** 19
 - **Скиллов:** 3
-- **Последнее обновление:** 2026-02-08 20:57
+- **Последнее обновление:** 2026-02-08 20:58
 
 ---
 
