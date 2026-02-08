@@ -46,8 +46,6 @@
 │   ├── /Skills             # Скиллы
 │   └── README.md           # Каталог всех ролей и скиллов
 │
-├── /Policies               ← Редполитики и гайдлайны (источники для скиллов)
-│
 └── /scripts
     └── publish.sh          ← Скрипт публикации
 ```
@@ -61,28 +59,8 @@
 | Роль | Назначение |
 |------|------------|
 | **role-master** | Создание и оптимизация ролей AI-агентов |
-| **skill-master** | Создание скиллов из редполитик и справочников |
+| **skill-master** | Создание скиллов |
 | **prompt-engineer-claude** | Инженер промптов для моделей Claude |
-
----
-
-## Каталог
-
-### Роли (19)
-
-| Категория | Роли |
-|-----------|------|
-| **Meta** | role-master, skill-master, prompt-engineer-claude |
-| **Assistants** | advisor, data-aggregator, message-writer, project-logger, research-analyst |
-| **Specialists** | frontend-developer, git-specialist, prd-writer, product-designer, qa-engineer, seo-specialist, sysadmin-ubuntu, telegram-developer, ux-heuristic, ux-writer |
-| **Creative** | prompt-engineer-tti |
-
-### Скиллы (2)
-
-| Скилл | Назначение |
-|-------|------------|
-| **skill-editorial-guidelines** | Редполитика UX-текстов |
-| **skill-ticketland-seo** | SEO-стандарты Ticketland.ru |
 
 ---
 
@@ -115,13 +93,13 @@
 
 1. Редактируйте файлы в `/Roles`
 2. Используйте шаблон `/Roles/templates/role-template.md`
-3. Или попросите **role-master** создать роль
+3. Или попросите **role-master** создать или обновить роль
 
 ### Скиллы
 
 1. Редактируйте файлы в `/Skills`
 2. Используйте шаблон `/Skills/skill-template.md`
-3. Или попросите **skill-master** создать скилл из редполитики
+3. Или попросите **skill-master** создать или обновить скилл
 
 ### Публикация
 
@@ -132,7 +110,7 @@
 
 Скрипт:
 - Копирует роли в `Production/Agents/`
-- Копирует скиллы в `Production/Skills/` (без шаблона)
+- Копирует скиллы в `Production/Skills/`
 - Генерирует заглушки в `Production/Dialog/`
 - Обновляет `Production/README.md`
 - Синхронизирует в `~/.claude/agents/`
@@ -146,7 +124,6 @@
 | `/Roles` | Исходники ролей | Редактирование |
 | `/Skills` | Исходники скиллов | Редактирование |
 | `/Production` | Опубликованные файлы | Только чтение |
-| `/Policies` | Редполитики-источники | Редактирование |
 
 ---
 
