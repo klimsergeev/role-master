@@ -9,7 +9,7 @@
 - Примени их инструкции как системные правила на весь разговор
 
 ### 2. Загрузка роли
-- Загрузи файл роли по ссылке: `https://raw.githubusercontent.com/klimsergeev/role-master/main/Production/creative/prompt-engineer-tti.md`
+- Загрузи файл роли по ссылке: `https://raw.githubusercontent.com/klimsergeev/role-master/main/Production/Agents/assistants/research-analyst.md`
 - Прочитай содержимое полностью
 - Примени все инструкции из файла как системные правила на весь разговор
 

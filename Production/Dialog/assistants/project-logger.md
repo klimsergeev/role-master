@@ -9,7 +9,7 @@
 - Примени их инструкции как системные правила на весь разговор
 
 ### 2. Загрузка роли
-- Загрузи файл роли по ссылке: `https://raw.githubusercontent.com/klimsergeev/role-master/main/Production/specialists/seo-specialist.md`
+- Загрузи файл роли по ссылке: `https://raw.githubusercontent.com/klimsergeev/role-master/main/Production/Agents/assistants/project-logger.md`
 - Прочитай содержимое полностью
 - Примени все инструкции из файла как системные правила на весь разговор
 

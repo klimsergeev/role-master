@@ -1,17 +1,22 @@
 #!/bin/bash
 
 # =============================================================================
-# publish.sh — Скрипт публикации ролей из /Roles в /Production и Claude Agents
+# publish.sh — Скрипт публикации ролей, скиллов и заглушек
 # =============================================================================
 #
 # Использование:
-#   ./scripts/publish.sh          — публикует все роли
+#   ./scripts/publish.sh          — публикует все роли и скиллы
 #   ./scripts/publish.sh --dry    — показывает что будет скопировано (без изменений)
 #
-# Назначения:
-#   1. /Production — для внешних AI-агентов (read-only library)
-#   2. ~/.claude/agents — для Claude Code (формат agent-{name}.md)
-#   3. /Dialog — заглушки с инструкцией загрузки роли с GitHub
+# Структура Production:
+#   Production/
+#   ├── Agents/       — роли по категориям (assistants, specialists, creative, meta)
+#   ├── Dialog/       — заглушки с инструкцией загрузки роли с GitHub
+#   ├── Skills/       — скиллы (flat формат, префикс skill-)
+#   └── README.md     — каталог ролей и скиллов
+#
+# Дополнительно:
+#   ~/.claude/agents  — для Claude Code (формат agent-{name}.md)
 #
 # =============================================================================
 
@@ -29,10 +34,13 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
 SOURCE_DIR="$PROJECT_ROOT/Roles"
+SKILLS_SOURCE_DIR="$PROJECT_ROOT/Skills"
 TARGET_DIR="$PROJECT_ROOT/Production"
+AGENTS_TARGET_DIR="$TARGET_DIR/Agents"
+SKILLS_TARGET_DIR="$TARGET_DIR/Skills"
+DIALOG_DIR="$TARGET_DIR/Dialog"
 README_FILE="$TARGET_DIR/README.md"
-DIALOG_DIR="$PROJECT_ROOT/Dialog"
-AGENTS_DIR="$HOME/.claude/agents"
+CLAUDE_AGENTS_DIR="$HOME/.claude/agents"
 
 # Проверка аргументов
 DRY_RUN=false
@@ -41,9 +49,10 @@ if [[ "$1" == "--dry" ]]; then
     echo -e "${YELLOW}🔍 Режим просмотра (dry run) — изменения не будут применены${NC}\n"
 fi
 
-echo -e "${BLUE}📦 Публикация ролей${NC}"
-echo "   Источник: $SOURCE_DIR"
-echo "   Назначение: $TARGET_DIR"
+echo -e "${BLUE}📦 Публикация ролей и скиллов${NC}"
+echo "   Роли: $SOURCE_DIR -> $AGENTS_TARGET_DIR"
+echo "   Скиллы: $SKILLS_SOURCE_DIR -> $SKILLS_TARGET_DIR"
+echo "   Заглушки: $DIALOG_DIR"
 echo ""
 
 # Проверяем существование директорий
@@ -59,29 +68,36 @@ if [[ ! -d "$TARGET_DIR" ]]; then
     fi
 fi
 
+if [[ ! -d "$AGENTS_TARGET_DIR" ]]; then
+    if [[ "$DRY_RUN" == false ]]; then
+        mkdir -p "$AGENTS_TARGET_DIR"
+    fi
+fi
+
 # Считаем файлы до синхронизации
-BEFORE_COUNT=$(find "$TARGET_DIR" -name "*.md" ! -name "README.md" 2>/dev/null | wc -l | tr -d ' ')
+BEFORE_COUNT=$(find "$AGENTS_TARGET_DIR" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+BEFORE_SKILLS_COUNT=$(find "$SKILLS_TARGET_DIR" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
 
 # Список категорий (папок) — без templates (шаблоны не публикуются)
 CATEGORIES="meta assistants specialists creative"
 
-echo -e "${BLUE}📁 Синхронизация категорий:${NC}"
+echo -e "${BLUE}📁 Синхронизация ролей в Agents/:${NC}"
 
 for category in $CATEGORIES; do
     SOURCE_CAT="$SOURCE_DIR/$category"
-    TARGET_CAT="$TARGET_DIR/$category"
-    
+    TARGET_CAT="$AGENTS_TARGET_DIR/$category"
+
     if [[ -d "$SOURCE_CAT" ]]; then
         # Считаем .md файлы в категории
         FILE_COUNT=$(find "$SOURCE_CAT" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
-        
+
         if [[ "$FILE_COUNT" -gt 0 ]]; then
-            echo -e "   ${GREEN}✓${NC} /$category — $FILE_COUNT файл(ов)"
-            
+            echo -e "   ${GREEN}✓${NC} Agents/$category — $FILE_COUNT файл(ов)"
+
             if [[ "$DRY_RUN" == false ]]; then
                 # Создаём директорию если не существует
                 mkdir -p "$TARGET_CAT"
-                
+
                 # Копируем только .md файлы с сохранением структуры
                 rsync -av --delete \
                     --include="*/" \
@@ -91,45 +107,45 @@ for category in $CATEGORIES; do
                     > /dev/null 2>&1
             fi
         else
-            # Папка пуста в источнике — удаляем из Production если существует
+            # Папка пуста в источнике — удаляем из Agents если существует
             if [[ -d "$TARGET_CAT" ]]; then
-                echo -e "   ${YELLOW}✗${NC} /$category — удаляю пустую папку"
+                echo -e "   ${YELLOW}✗${NC} Agents/$category — удаляю пустую папку"
                 if [[ "$DRY_RUN" == false ]]; then
                     rm -rf "$TARGET_CAT"
                 fi
             else
-                echo -e "   ${YELLOW}○${NC} /$category — пропущено (пусто)"
+                echo -e "   ${YELLOW}○${NC} Agents/$category — пропущено (пусто)"
             fi
         fi
     else
-        # Папка не существует в источнике — удаляем из Production если существует
+        # Папка не существует в источнике — удаляем из Agents если существует
         if [[ -d "$TARGET_CAT" ]]; then
-            echo -e "   ${YELLOW}✗${NC} /$category — удаляю (нет в источнике)"
+            echo -e "   ${YELLOW}✗${NC} Agents/$category — удаляю (нет в источнике)"
             if [[ "$DRY_RUN" == false ]]; then
                 rm -rf "$TARGET_CAT"
             fi
         else
-            echo -e "   ${YELLOW}○${NC} /$category — пропущено (не существует)"
+            echo -e "   ${YELLOW}○${NC} Agents/$category — пропущено (не существует)"
         fi
     fi
 done
 
-# Удаляем папки в Production, которые не входят в CATEGORIES
-if [[ -d "$TARGET_DIR" ]]; then
-    for dir in "$TARGET_DIR"/*/; do
+# Удаляем папки в Agents, которые не входят в CATEGORIES
+if [[ -d "$AGENTS_TARGET_DIR" ]]; then
+    for dir in "$AGENTS_TARGET_DIR"/*/; do
         if [[ -d "$dir" ]]; then
             dir_name=$(basename "$dir")
             is_valid_category=false
-            
+
             for category in $CATEGORIES; do
                 if [[ "$dir_name" == "$category" ]]; then
                     is_valid_category=true
                     break
                 fi
             done
-            
+
             if [[ "$is_valid_category" == false ]]; then
-                echo -e "   ${YELLOW}✗${NC} /$dir_name — удаляю (не в списке категорий)"
+                echo -e "   ${YELLOW}✗${NC} Agents/$dir_name — удаляю (не в списке категорий)"
                 if [[ "$DRY_RUN" == false ]]; then
                     rm -rf "$dir"
                 fi
@@ -180,15 +196,15 @@ get_role_name() {
 # =============================================================================
 
 # Синхронизирует роли в Claude Agents (формат agent-{name}.md)
-sync_to_agents() {
+sync_to_claude_agents() {
     echo -e "${BLUE}🤖 Синхронизация в Claude Agents:${NC}"
-    echo "   Назначение: $AGENTS_DIR"
+    echo "   Назначение: $CLAUDE_AGENTS_DIR"
     echo ""
 
     # Создаём директорию agents если не существует
-    if [[ ! -d "$AGENTS_DIR" ]]; then
+    if [[ ! -d "$CLAUDE_AGENTS_DIR" ]]; then
         if [[ "$DRY_RUN" == false ]]; then
-            mkdir -p "$AGENTS_DIR"
+            mkdir -p "$CLAUDE_AGENTS_DIR"
         fi
     fi
 
@@ -202,7 +218,7 @@ sync_to_agents() {
             while IFS= read -r -d '' file; do
                 if [[ -n "$file" ]]; then
                     local role_name=$(get_role_name "$file")
-                    local agent_file="$AGENTS_DIR/agent-$role_name.md"
+                    local agent_file="$CLAUDE_AGENTS_DIR/agent-$role_name.md"
 
                     if [[ "$DRY_RUN" == false ]]; then
                         cp "$file" "$agent_file"
@@ -241,7 +257,7 @@ generate_dialog_file() {
 - Примени их инструкции как системные правила на весь разговор
 
 ### 2. Загрузка роли
-- Загрузи файл роли по ссылке: \`https://raw.githubusercontent.com/klimsergeev/role-master/main/Production/${category}/${filename}\`
+- Загрузи файл роли по ссылке: \`https://raw.githubusercontent.com/klimsergeev/role-master/main/Production/Agents/${category}/${filename}\`
 - Прочитай содержимое полностью
 - Примени все инструкции из файла как системные правила на весь разговор
 
@@ -359,17 +375,76 @@ sync_to_dialog() {
 }
 
 # =============================================================================
-# Генерация README.md с каталогом ролей
+# Синхронизация Skills
+# =============================================================================
+
+sync_skills() {
+    echo -e "${BLUE}📚 Синхронизация скиллов в Skills/:${NC}"
+
+    # Создаём директорию если не существует
+    if [[ ! -d "$SKILLS_TARGET_DIR" ]]; then
+        if [[ "$DRY_RUN" == false ]]; then
+            mkdir -p "$SKILLS_TARGET_DIR"
+        fi
+    fi
+
+    local SYNCED_COUNT=0
+
+    if [[ -d "$SKILLS_SOURCE_DIR" ]]; then
+        # Находим все skill-*.md файлы, исключая skill-template.md
+        while IFS= read -r -d '' file; do
+            if [[ -n "$file" ]]; then
+                local filename=$(basename "$file")
+
+                # Пропускаем шаблон
+                if [[ "$filename" == "skill-template.md" ]]; then
+                    echo -e "   ${YELLOW}○${NC} $filename — пропущено (шаблон)"
+                    continue
+                fi
+
+                local target_file="$SKILLS_TARGET_DIR/$filename"
+
+                if [[ "$DRY_RUN" == false ]]; then
+                    cp "$file" "$target_file"
+                fi
+
+                echo -e "   ${GREEN}✓${NC} $filename"
+                SYNCED_COUNT=$((SYNCED_COUNT + 1))
+            fi
+        done < <(find "$SKILLS_SOURCE_DIR" -maxdepth 1 -name "skill-*.md" -type f -print0 2>/dev/null)
+
+        # Удаляем файлы из Skills, которых нет в источнике
+        if [[ -d "$SKILLS_TARGET_DIR" && "$DRY_RUN" == false ]]; then
+            while IFS= read -r -d '' target_file; do
+                local fname=$(basename "$target_file")
+                if [[ ! -f "$SKILLS_SOURCE_DIR/$fname" ]]; then
+                    rm -f "$target_file"
+                    echo -e "   ${YELLOW}✗${NC} $fname (удалён)"
+                fi
+            done < <(find "$SKILLS_TARGET_DIR" -name "*.md" -type f -print0 2>/dev/null)
+        fi
+    else
+        echo -e "   ${YELLOW}○${NC} Папка $SKILLS_SOURCE_DIR не найдена"
+    fi
+
+    echo ""
+    echo "   Синхронизировано: $SYNCED_COUNT скиллов"
+    echo ""
+}
+
+# =============================================================================
+# Генерация README.md с каталогом ролей и скиллов
 # =============================================================================
 
 generate_readme() {
     local TIMESTAMP=$(date "+%Y-%m-%d %H:%M")
     local TOTAL_ROLES=0
+    local TOTAL_SKILLS=0
     local ACTIVE_CATEGORIES=""
-    
-    # Сначала считаем общее количество ролей и собираем активные категории
+
+    # Считаем роли
     for category in $CATEGORIES; do
-        TARGET_CAT="$TARGET_DIR/$category"
+        TARGET_CAT="$AGENTS_TARGET_DIR/$category"
         if [[ -d "$TARGET_CAT" ]]; then
             local count=$(find "$TARGET_CAT" -name "*.md" -type f 2>/dev/null | wc -l | tr -d ' ')
             if [[ "$count" -gt 0 ]]; then
@@ -378,11 +453,16 @@ generate_readme() {
             fi
         fi
     done
-    
-    cat << 'HEADER'
-# 📚 Production — Библиотека ролей для AI-агентов
 
-> ⚠️ **READ-ONLY LIBRARY** — Эта папка содержит стабильные версии ролей для внешнего использования.
+    # Считаем скиллы
+    if [[ -d "$SKILLS_TARGET_DIR" ]]; then
+        TOTAL_SKILLS=$(find "$SKILLS_TARGET_DIR" -name "*.md" -type f 2>/dev/null | wc -l | tr -d ' ')
+    fi
+
+    cat << 'HEADER'
+# 📚 Production — Библиотека ролей и скиллов для AI-агентов
+
+> ⚠️ **READ-ONLY LIBRARY** — Эта папка содержит стабильные версии для внешнего использования.
 
 ---
 
@@ -395,79 +475,119 @@ generate_readme() {
 | ❌ Создавать файлы | **Нет** |
 | ❌ Удалять файлы | **Нет** |
 
-### Как использовать роли
+### Как использовать
 
-1. **Найди свою роль** в каталоге ниже
+1. **Найди роль или скилл** в каталоге ниже
 2. **Перейди по пути** к файлу `.md`
 3. **Прочитай описание** и применяй инструкции
 
 ### Если нужны изменения
 
-Изменения в ролях вносятся только через проект **Role Creator**:
-- Исходные файлы находятся в `/Roles`
+Изменения вносятся только через проект **Role Creator**:
+- Роли: `/Roles` → `Production/Agents`
+- Скиллы: `/Skills` → `Production/Skills`
 - После изменений запускается скрипт публикации
-- Обновлённые роли появляются здесь
 
 ---
 
-## 📋 Каталог ролей
+## 📋 Каталог ролей (Agents/)
 
 HEADER
 
     local has_roles=false
-    
+
     for category in $CATEGORIES; do
-        TARGET_CAT="$TARGET_DIR/$category"
-        
+        TARGET_CAT="$AGENTS_TARGET_DIR/$category"
+
         if [[ -d "$TARGET_CAT" ]]; then
             # Находим все .md файлы
             local files=$(find "$TARGET_CAT" -name "*.md" -type f 2>/dev/null | sort)
-            
+
             if [[ -n "$files" ]]; then
                 has_roles=true
                 local cat_desc=$(get_category_desc "$category")
-                
+
                 echo ""
                 echo "### ${cat_desc}"
                 echo ""
                 echo "| Роль | Файл | Описание |"
                 echo "|------|------|----------|"
-                
+
                 echo "$files" | while read file; do
                     if [[ -n "$file" ]]; then
                         local filename=$(basename "$file")
-                        local relative_path="${category}/${filename}"
-                        
+                        local relative_path="Agents/${category}/${filename}"
+
                         # Извлекаем название из первой строки (# Название)
                         local title=$(head -1 "$file" | sed 's/^#[[:space:]]*//' | sed 's/—.*//' | sed 's/[[:space:]]*$//')
-                        
+
                         # Извлекаем краткое описание (после — в заголовке)
                         local description=$(head -1 "$file" | grep -o '—.*' | sed 's/^—[[:space:]]*//' | sed 's/[[:space:]]*$//')
-                        
+
                         if [[ -z "$description" ]]; then
                             description="—"
                         fi
-                        
+
                         echo "| **${title}** | \`${relative_path}\` | ${description} |"
                     fi
                 done
             fi
         fi
     done
-    
+
     # Если ролей нет
     if [[ "$has_roles" == false ]]; then
         echo ""
         echo "*Пока нет опубликованных ролей. Добавьте роли в /Roles и запустите publish.sh*"
     fi
-    
-    # Генерируем дерево папок только для активных категорий
+
+    # Секция скиллов
+    echo ""
+    echo "---"
+    echo ""
+    echo "## 📚 Каталог скиллов (Skills/)"
+    echo ""
+
+    if [[ -d "$SKILLS_TARGET_DIR" ]]; then
+        local skills_files=$(find "$SKILLS_TARGET_DIR" -name "*.md" -type f 2>/dev/null | sort)
+
+        if [[ -n "$skills_files" ]]; then
+            echo "| Скилл | Файл | Описание |"
+            echo "|-------|------|----------|"
+
+            echo "$skills_files" | while read file; do
+                if [[ -n "$file" ]]; then
+                    local filename=$(basename "$file")
+                    local relative_path="Skills/${filename}"
+
+                    # Извлекаем название из первой строки (# Название)
+                    local title=$(head -1 "$file" | sed 's/^#[[:space:]]*//' | sed 's/—.*//' | sed 's/[[:space:]]*$//')
+
+                    # Извлекаем краткое описание (после — в заголовке)
+                    local description=$(head -1 "$file" | grep -o '—.*' | sed 's/^—[[:space:]]*//' | sed 's/[[:space:]]*$//')
+
+                    if [[ -z "$description" ]]; then
+                        description="—"
+                    fi
+
+                    echo "| **${title}** | \`${relative_path}\` | ${description} |"
+                fi
+            done
+        else
+            echo "*Пока нет опубликованных скиллов. Добавьте скиллы в /Skills и запустите publish.sh*"
+        fi
+    else
+        echo "*Пока нет опубликованных скиллов. Добавьте скиллы в /Skills и запустите publish.sh*"
+    fi
+
+    # Статистика
     echo ""
     echo "---"
     echo ""
     echo "## 📊 Статистика"
     echo ""
-    echo "- **Всего ролей:** ${TOTAL_ROLES}"
+    echo "- **Ролей:** ${TOTAL_ROLES}"
+    echo "- **Скиллов:** ${TOTAL_SKILLS}"
     echo "- **Последнее обновление:** ${TIMESTAMP}"
     echo ""
     echo "---"
@@ -476,54 +596,37 @@ HEADER
     echo ""
     echo "\`\`\`"
     echo "/Production"
-    
-    # Показываем только папки с ролями
-    local first=true
-    local last_category=""
-    
-    # Определяем последнюю активную категорию для правильного отображения дерева
+    echo "├── /Agents              # Роли по категориям"
+
+    # Показываем категории ролей
     for category in $CATEGORIES; do
-        TARGET_CAT="$TARGET_DIR/$category"
-        if [[ -d "$TARGET_CAT" ]]; then
-            local count=$(find "$TARGET_CAT" -name "*.md" -type f 2>/dev/null | wc -l | tr -d ' ')
-            if [[ "$count" -gt 0 ]]; then
-                last_category="$category"
-            fi
-        fi
-    done
-    
-    for category in $CATEGORIES; do
-        TARGET_CAT="$TARGET_DIR/$category"
+        TARGET_CAT="$AGENTS_TARGET_DIR/$category"
         if [[ -d "$TARGET_CAT" ]]; then
             local count=$(find "$TARGET_CAT" -name "*.md" -type f 2>/dev/null | wc -l | tr -d ' ')
             if [[ "$count" -gt 0 ]]; then
                 local cat_comment=""
                 case "$category" in
-                    "meta")        cat_comment="# Мета-роли" ;;
-                    "assistants")  cat_comment="# Помощники" ;;
-                    "specialists") cat_comment="# Специалисты" ;;
-                    "creative")    cat_comment="# Креативные роли" ;;
-                    "templates")   cat_comment="# Шаблоны" ;;
+                    "meta")        cat_comment="Мета-роли" ;;
+                    "assistants")  cat_comment="Помощники" ;;
+                    "specialists") cat_comment="Специалисты" ;;
+                    "creative")    cat_comment="Креативные роли" ;;
                 esac
-                
-                if [[ "$category" == "$last_category" ]]; then
-                    echo "└── /${category}    ${cat_comment}"
-                else
-                    echo "├── /${category}    ${cat_comment}"
-                fi
+                echo "│   └── /${category}    # ${cat_comment}"
             fi
         fi
     done
-    
+
+    echo "├── /Dialog              # Заглушки для Claude"
+    echo "└── /Skills              # Скиллы (справочники)"
     echo "\`\`\`"
-    
+
     cat << 'FOOTER'
 
 ---
 
 ## Версионирование
 
-Каждая роль содержит версию в метаданных:
+Каждая роль и скилл содержит версию в метаданных:
 - **X.0.0** — Мажорные изменения (несовместимые)
 - **X.Y.0** — Новые возможности
 - **X.Y.Z** — Исправления и улучшения
@@ -534,15 +637,18 @@ HEADER
 FOOTER
 }
 
-# Синхронизируем в Claude Agents
-sync_to_agents
+# Синхронизируем в Claude Agents (~/.claude/agents)
+sync_to_claude_agents
 
 # Синхронизируем заглушки в Dialog
 sync_to_dialog
 
+# Синхронизируем скиллы
+sync_skills
+
 # Генерируем README
 if [[ "$DRY_RUN" == false ]]; then
-    echo -e "${BLUE}📝 Генерация README.md с каталогом ролей...${NC}"
+    echo -e "${BLUE}📝 Генерация README.md с каталогом ролей и скиллов...${NC}"
     generate_readme > "$README_FILE"
     echo -e "   ${GREEN}✓${NC} README.md обновлён"
     echo ""
@@ -550,17 +656,28 @@ fi
 
 # Считаем файлы после синхронизации
 if [[ "$DRY_RUN" == false ]]; then
-    AFTER_COUNT=$(find "$TARGET_DIR" -name "*.md" ! -name "README.md" 2>/dev/null | wc -l | tr -d ' ')
-    
+    AFTER_COUNT=$(find "$AGENTS_TARGET_DIR" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+    AFTER_SKILLS_COUNT=$(find "$SKILLS_TARGET_DIR" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+
     echo -e "${GREEN}✅ Публикация завершена!${NC}"
     echo "   Опубликовано ролей: $AFTER_COUNT"
-    
+    echo "   Опубликовано скиллов: $AFTER_SKILLS_COUNT"
+
     if [[ "$BEFORE_COUNT" != "$AFTER_COUNT" ]]; then
         DIFF=$((AFTER_COUNT - BEFORE_COUNT))
         if [[ "$DIFF" -gt 0 ]]; then
-            echo -e "   ${GREEN}+$DIFF новых${NC}"
+            echo -e "   ${GREEN}+$DIFF новых ролей${NC}"
         else
-            echo -e "   ${YELLOW}$DIFF удалено${NC}"
+            echo -e "   ${YELLOW}$DIFF ролей удалено${NC}"
+        fi
+    fi
+
+    if [[ "$BEFORE_SKILLS_COUNT" != "$AFTER_SKILLS_COUNT" ]]; then
+        DIFF=$((AFTER_SKILLS_COUNT - BEFORE_SKILLS_COUNT))
+        if [[ "$DIFF" -gt 0 ]]; then
+            echo -e "   ${GREEN}+$DIFF новых скиллов${NC}"
+        else
+            echo -e "   ${YELLOW}$DIFF скиллов удалено${NC}"
         fi
     fi
 else
@@ -570,5 +687,7 @@ fi
 
 echo ""
 echo "📍 Production: $TARGET_DIR"
-echo "📍 Claude Agents: $AGENTS_DIR"
-echo "📍 Dialog: $DIALOG_DIR"
+echo "   ├── Agents: $AGENTS_TARGET_DIR"
+echo "   ├── Dialog: $DIALOG_DIR"
+echo "   └── Skills: $SKILLS_TARGET_DIR"
+echo "📍 Claude Agents: $CLAUDE_AGENTS_DIR"
