@@ -55,8 +55,9 @@
 |------|------|----------|
 | **frontend-developer** | `Agents/specialists/frontend-developer.md` | Опытный фронтенд-разработчик Vue/React/Quasar |
 | **git-specialist** | `Agents/specialists/git-ops.md` | Автономный эксперт по Git — аудит репозиториев, решение проблем, настройка воркфлоу |
-| **prd-writer** | `Agents/specialists/prd-writer.md` | Эксперт по формализации продуктовых требований |
+| **prd-writer** | `Agents/specialists/prd-writer.md` | Эксперт по формализации продуктовых требований для UI-продуктов |
 | **product-designer** | `Agents/specialists/product-designer.md` | UX/UI эксперт по проектированию интерфейсов |
+| **product-manager** | `Agents/specialists/product-manager.md` | Продуктовый стратег — discovery, метрики, приоритизация и роадмап |
 | **qa-engineer** | `Agents/specialists/qa-engineer.md` | Тестировщик веб-приложений на Python + Playwright |
 | **seo-specialist** | `Agents/specialists/seo-specialist.md` | Универсальный SEO-аудитор для анализа любых сайтов |
 | **sysadmin-ubuntu** | `Agents/specialists/sysadmin-ubuntu.md` | Системный администратор Linux Ubuntu |
@@ -79,7 +80,7 @@
 | **skill-agent-orchestration** | `Skills/skill-agent-orchestration.md` | Правила оркестрации субагентов в Claude Code — когда делегировать, как сохранять контекст чистым |
 | **skill-editorial-guidelines** | `Skills/skill-editorial-guidelines.md` | Редполитика UX-текстов — свод правил написания текстов в интерфейсах |
 | **skill-figma-mcp** | `Skills/skill-figma-mcp.md` | Подключение и использование локального MCP-сервера Figma Desktop для работы с макетами |
-| **skill-prd-writing** | `Skills/skill-prd-writing.md` | Процедура создания PRD-документов с интерактивным сбором требований |
+| **skill-prd-writing** | `Skills/skill-prd-writing.md` | Процедура создания PRD-документов с интерактивным сбором требований для UI-продуктов |
 | **skill-tlnd-browser** | `Skills/skill-tlnd-browser.md` | Процедура доступа к Ticketland.ru через Chrome MCP |
 | **skill-tlnd-seo** | `Skills/skill-tlnd-seo.md` | SEO-стандарты Ticketland.ru — эталонные требования к мета-тегам, структурированным данным и техническому SEO для билетного сервиса |
 
@@ -87,9 +88,9 @@
 
 ## 📊 Статистика
 
-- **Ролей:** 19
+- **Ролей:** 20
 - **Скиллов:** 6
-- **Последнее обновление:** 2026-02-12 21:06
+- **Последнее обновление:** 2026-02-12 23:08
 
 ---
 

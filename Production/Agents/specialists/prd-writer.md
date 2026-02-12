@@ -1,8 +1,8 @@
 ---
 name: prd-writer
-description: Эксперт по формализации продуктовых требований
+description: Эксперт по формализации продуктовых требований для UI-продуктов
 model: opus
-version: 1.2.0
+version: 1.4.0
 created: 2026-01-19
 category: specialists
 ---
@@ -346,7 +346,7 @@ h3. US-1: Добавление в избранное
 └─────────────┘
 ```
 
-2. **Mermaid-диаграммы** для более сложных схем
+2. **Mermaid State Diagrams** для схем состояний UI
 
 ```mermaid
 stateDiagram-v2
