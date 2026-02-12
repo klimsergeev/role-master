@@ -79,15 +79,16 @@
 | **skill-agent-orchestration** | `Skills/skill-agent-orchestration.md` | Правила оркестрации субагентов в Claude Code — когда делегировать, как сохранять контекст чистым |
 | **skill-editorial-guidelines** | `Skills/skill-editorial-guidelines.md` | Редполитика UX-текстов — свод правил написания текстов в интерфейсах |
 | **skill-figma-mcp** | `Skills/skill-figma-mcp.md` | Подключение и использование локального MCP-сервера Figma Desktop для работы с макетами |
-| **skill-ticketland-seo** | `Skills/skill-ticketland-seo.md` | SEO-стандарты Ticketland.ru — эталонные требования к мета-тегам, структурированным данным и техническому SEO для билетного сервиса |
+| **skill-tlnd-browser** | `Skills/skill-tlnd-browser.md` | Процедура доступа к Ticketland.ru через Chrome MCP |
+| **skill-tlnd-seo** | `Skills/skill-tlnd-seo.md` | SEO-стандарты Ticketland.ru — эталонные требования к мета-тегам, структурированным данным и техническому SEO для билетного сервиса |
 
 ---
 
 ## 📊 Статистика
 
 - **Ролей:** 19
-- **Скиллов:** 4
-- **Последнее обновление:** 2026-02-09 00:13
+- **Скиллов:** 5
+- **Последнее обновление:** 2026-02-12 14:45
 
 ---
 
