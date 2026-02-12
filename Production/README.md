@@ -63,6 +63,7 @@
 | **sysadmin-ubuntu** | `Agents/specialists/sysadmin-ubuntu.md` | Системный администратор Linux Ubuntu |
 | **telegram-developer** | `Agents/specialists/telegram-developer.md` | Python-разработчик Telegram-ботов на aiogram |
 | **ux-heuristic** | `Agents/specialists/ux-heuristic.md` | Эксперт по эвристической оценке интерфейсов |
+| **ux-researcher** | `Agents/specialists/ux-researcher.md` | UX-исследователь для анализа опыта пользователей и actionable-рекомендаций |
 | **ux-writer** | `Agents/specialists/ux-writer.md` | Редактор интерфейсных текстов по редполитике |
 
 ### 🎨 Креативные роли
@@ -88,9 +89,9 @@
 
 ## 📊 Статистика
 
-- **Ролей:** 20
+- **Ролей:** 21
 - **Скиллов:** 6
-- **Последнее обновление:** 2026-02-12 23:08
+- **Последнее обновление:** 2026-02-13 01:14
 
 ---
 
