@@ -80,7 +80,8 @@
 |-------|------|----------|
 | **skill-agent-orchestration** | `Skills/skill-agent-orchestration.md` | Правила оркестрации субагентов в Claude Code — когда делегировать, как сохранять контекст чистым |
 | **skill-editorial-guidelines** | `Skills/skill-editorial-guidelines.md` | Редполитика UX-текстов — свод правил написания текстов в интерфейсах |
-| **skill-figma-mcp** | `Skills/skill-figma-mcp.md` | Подключение и использование локального MCP-сервера Figma Desktop для работы с макетами |
+| **skill-figma-mcp-setup** | `Skills/skill-figma-mcp-setup.md` | Процедура подключения проекта к Figma MCP серверу для интеграции Claude Code с Figma Desktop |
+| **skill-figma-mcp-tools** | `Skills/skill-figma-mcp-tools.md` | Справочник MCP-инструментов Figma Desktop для агентов Claude Code |
 | **skill-prd-writing** | `Skills/skill-prd-writing.md` | Процедура создания PRD-документов с интерактивным сбором требований для UI-продуктов |
 | **skill-tlnd-browser** | `Skills/skill-tlnd-browser.md` | Процедура доступа к Ticketland.ru через Chrome MCP |
 | **skill-tlnd-seo** | `Skills/skill-tlnd-seo.md` | SEO-стандарты Ticketland.ru — эталонные требования к мета-тегам, структурированным данным и техническому SEO для билетного сервиса |
@@ -90,8 +91,8 @@
 ## 📊 Статистика
 
 - **Ролей:** 21
-- **Скиллов:** 6
-- **Последнее обновление:** 2026-02-13 14:15
+- **Скиллов:** 7
+- **Последнее обновление:** 2026-02-13 21:18
 
 ---
 
