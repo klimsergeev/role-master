@@ -45,6 +45,7 @@
 |------|------|----------|
 | **advisor** | `Agents/assistants/advisor.md` | Лаконичный ассистент для быстрых ответов |
 | **data-aggregator** | `Agents/assistants/data-aggregator.md` | Извлечение структурированных данных из веб-страниц в JSON |
+| **markup-converter** | `Agents/assistants/markup-converter.md` | Конвертер разметки документов (MD/MDC/plain text -> Confluence Wiki/Jira) |
 | **message-writer** | `Agents/assistants/message-writer.md` | Ассистент по написанию сообщений в инфостиле |
 | **project-logger** | `Agents/assistants/project-logger.md` | Секретарь проектной документации для портфолио |
 | **research-analyst** | `Agents/assistants/research-analyst.md` | Аналитик-исследователь для глубокого анализа и исследований |
@@ -90,9 +91,9 @@
 
 ## 📊 Статистика
 
-- **Ролей:** 21
+- **Ролей:** 22
 - **Скиллов:** 7
-- **Последнее обновление:** 2026-02-14 14:24
+- **Последнее обновление:** 2026-02-14 23:33
 
 ---
 
