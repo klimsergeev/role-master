@@ -83,6 +83,10 @@
 | **skill-editorial-guidelines** | `Skills/skill-editorial-guidelines.md` | Редполитика UX-текстов — свод правил написания текстов в интерфейсах |
 | **skill-figma-mcp-setup** | `Skills/skill-figma-mcp-setup.md` | Процедура подключения проекта к Figma MCP серверу для интеграции Claude Code с Figma Desktop |
 | **skill-figma-mcp-tools** | `Skills/skill-figma-mcp-tools.md` | Справочник MCP-инструментов Figma Desktop для агентов Claude Code |
+| **skill-markup-confluence** | `Skills/skill-markup-confluence.md` | Справочник синтаксиса Confluence Wiki Markup для форматирования документов |
+| **skill-markup-jira** | `Skills/skill-markup-jira.md` | Справочник Jira Text Formatting Notation для форматирования текста в задачах и комментариях Jira |
+| **skill-markup-latex** | `Skills/skill-markup-latex.md` | Справочник синтаксиса LaTeX для создания и редактирования документов |
+| **skill-markup-wikitext** | `Skills/skill-markup-wikitext.md` | Справочник синтаксиса Wikitext (MediaWiki markup) для разметки wiki-страниц |
 | **skill-prd-writing** | `Skills/skill-prd-writing.md` | Процедура создания PRD-документов с интерактивным сбором требований для UI-продуктов |
 | **skill-tlnd-browser** | `Skills/skill-tlnd-browser.md` | Процедура доступа к Ticketland.ru через Chrome MCP |
 | **skill-tlnd-seo** | `Skills/skill-tlnd-seo.md` | SEO-стандарты Ticketland.ru — эталонные требования к мета-тегам, структурированным данным и техническому SEO для билетного сервиса |
@@ -92,8 +96,8 @@
 ## 📊 Статистика
 
 - **Ролей:** 22
-- **Скиллов:** 7
-- **Последнее обновление:** 2026-02-14 23:33
+- **Скиллов:** 11
+- **Последнее обновление:** 2026-02-15 00:15
 
 ---
 
