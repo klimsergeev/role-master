@@ -1,8 +1,9 @@
 ---
 name: skill-tlnd-seo
 description: SEO-стандарты Ticketland.ru — эталонные требования к мета-тегам, структурированным данным и техническому SEO для билетного сервиса
-version: 1.2.0
+version: 1.3.0
 created: 2026-02-08
+updated: 2026-02-14
 type: reference
 ---
 
@@ -479,6 +480,28 @@ JSON-LD размещается в `<head>` страницы:
 | **Critical** | Блокирует индексацию или rich snippets | Canonical/og:url на главную, отсутствие Event разметки |
 | **High** | Влияет на CTR и отображение в выдаче | Title >60 симв., Description >160 симв., og:image без размеров, нет BreadcrumbList |
 | **Medium** | Неоптимально, но не критично | Meta keywords, og:type = website вместо event, JSON-LD в footer вместо HEAD |
+
+---
+
+## Самопроверка при подключении
+
+При подключении скилла агент должен вывести:
+
+```
+Скилл подключён: Ticketland SEO
+
+Назначение: Эталонные SEO-требования для ticketland.ru.
+
+Типы страниц:
+• Мероприятие (Event/TheaterEvent)
+• Площадка (Place/PerformingArtsTheater)
+• Исполнитель (Person/PerformingGroup)
+• Категория/подкатегория (ItemList)
+
+Стандарты: meta-теги, JSON-LD, canonical, Open Graph
+
+Готов проводить SEO-аудит страниц ticketland.ru.
+```
 
 ---
 

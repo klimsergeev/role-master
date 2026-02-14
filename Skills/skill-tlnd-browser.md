@@ -1,8 +1,9 @@
 ---
 name: skill-tlnd-browser
 description: Процедура доступа к Ticketland.ru через Chrome MCP
-version: 2.0.0
+version: 2.1.0
 created: 2026-02-10
+updated: 2026-02-14
 ---
 
 # Ticketland Browser
@@ -138,6 +139,32 @@ mcp__claude-in-chrome__computer
 1. wait(2) // дополнительное ожидание
 2. Повторить действие
 3. Если всё ещё пусто -> записать ошибку, продолжить
+```
+
+---
+
+## Самопроверка при подключении
+
+При подключении скилла агент должен:
+
+1. Вызвать `mcp__claude-in-chrome__tabs_context_mcp` для проверки связи с Chrome
+2. Показать количество открытых вкладок
+3. Вывести сообщение:
+
+```
+Скилл подключён: Ticketland Browser
+
+Назначение: Доступ к ticketland.ru через Chrome MCP.
+
+Статус Chrome MCP:
+• Соединение: [активно/недоступно]
+• Табы: [N открытых вкладок]
+
+Инструменты:
+• navigate — переход на URL
+• computer — click/type/scroll/screenshot
+• javascript_tool — извлечение данных
+• read_page — структура страницы
 ```
 
 ---

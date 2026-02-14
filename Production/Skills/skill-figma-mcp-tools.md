@@ -1,8 +1,9 @@
 ---
 name: skill-figma-mcp-tools
 description: Справочник MCP-инструментов Figma Desktop для агентов Claude Code
-version: 1.0.0
+version: 1.2.0
 created: 2025-02-13
+updated: 2026-02-14
 ---
 
 # Figma MCP Tools
@@ -27,6 +28,8 @@ created: 2025-02-13
 
 ## Инструменты для чтения
 
+**Заметка о Code Connect:** Для лучших результатов переиспользования кода настройте Code Connect в Figma. Code Connect позволяет связать несколько фреймворков (например, React и SwiftUI) с компонентами Figma-библиотеки. Desktop MCP использует маппинг, выбранный в Dev Mode. Для управления маппингом через параметр `clientFrameworks` укажите точное название label из Code Connect (например, "React", "SwiftUI").
+
 ### get_design_context
 
 **Назначение:** Генерирует React+Tailwind код для выделенного элемента.
@@ -46,7 +49,13 @@ created: 2025-02-13
 mcp__figma-desktop__get_design_context с nodeId="123:456", clientFrameworks="react", clientLanguages="typescript"
 ```
 
-**Результат:** React-компонент с Tailwind-классами.
+**Примеры промптов:**
+- "сгенерируй мой выделенный элемент на Vue"
+- "сгенерируй мой выделенный элемент на HTML + CSS"
+- "сгенерируй мой выделенный элемент, используя компоненты из src/components/ui"
+- "сгенерируй мой выделенный элемент, используя компоненты из src/ui и стилизуй через Tailwind"
+
+**Результат:** React-компонент с Tailwind-классами (по умолчанию).
 
 ---
 
@@ -110,6 +119,11 @@ mcp__figma-desktop__get_design_context с nodeId="123:456", clientFrameworks="re
 - Нужны токены дизайн-системы
 - Настройка Tailwind config
 - Синхронизация цветов/шрифтов с кодом
+
+**Примеры промптов:**
+- "получи переменные из моего выделенного элемента в Figma"
+- "какие цветовые и spacing-переменные используются в моём выделении?"
+- "выведи имена переменных и их значения из моего выделения в Figma"
 
 **Пример результата:**
 ```json
@@ -229,12 +243,34 @@ mcp__figma-desktop__add_code_connect_map с source="src/components/Button.tsx", 
 
 ---
 
-## Недоступные инструменты
+## Недоступные инструменты (remote-only)
 
-| Инструмент | Причина |
-|------------|---------|
-| generate_diagram | Только в remote-версии |
-| whoami | Только в remote-версии |
+### generate_diagram (remote-only)
+
+**Назначение:** Генерирует FigJam-диаграмму из Mermaid-синтаксиса.
+
+**Как работает:** Агент принимает описание диаграммы на естественном языке, генерирует Mermaid-синтаксис и вызывает инструмент для создания интерактивной FigJam-диаграммы.
+
+**Поддерживаемые типы диаграмм:**
+- Flowchart (блок-схемы)
+- Gantt chart (диаграммы Ганта)
+- State diagram (диаграммы состояний)
+- Sequence diagram (диаграммы последовательности)
+
+**Примеры промптов:**
+- "создай блок-схему для процесса аутентификации пользователя через Figma MCP generate_diagram"
+- "сгенерируй диаграмму Ганта для таймлайна проекта через Figma MCP generate_diagram"
+- "создай диаграмму последовательности для системы обработки платежей"
+
+**Ограничение:** Доступен только в remote-версии MCP, недоступен в Desktop MCP.
+
+---
+
+### whoami (remote-only)
+
+**Назначение:** Возвращает идентификационные данные пользователя, авторизованного в Figma.
+
+**Ограничение:** Доступен только в remote-версии MCP, недоступен в Desktop MCP.
 
 ---
 
@@ -355,10 +391,33 @@ module.exports = {
 
 ---
 
+## Самопроверка при подключении
+
+При подключении скилла агент должен вывести:
+
+```
+Скилл подключён: Figma MCP Tools
+
+Назначение: Справочник инструментов Figma Desktop MCP.
+
+Доступные инструменты (8):
+• get_design_context — генерация кода из макета
+• get_screenshot — скриншот элемента
+• get_metadata — XML-структура
+• get_variable_defs — токены дизайн-системы
+• get_code_connect_map — маппинги компонентов
+• add_code_connect_map — добавление маппинга
+• get_code_connect_suggestions — предложения
+• create_design_system_rules — правила ДС
+
+Недоступные (remote-only): generate_diagram, whoami
+```
+
+---
+
 ## Что НЕ входит в scope
 
 - Настройка подключения к MCP-серверу (см. skill-figma-mcp-setup)
 - Работа с Figma Web API
 - Редактирование макетов в Figma
 - Работа с Figma plugins
-- Remote MCP (generate_diagram, whoami)
