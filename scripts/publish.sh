@@ -42,6 +42,7 @@ DIALOG_DIR="$TARGET_DIR/Dialog"
 README_FILE="$TARGET_DIR/README.md"
 CLAUDE_AGENTS_DIR="$HOME/.claude/agents"
 CLAUDE_SKILLS_DIR="$HOME/.claude/skills"
+CURSOR_SKILLS_DIR="$HOME/.cursor/skills"
 
 # Проверка аргументов
 DRY_RUN=false
@@ -54,7 +55,8 @@ echo -e "${BLUE}📦 Публикация ролей и скиллов${NC}"
 echo "   Роли: $SOURCE_DIR -> $AGENTS_TARGET_DIR"
 echo "   Скиллы (Github): $SKILLS_SOURCE_DIR -> $SKILLS_TARGET_DIR"
 echo "   Скиллы (Claude): $SKILLS_SOURCE_DIR -> $CLAUDE_SKILLS_DIR"
-echo "   Заглушки: $DIALOG_DIR"
+echo "   Скиллы (Cursor): $SKILLS_SOURCE_DIR -> $CURSOR_SKILLS_DIR"
+echo "   Для веб-диалогов: $DIALOG_DIR"
 echo ""
 
 # Проверяем существование директорий
@@ -80,6 +82,7 @@ fi
 BEFORE_COUNT=$(find "$AGENTS_TARGET_DIR" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
 BEFORE_SKILLS_COUNT=$(find "$SKILLS_TARGET_DIR" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
 BEFORE_CLAUDE_SKILLS_COUNT=$(find "$CLAUDE_SKILLS_DIR" -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
+BEFORE_CURSOR_SKILLS_COUNT=$(find "$CURSOR_SKILLS_DIR" -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
 
 # Список категорий (папок) — без templates (шаблоны не публикуются)
 CATEGORIES="meta assistants specialists creative"
@@ -460,6 +463,106 @@ sync_to_claude_skills() {
 }
 
 # =============================================================================
+# Синхронизация в Cursor Skills (~/.cursor/skills)
+# =============================================================================
+
+# Добавляет disable-model-invocation в frontmatter скилла для Cursor
+# Если параметр уже существует в целевом файле — сохраняет его значение
+add_cursor_frontmatter_param() {
+    local source_file="$1"
+    local target_file="$2"
+    local param_name="disable-model-invocation"
+    local default_value="true"
+    
+    # Проверяем, есть ли параметр в существующем целевом файле
+    local existing_value=""
+    if [[ -f "$target_file" ]]; then
+        existing_value=$(sed -n '2,/^---$/p' "$target_file" 2>/dev/null | grep "^${param_name}:" | sed "s/^${param_name}:[[:space:]]*//" | tr -d '\r')
+    fi
+    
+    # Определяем значение параметра
+    local param_value="${existing_value:-$default_value}"
+    
+    # Копируем файл и добавляем параметр после первой строки frontmatter
+    if head -1 "$source_file" | grep -q '^---'; then
+        # Файл имеет frontmatter — вставляем параметр после первого ---
+        {
+            head -1 "$source_file"
+            echo "${param_name}: ${param_value}"
+            tail -n +2 "$source_file"
+        } > "$target_file"
+    else
+        # Файл без frontmatter — добавляем frontmatter с параметром
+        {
+            echo "---"
+            echo "${param_name}: ${param_value}"
+            echo "---"
+            cat "$source_file"
+        } > "$target_file"
+    fi
+}
+
+# Синхронизирует скиллы в Cursor Skills (формат skill-{name}/SKILL.md)
+sync_to_cursor_skills() {
+    echo -e "${BLUE}📚 Синхронизация скиллов в Cursor Skills:${NC}"
+    echo "   Назначение: $CURSOR_SKILLS_DIR"
+    echo ""
+
+    # Создаём директорию skills если не существует
+    if [[ ! -d "$CURSOR_SKILLS_DIR" ]]; then
+        if [[ "$DRY_RUN" == false ]]; then
+            mkdir -p "$CURSOR_SKILLS_DIR"
+        fi
+    fi
+
+    local SYNCED_COUNT=0
+
+    if [[ -d "$SKILLS_SOURCE_DIR" ]]; then
+        # Находим все skill-*.md файлы, исключая skill-template.md
+        while IFS= read -r -d '' file; do
+            if [[ -n "$file" ]]; then
+                local filename=$(basename "$file")
+
+                # Пропускаем шаблон
+                if [[ "$filename" == "skill-template.md" ]]; then
+                    echo -e "   ${YELLOW}○${NC} $filename — пропущено (шаблон)"
+                    continue
+                fi
+
+                # Извлекаем имя скилла (без расширения)
+                local skill_name="${filename%.md}"
+                local skill_dir="$CURSOR_SKILLS_DIR/$skill_name"
+                local skill_file="$skill_dir/SKILL.md"
+
+                # Создаём папку скилла если не существует
+                if [[ ! -d "$skill_dir" ]]; then
+                    if [[ "$DRY_RUN" == false ]]; then
+                        mkdir -p "$skill_dir"
+                        echo -e "   ${GREEN}+${NC} $skill_name/ — создана папка"
+                    else
+                        echo -e "   ${GREEN}+${NC} $skill_name/ — будет создана папка"
+                    fi
+                fi
+
+                # Копируем/обновляем SKILL.md с добавлением disable-model-invocation
+                if [[ "$DRY_RUN" == false ]]; then
+                    add_cursor_frontmatter_param "$file" "$skill_file"
+                fi
+
+                echo -e "   ${GREEN}✓${NC} $skill_name/SKILL.md — обновлён"
+                SYNCED_COUNT=$((SYNCED_COUNT + 1))
+            fi
+        done < <(find "$SKILLS_SOURCE_DIR" -maxdepth 1 -name "skill-*.md" -type f -print0 2>/dev/null)
+    else
+        echo -e "   ${YELLOW}○${NC} Папка $SKILLS_SOURCE_DIR не найдена"
+    fi
+
+    echo ""
+    echo "   Синхронизировано скиллов: $SYNCED_COUNT (с disable-model-invocation)"
+    echo ""
+}
+
+# =============================================================================
 # Синхронизация Skills
 # =============================================================================
 
@@ -737,6 +840,9 @@ sync_to_dialog
 # Синхронизируем скиллы в Claude Skills (~/.claude/skills)
 sync_to_claude_skills
 
+# Синхронизируем скиллы в Cursor Skills (~/.cursor/skills-cursor)
+sync_to_cursor_skills
+
 # Синхронизируем скиллы
 sync_skills
 
@@ -753,11 +859,13 @@ if [[ "$DRY_RUN" == false ]]; then
     AFTER_COUNT=$(find "$AGENTS_TARGET_DIR" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
     AFTER_SKILLS_COUNT=$(find "$SKILLS_TARGET_DIR" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
     AFTER_CLAUDE_SKILLS_COUNT=$(find "$CLAUDE_SKILLS_DIR" -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
+    AFTER_CURSOR_SKILLS_COUNT=$(find "$CURSOR_SKILLS_DIR" -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
 
     echo -e "${GREEN}✅ Публикация завершена!${NC}"
     echo "   Опубликовано ролей: $AFTER_COUNT"
     echo "   Опубликовано скиллов (Github): $AFTER_SKILLS_COUNT"
     echo "   Опубликовано скиллов (Claude): $AFTER_CLAUDE_SKILLS_COUNT"
+    echo "   Опубликовано скиллов (Cursor): $AFTER_CURSOR_SKILLS_COUNT"
 
     if [[ "$BEFORE_COUNT" != "$AFTER_COUNT" ]]; then
         DIFF=$((AFTER_COUNT - BEFORE_COUNT))
@@ -785,6 +893,15 @@ if [[ "$DRY_RUN" == false ]]; then
             echo -e "   ${YELLOW}$DIFF скиллов удалено из Claude${NC}"
         fi
     fi
+
+    if [[ "$BEFORE_CURSOR_SKILLS_COUNT" != "$AFTER_CURSOR_SKILLS_COUNT" ]]; then
+        DIFF=$((AFTER_CURSOR_SKILLS_COUNT - BEFORE_CURSOR_SKILLS_COUNT))
+        if [[ "$DIFF" -gt 0 ]]; then
+            echo -e "   ${GREEN}+$DIFF новых скиллов в Cursor${NC}"
+        else
+            echo -e "   ${YELLOW}$DIFF скиллов удалено из Cursor${NC}"
+        fi
+    fi
 else
     echo -e "${YELLOW}🔍 Dry run завершён — изменения не применены${NC}"
     echo "   Запустите без --dry для применения изменений"
@@ -797,3 +914,4 @@ echo "   ├── Dialog: $DIALOG_DIR"
 echo "   └── Skills: $SKILLS_TARGET_DIR"
 echo "📍 Claude Agents: $CLAUDE_AGENTS_DIR"
 echo "📍 Claude Skills: $CLAUDE_SKILLS_DIR"
+echo "📍 Cursor Skills: $CURSOR_SKILLS_DIR"
