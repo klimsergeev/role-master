@@ -86,18 +86,24 @@
 | **skill-markup-confluence** | `Skills/skill-markup-confluence.md` | Справочник синтаксиса Confluence Wiki Markup для форматирования документов |
 | **skill-markup-jira** | `Skills/skill-markup-jira.md` | Справочник Jira Text Formatting Notation для форматирования текста в задачах и комментариях Jira |
 | **skill-markup-latex** | `Skills/skill-markup-latex.md` | Справочник синтаксиса LaTeX для создания и редактирования документов |
+| **skill-markup-markdown** | `Skills/skill-markup-markdown.md` | Справочник синтаксиса Markdown, MultiMarkdown и MDC для форматирования документов |
+| **skill-markup-textile** | `Skills/skill-markup-textile.md` | Справочник синтаксиса Textile для форматирования текста в HTML |
 | **skill-markup-wikitext** | `Skills/skill-markup-wikitext.md` | Справочник синтаксиса Wikitext (MediaWiki markup) для разметки wiki-страниц |
+| **skill-nuxt-data-fetching** | `Skills/skill-nuxt-data-fetching.md` | Процедура выбора и использования методов загрузки данных в Nuxt 3 (useFetch, useAsyncData, $fetch) |
 | **skill-prd-writing** | `Skills/skill-prd-writing.md` | Процедура создания PRD-документов с интерактивным сбором требований для UI-продуктов |
+| **skill-strapi-api-integration** | `Skills/skill-strapi-api-integration.md` | Процедура интеграции Vue/Nuxt приложения с Strapi v5 API через @nuxtjs/strapi модуль |
+| **skill-strapi-content-modeling** | `Skills/skill-strapi-content-modeling.md` | Процедура проектирования контент-типов, компонентов и dynamic zones в Strapi v5 |
 | **skill-tlnd-browser** | `Skills/skill-tlnd-browser.md` | Процедура доступа к Ticketland.ru через Chrome MCP |
 | **skill-tlnd-seo** | `Skills/skill-tlnd-seo.md` | SEO-стандарты Ticketland.ru — эталонные требования к мета-тегам, структурированным данным и техническому SEO для билетного сервиса |
+| **skill-vue-typescript-patterns** | `Skills/skill-vue-typescript-patterns.md` | Справочник TypeScript-паттернов для Vue 3 / Nuxt 3 — типизация props, emits, slots, composables, Pinia stores |
 
 ---
 
 ## 📊 Статистика
 
 - **Ролей:** 22
-- **Скиллов:** 11
-- **Последнее обновление:** 2026-02-15 03:46
+- **Скиллов:** 17
+- **Последнее обновление:** 2026-02-18 21:59
 
 ---
 
