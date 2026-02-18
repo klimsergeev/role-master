@@ -1,8 +1,6 @@
 ---
 name: skill-markup-textile
 description: Справочник синтаксиса Textile для форматирования текста в HTML
-version: 1.0.0
-created: 2026-02-15
 ---
 
 # Textile Markup

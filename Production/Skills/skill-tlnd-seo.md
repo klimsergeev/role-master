@@ -1,10 +1,6 @@
 ---
 name: skill-tlnd-seo
 description: SEO-стандарты Ticketland.ru — эталонные требования к мета-тегам, структурированным данным и техническому SEO для билетного сервиса
-version: 1.3.0
-created: 2026-02-08
-updated: 2026-02-14
-type: reference
 ---
 
 # Ticketland SEO

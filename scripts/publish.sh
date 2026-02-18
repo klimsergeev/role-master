@@ -466,6 +466,71 @@ sync_to_claude_skills() {
 # Синхронизация в Cursor Skills (~/.cursor/skills)
 # =============================================================================
 
+# =============================================================================
+# Фильтрация frontmatter скиллов для веб-версии Claude
+# =============================================================================
+
+# Разрешённые ключи для веб-версии Claude
+ALLOWED_FRONTMATTER_KEYS="name description license allowed-tools compatibility metadata"
+
+# Фильтрует frontmatter, оставляя только разрешённые ключи
+# Использование: filter_skill_frontmatter source_file target_file
+filter_skill_frontmatter() {
+    local source_file="$1"
+    local target_file="$2"
+
+    # Проверяем, есть ли frontmatter
+    if ! head -1 "$source_file" | grep -q '^---'; then
+        # Нет frontmatter — просто копируем
+        cp "$source_file" "$target_file"
+        return
+    fi
+
+    # Находим номер строки закрывающего ---
+    local end_line=$(awk 'NR>1 && /^---$/ {print NR; exit}' "$source_file")
+
+    if [[ -z "$end_line" ]]; then
+        # Не нашли закрывающий --- — копируем как есть
+        cp "$source_file" "$target_file"
+        return
+    fi
+
+    # Создаём временный файл
+    local tmp_file=$(mktemp)
+
+    # Записываем открывающий ---
+    echo "---" > "$tmp_file"
+
+    # Извлекаем frontmatter (строки 2 до end_line-1) и фильтруем
+    sed -n "2,$((end_line - 1))p" "$source_file" | while IFS= read -r line; do
+        # Извлекаем ключ (до первого двоеточия)
+        local key=$(echo "$line" | sed -n 's/^\([a-zA-Z_-]*\):.*/\1/p')
+
+        # Проверяем, есть ли ключ в списке разрешённых
+        if [[ -n "$key" ]]; then
+            for allowed in $ALLOWED_FRONTMATTER_KEYS; do
+                if [[ "$key" == "$allowed" ]]; then
+                    echo "$line" >> "$tmp_file"
+                    break
+                fi
+            done
+        fi
+    done
+
+    # Записываем закрывающий ---
+    echo "---" >> "$tmp_file"
+
+    # Записываем остальное содержимое файла (после frontmatter)
+    tail -n +$((end_line + 1)) "$source_file" >> "$tmp_file"
+
+    # Перемещаем результат
+    mv "$tmp_file" "$target_file"
+}
+
+# =============================================================================
+# Добавление параметров frontmatter для Cursor
+# =============================================================================
+
 # Добавляет disable-model-invocation в frontmatter скилла для Cursor
 # Если параметр уже существует в целевом файле — сохраняет его значение
 add_cursor_frontmatter_param() {
@@ -593,10 +658,11 @@ sync_skills() {
                 local target_file="$SKILLS_TARGET_DIR/$filename"
 
                 if [[ "$DRY_RUN" == false ]]; then
-                    cp "$file" "$target_file"
+                    # Фильтруем frontmatter для совместимости с веб-версией Claude
+                    filter_skill_frontmatter "$file" "$target_file"
                 fi
 
-                echo -e "   ${GREEN}✓${NC} $filename"
+                echo -e "   ${GREEN}✓${NC} $filename (frontmatter отфильтрован)"
                 SYNCED_COUNT=$((SYNCED_COUNT + 1))
             fi
         done < <(find "$SKILLS_SOURCE_DIR" -maxdepth 1 -name "skill-*.md" -type f -print0 2>/dev/null)

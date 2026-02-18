@@ -1,9 +1,6 @@
 ---
 name: skill-strapi-api-integration
 description: Процедура интеграции Vue/Nuxt приложения с Strapi v5 API через @nuxtjs/strapi модуль
-version: 1.0.0
-created: 2026-02-18
-type: task
 ---
 
 # Strapi API Integration

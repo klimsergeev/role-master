@@ -1,9 +1,6 @@
 ---
 name: skill-agent-orchestration
 description: Правила оркестрации субагентов в Claude Code — когда делегировать, как сохранять контекст чистым
-version: 1.2.0
-created: 2026-02-08
-updated: 2026-02-14
 ---
 
 # Agent Orchestration

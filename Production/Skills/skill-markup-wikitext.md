@@ -1,8 +1,6 @@
 ---
 name: skill-markup-wikitext
 description: Справочник синтаксиса Wikitext (MediaWiki markup) для разметки wiki-страниц
-version: 1.0.0
-created: 2026-02-14
 ---
 
 # Wikitext Markup

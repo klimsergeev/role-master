@@ -1,8 +1,6 @@
 ---
 name: skill-markup-latex
 description: Справочник синтаксиса LaTeX для создания и редактирования документов
-version: 1.0.0
-created: 2026-02-15
 ---
 
 # LaTeX Markup

@@ -1,9 +1,6 @@
 ---
 name: skill-prd-writing
 description: Процедура создания PRD-документов с интерактивным сбором требований для UI-продуктов
-version: 2.2.0
-created: 2026-02-12
-updated: 2026-02-14
 ---
 
 # PRD Writing

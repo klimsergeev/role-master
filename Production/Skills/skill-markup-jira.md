@@ -1,8 +1,6 @@
 ---
 name: skill-markup-jira
 description: Справочник Jira Text Formatting Notation для форматирования текста в задачах и комментариях Jira
-version: 1.0.0
-created: 2026-02-14
 ---
 
 # Jira Formatting Notation

@@ -1,9 +1,6 @@
 ---
 name: skill-figma-mcp-setup
 description: Процедура подключения проекта к Figma MCP серверу для интеграции Claude Code с Figma Desktop
-version: 1.1.0
-created: 2025-02-13
-updated: 2026-02-14
 ---
 
 # Figma MCP Setup

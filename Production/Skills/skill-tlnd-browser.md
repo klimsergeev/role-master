@@ -1,9 +1,6 @@
 ---
 name: skill-tlnd-browser
 description: Процедура доступа к Ticketland.ru через Chrome MCP
-version: 2.1.0
-created: 2026-02-10
-updated: 2026-02-14
 ---
 
 # Ticketland Browser

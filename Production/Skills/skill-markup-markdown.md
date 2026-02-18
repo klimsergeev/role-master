@@ -1,8 +1,6 @@
 ---
 name: skill-markup-markdown
 description: Справочник синтаксиса Markdown, MultiMarkdown и MDC для форматирования документов
-version: 1.0.0
-created: 2026-02-15
 ---
 
 # Markdown / MultiMarkdown / MDC

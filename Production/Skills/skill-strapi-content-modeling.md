@@ -1,9 +1,6 @@
 ---
 name: skill-strapi-content-modeling
 description: Процедура проектирования контент-типов, компонентов и dynamic zones в Strapi v5
-version: 1.0.0
-created: 2026-02-18
-type: task
 ---
 
 # Strapi Content Modeling

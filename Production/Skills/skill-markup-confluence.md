@@ -1,8 +1,6 @@
 ---
 name: skill-markup-confluence
 description: Справочник синтаксиса Confluence Wiki Markup для форматирования документов
-version: 1.0.0
-created: 2026-02-14
 ---
 
 # Confluence Wiki Markup

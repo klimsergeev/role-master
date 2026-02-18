@@ -1,9 +1,6 @@
 ---
 name: skill-figma-mcp-tools
 description: Справочник MCP-инструментов Figma Desktop для агентов Claude Code
-version: 1.2.0
-created: 2025-02-13
-updated: 2026-02-14
 ---
 
 # Figma MCP Tools

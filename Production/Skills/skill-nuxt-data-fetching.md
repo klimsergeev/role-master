@@ -1,9 +1,6 @@
 ---
 name: skill-nuxt-data-fetching
 description: Процедура выбора и использования методов загрузки данных в Nuxt 3 (useFetch, useAsyncData, $fetch)
-version: 1.0.0
-created: 2025-02-18
-type: task
 ---
 
 # Nuxt Data Fetching

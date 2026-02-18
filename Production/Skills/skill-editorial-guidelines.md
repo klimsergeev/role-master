@@ -1,10 +1,6 @@
 ---
 name: skill-editorial-guidelines
 description: Редполитика UX-текстов — свод правил написания текстов в интерфейсах
-version: 1.1.0
-created: 2026-02-07
-updated: 2026-02-14
-type: reference
 ---
 
 # Editorial Guidelines

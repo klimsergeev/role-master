@@ -1,9 +1,6 @@
 ---
 name: skill-vue-typescript-patterns
 description: Справочник TypeScript-паттернов для Vue 3 / Nuxt 3 — типизация props, emits, slots, composables, Pinia stores
-version: 1.0.0
-created: 2026-02-18
-type: reference
 ---
 
 # Vue TypeScript Patterns
