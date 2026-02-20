@@ -54,6 +54,7 @@
 
 | Роль | Файл | Описание |
 |------|------|----------|
+| **sysadmin-ubuntu** | `Agents/specialists/devops-ubuntu.md` | Системный администратор Linux Ubuntu |
 | **frontend-developer** | `Agents/specialists/frontend-developer.md` | Опытный фронтенд-разработчик Vue/React/Quasar |
 | **git-specialist** | `Agents/specialists/git-ops.md` | Автономный эксперт по Git — аудит репозиториев, решение проблем, настройка воркфлоу |
 | **prd-writer** | `Agents/specialists/prd-writer.md` | Эксперт по формализации продуктовых требований для UI-продуктов |
@@ -61,7 +62,6 @@
 | **product-manager** | `Agents/specialists/product-manager.md` | Продуктовый стратег — discovery, метрики, приоритизация и роадмап |
 | **qa-engineer** | `Agents/specialists/qa-engineer.md` | Тестировщик веб-приложений на Python + Playwright |
 | **seo-specialist** | `Agents/specialists/seo-specialist.md` | Универсальный SEO-аудитор для анализа любых сайтов |
-| **sysadmin-ubuntu** | `Agents/specialists/sysadmin-ubuntu.md` | Системный администратор Linux Ubuntu |
 | **telegram-developer** | `Agents/specialists/telegram-developer.md` | Python-разработчик Telegram-ботов на aiogram |
 | **ux-heuristic** | `Agents/specialists/ux-heuristic.md` | Эксперт по эвристической оценке интерфейсов |
 | **ux-researcher** | `Agents/specialists/ux-researcher.md` | UX-исследователь для анализа опыта пользователей и actionable-рекомендаций |
@@ -91,6 +91,7 @@
 | **skill-markup-wikitext** | `Skills/skill-markup-wikitext.md` | Справочник синтаксиса Wikitext (MediaWiki markup) для разметки wiki-страниц |
 | **skill-nuxt-data-fetching** | `Skills/skill-nuxt-data-fetching.md` | Процедура выбора и использования методов загрузки данных в Nuxt 3 (useFetch, useAsyncData, $fetch) |
 | **skill-prd-writing** | `Skills/skill-prd-writing.md` | Процедура создания PRD-документов с интерактивным сбором требований для UI-продуктов |
+| **skill-semantic-core** | `Skills/skill-semantic-core.md` | Справочник формата YAML-семантики сайта для SEO/GEO-анализа веб-страниц |
 | **skill-strapi-api-integration** | `Skills/skill-strapi-api-integration.md` | Процедура интеграции Vue/Nuxt приложения с Strapi v5 API через @nuxtjs/strapi модуль |
 | **skill-strapi-content-modeling** | `Skills/skill-strapi-content-modeling.md` | Процедура проектирования контент-типов, компонентов и dynamic zones в Strapi v5 |
 | **skill-tlnd-browser** | `Skills/skill-tlnd-browser.md` | Процедура доступа к Ticketland.ru через Chrome MCP |
@@ -102,8 +103,8 @@
 ## 📊 Статистика
 
 - **Ролей:** 22
-- **Скиллов:** 17
-- **Последнее обновление:** 2026-02-18 22:06
+- **Скиллов:** 18
+- **Последнее обновление:** 2026-02-20 20:51
 
 ---
 
