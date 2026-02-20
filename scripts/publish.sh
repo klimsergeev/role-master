@@ -928,10 +928,8 @@ if [[ "$DRY_RUN" == false ]]; then
     AFTER_CURSOR_SKILLS_COUNT=$(find "$CURSOR_SKILLS_DIR" -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
 
     echo -e "${GREEN}✅ Публикация завершена!${NC}"
-    echo "   Опубликовано ролей: $AFTER_COUNT"
-    echo "   Опубликовано скиллов (Github): $AFTER_SKILLS_COUNT"
-    echo "   Опубликовано скиллов (Claude): $AFTER_CLAUDE_SKILLS_COUNT"
-    echo "   Опубликовано скиллов (Cursor): $AFTER_CURSOR_SKILLS_COUNT"
+    echo "   Опубликовано агентов: $AFTER_COUNT"
+    echo "   Опубликовано скиллов: $AFTER_SKILLS_COUNT"
 
     if [[ "$BEFORE_COUNT" != "$AFTER_COUNT" ]]; then
         DIFF=$((AFTER_COUNT - BEFORE_COUNT))
