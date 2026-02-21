@@ -54,7 +54,7 @@
 
 | Роль | Файл | Описание |
 |------|------|----------|
-| **sysadmin-ubuntu** | `Agents/specialists/devops-ubuntu.md` | Системный администратор Linux Ubuntu |
+| **devops-ubuntu** | `Agents/specialists/devops-ubuntu.md` | Системный администратор Linux Ubuntu |
 | **frontend-developer** | `Agents/specialists/frontend-developer.md` | Опытный фронтенд-разработчик Vue/React/Quasar |
 | **git-specialist** | `Agents/specialists/git-ops.md` | Автономный эксперт по Git — аудит репозиториев, решение проблем, настройка воркфлоу |
 | **prd-writer** | `Agents/specialists/prd-writer.md` | Эксперт по формализации продуктовых требований для UI-продуктов |
@@ -104,7 +104,7 @@
 
 - **Ролей:** 22
 - **Скиллов:** 18
-- **Последнее обновление:** 2026-02-20 21:00
+- **Последнее обновление:** 2026-02-21 18:52
 
 ---
 

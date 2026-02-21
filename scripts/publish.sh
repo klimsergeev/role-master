@@ -255,8 +255,49 @@ sync_to_claude_agents() {
         fi
     done
 
+    # Собираем список всех имён ролей из исходников
+    local VALID_AGENTS=()
+    for category in $CATEGORIES; do
+        local SOURCE_CAT="$SOURCE_DIR/$category"
+        if [[ -d "$SOURCE_CAT" ]]; then
+            while IFS= read -r -d '' file; do
+                if [[ -n "$file" ]]; then
+                    local role_name=$(get_role_name "$file")
+                    VALID_AGENTS+=("agent-$role_name.md")
+                fi
+            done < <(find "$SOURCE_CAT" -name "*.md" -type f -print0 2>/dev/null)
+        fi
+    done
+
+    # Удаляем агентов, которых нет в исходниках
+    local DELETED_COUNT=0
+    if [[ -d "$CLAUDE_AGENTS_DIR" ]]; then
+        while IFS= read -r -d '' agent_file; do
+            local fname=$(basename "$agent_file")
+            local is_valid=false
+
+            for valid_agent in "${VALID_AGENTS[@]}"; do
+                if [[ "$fname" == "$valid_agent" ]]; then
+                    is_valid=true
+                    break
+                fi
+            done
+
+            if [[ "$is_valid" == false ]]; then
+                if [[ "$DRY_RUN" == false ]]; then
+                    rm -f "$agent_file"
+                fi
+                echo -e "   ${YELLOW}✗${NC} $fname (удалён)"
+                DELETED_COUNT=$((DELETED_COUNT + 1))
+            fi
+        done < <(find "$CLAUDE_AGENTS_DIR" -maxdepth 1 -name "agent-*.md" -type f -print0 2>/dev/null)
+    fi
+
     echo ""
     echo "   Синхронизировано: $SYNCED_COUNT агентов"
+    if [[ "$DELETED_COUNT" -gt 0 ]]; then
+        echo "   Удалено: $DELETED_COUNT агентов"
+    fi
     echo ""
 }
 

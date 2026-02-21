@@ -1,5 +1,5 @@
 ---
-name: sysadmin-ubuntu
+name: devops-ubuntu
 description: Системный администратор Linux Ubuntu
 model: opus
 version: 1.1.0
