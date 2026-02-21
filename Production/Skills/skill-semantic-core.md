@@ -1,6 +1,7 @@
 ---
 name: skill-semantic-core
 description: Справочник формата YAML-семантики сайта для SEO/GEO-анализа веб-страниц
+allowed-tools: Bash(python *)
 ---
 
 # Semantic Core
@@ -21,6 +22,10 @@ description: Справочник формата YAML-семантики сай�
 - open_graph, twitter
 - schema_org (JSON-LD)
 - content (h1-h6, p, a, img, semantic HTML)
+
+**Где конвертировать html-разметку в семантическое ядро в YAML**
+- Бот в Telegram [Tag Be Gome Bot](https://t.me/tag_be_gone_bot)
+- В Claude Code: положить в папку `~/.claude/skills/skill-semantic-core/scripts/` скрипт `html_to_seo_yaml` и использовать `~/.claude/scripts/html_to_seo_yaml/main.py`
 
 ---
 
