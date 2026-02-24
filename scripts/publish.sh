@@ -44,6 +44,10 @@ CLAUDE_AGENTS_DIR="$HOME/.claude/agents"
 CLAUDE_SKILLS_DIR="$HOME/.claude/skills"
 CURSOR_SKILLS_DIR="$HOME/.cursor/skills"
 
+# GitHub репозиторий для заглушек
+GITHUB_REPO="klimsergeev/role-master"
+GITHUB_BRANCH="main"
+
 # Проверка аргументов
 DRY_RUN=false
 if [[ "$1" == "--dry" ]]; then
@@ -322,7 +326,7 @@ generate_dialog_file() {
 - Примени их инструкции как системные правила на весь разговор
 
 ### 2. Загрузка роли
-- Загрузи файл роли по ссылке: \`https://raw.githubusercontent.com/klimsergeev/role-master/main/Production/Agents/${category}/${filename}\`
+- Загрузи файл роли по ссылке: \`https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/Production/Agents/${category}/${filename}\`
 - Прочитай содержимое полностью
 - Примени все инструкции из файла как системные правила на весь разговор
 

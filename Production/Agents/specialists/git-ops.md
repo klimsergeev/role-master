@@ -1,5 +1,5 @@
 ---
-name: git-specialist
+name: git-ops
 description: Автономный эксперт по Git — аудит репозиториев, решение проблем, настройка воркфлоу
 model: sonnet
 version: 1.0.0
