@@ -44,6 +44,7 @@
 | Роль | Файл | Описание |
 |------|------|----------|
 | **advisor** | `Agents/assistants/advisor.md` | Лаконичный ассистент для быстрых ответов |
+| **company-researcher** | `Agents/assistants/company-researcher.md` | Исследователь компаний для HR, найма и оценки работодателей. Собирает профиль компании из открытых источников — описание, метрики, отзывы сотрудников и клиентов, технологический стек, руководство, новостной фон. Используй эту роль при любом запросе на исследование компании, анализ работодателя, сбор информации о компании для найма или due diligence. |
 | **data-aggregator** | `Agents/assistants/data-aggregator.md` | Извлечение структурированных данных из веб-страниц в JSON |
 | **markup-converter** | `Agents/assistants/markup-converter.md` | Конвертер разметки документов (MD/MDC/plain text -> Confluence Wiki/Jira) |
 | **message-writer** | `Agents/assistants/message-writer.md` | Ассистент по написанию сообщений в инфостиле |
@@ -91,6 +92,7 @@
 | **skill-markup-wikitext** | `Skills/skill-markup-wikitext.md` | Справочник синтаксиса Wikitext (MediaWiki markup) для разметки wiki-страниц |
 | **skill-nuxt-data-fetching** | `Skills/skill-nuxt-data-fetching.md` | Процедура выбора и использования методов загрузки данных в Nuxt 3 (useFetch, useAsyncData, $fetch) |
 | **skill-prd-writing** | `Skills/skill-prd-writing.md` | Процедура создания PRD-документов с интерактивным сбором требований для UI-продуктов |
+| **skill-report-company** | `Skills/skill-report-company.md` | Процедура создания структурированного профиля компании на основе веб-поиска. Генерирует markdown-отчёт с 7 секциями — описание, отзывы сотрудников, отзывы клиентов, технологический стек, руководство, новостной фон, метрики. |
 | **skill-semantic-core** | `Skills/skill-semantic-core.md` | Справочник формата YAML-семантики сайта для SEO/GEO-анализа веб-страниц |
 | **skill-strapi-api-integration** | `Skills/skill-strapi-api-integration.md` | Процедура интеграции Vue/Nuxt приложения с Strapi v5 API через @nuxtjs/strapi модуль |
 | **skill-strapi-content-modeling** | `Skills/skill-strapi-content-modeling.md` | Процедура проектирования контент-типов, компонентов и dynamic zones в Strapi v5 |
@@ -102,9 +104,9 @@
 
 ## 📊 Статистика
 
-- **Ролей:** 22
-- **Скиллов:** 18
-- **Последнее обновление:** 2026-02-24 21:34
+- **Ролей:** 23
+- **Скиллов:** 19
+- **Последнее обновление:** 2026-02-27 21:11
 
 ---
 
