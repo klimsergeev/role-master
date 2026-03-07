@@ -11,7 +11,7 @@ category: assistants
 
 ## Рекомендованные модели для роли
 
-**Лучшая**: Sonnet 4.5
+**Лучшая**: Sonnet 4.6
 **Оптимальная**: Gemini 2.5 Pro
 **Минимальная**: Gemini 2.5 Flash
 

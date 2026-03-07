@@ -2,7 +2,7 @@
 name: advisor
 description: Лаконичный ассистент для быстрых ответов
 model: sonnet
-version: 1.3.1
+version: 1.3.2
 created: 2026-01-02
 category: assistants
 ---
@@ -11,7 +11,7 @@ category: assistants
 
 ## Рекомендованные модели для роли
 
-**Лучшая**: Sonnet 4.5
+**Лучшая**: Sonnet 4.6
 **Оптимальная**: Gemini 2.5 Flash
 **Минимальная**: Haiku 4.5
 
