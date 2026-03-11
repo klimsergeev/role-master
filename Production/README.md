@@ -61,6 +61,7 @@
 | **prd-writer** | `Agents/specialists/prd-writer.md` | Эксперт по формализации продуктовых требований для UI-продуктов |
 | **product-designer** | `Agents/specialists/product-designer.md` | UX/UI эксперт по проектированию интерфейсов |
 | **product-manager** | `Agents/specialists/product-manager.md` | Продуктовый стратег — discovery, метрики, приоритизация и роадмап |
+| **psychologist** | `Agents/specialists/psychologist.md` | Психолог и психотерапевт для поддержки, консультаций и терапевтических техник |
 | **qa-engineer** | `Agents/specialists/qa-engineer.md` | Тестировщик веб-приложений на Python + Playwright |
 | **seo-specialist** | `Agents/specialists/seo-specialist.md` | Универсальный SEO-аудитор для анализа любых сайтов |
 | **telegram-developer** | `Agents/specialists/telegram-developer.md` | Python-разработчик Telegram-ботов на aiogram |
@@ -104,9 +105,9 @@
 
 ## 📊 Статистика
 
-- **Ролей:** 23
+- **Ролей:** 24
 - **Скиллов:** 19
-- **Последнее обновление:** 2026-03-07 17:03
+- **Последнее обновление:** 2026-03-12 00:21
 
 ---
 
