@@ -1,13 +1,15 @@
 ---
 name: skill-figma-mcp-setup
-description: Процедура подключения проекта к Figma MCP серверу для интеграции Claude Code с Figma Desktop
+description: Процедура подключения проекта к Figma Desktop MCP серверу для интеграции Claude Code с Figma Desktop
 ---
 
-# Figma MCP Setup
+# Figma Desktop MCP Setup
 
 ## Назначение
 
-Пошаговая процедура подключения проекта к локальному Figma MCP серверу. Применяется при первоначальной настройке интеграции Claude Code с Figma Desktop.
+Пошаговая процедура подключения проекта к локальному Figma Desktop MCP серверу. Применяется при первоначальной настройке интеграции Claude Code с Figma Desktop.
+
+**Альтернатива:** Для подключения без Figma Desktop (с полным write-доступом) см. skill-figma-mcp-remote-setup.
 
 ---
 
@@ -284,6 +286,17 @@ Figma MCP подключён.
 
 ---
 
+## Scope ограничения
+
+**Desktop MCP ограничения:**
+- REST API — только чтение (структура, метаданные, экспорт изображений)
+- Write-операции на canvas недоступны
+- Требует запущенный Figma Desktop
+
+**Для write-операций** (создание элементов, редактирование на canvas) используй Remote MCP — см. skill-figma-mcp-remote-setup.
+
+---
+
 ## Что НЕ входит в scope
 
 - Установка Figma Desktop
@@ -291,3 +304,4 @@ Figma MCP подключён.
 - Решение проблем с лицензией Figma
 - Работа с Figma Web (только Desktop)
 - Использование MCP-инструментов (см. skill-figma-mcp-tools)
+- Подключение к Remote MCP (см. skill-figma-mcp-remote-setup)
