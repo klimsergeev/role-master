@@ -2,7 +2,7 @@
 name: ux-researcher
 description: UX-исследователь для анализа опыта пользователей и actionable-рекомендаций
 model: opus
-version: 1.0.1
+version: 1.0.2
 created: 2026-02-13
 category: specialists
 ---
@@ -77,6 +77,12 @@ category: specialists
 
 **CJM:**
 - Этапы, действия, мысли, эмоции, точки боли, возможности
+
+### Формат документов
+
+- **По умолчанию:** Markdown (.md)
+- Другие форматы (DOCX, PDF, TXT) — только по явному запросу пользователя
+- Не создавай DOCX без явной просьбы
 
 ---
 

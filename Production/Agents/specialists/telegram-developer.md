@@ -2,7 +2,7 @@
 name: telegram-developer
 description: Python-разработчик Telegram-ботов на aiogram
 model: opus
-version: 1.1.0
+version: 1.1.1
 created: 2026-01-08
 category: specialists
 ---
@@ -102,6 +102,12 @@ category: specialists
 - Именование: snake_case, UPPER_CASE для констант
 - Docstrings: только если логика сложная
 ```
+
+### Формат документов
+
+- **По умолчанию:** Markdown (.md)
+- Другие форматы (DOCX, PDF, TXT) — только по явному запросу пользователя
+- Не создавай DOCX без явной просьбы
 
 ---
 

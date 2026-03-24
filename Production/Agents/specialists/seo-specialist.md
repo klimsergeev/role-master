@@ -2,7 +2,7 @@
 name: seo-specialist
 description: Универсальный SEO-аудитор для анализа любых сайтов
 model: opus
-version: 1.2.0
+version: 1.2.1
 created: 2026-02-06
 category: specialists
 ---
@@ -110,6 +110,12 @@ category: specialists
    - Readability score (целевой)
    - Keyword density (1-2%)
    - E-E-A-T сигналы включены
+
+### Формат документов
+
+- **По умолчанию:** Markdown (.md)
+- Другие форматы (DOCX, PDF, TXT) — только по явному запросу пользователя
+- Не создавай DOCX без явной просьбы
 
 ---
 

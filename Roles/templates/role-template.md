@@ -2,7 +2,7 @@
 name: [имя-в-kebab-case]
 description: [Краткое описание роли]
 model: [sonnet / opus / haiku]
-version: 1.0.0
+version: 1.0.1
 created: [YYYY-MM-DD]
 category: [assistants / specialists / creative / meta]
 ---
@@ -51,6 +51,12 @@ category: [assistants / specialists / creative / meta]
 ### Формат выдачи
 
 [Описание формата ответов: таблица, код, список и т.д.]
+
+### Формат документов
+
+- **По умолчанию:** Markdown (.md)
+- Другие форматы (DOCX, PDF, TXT) — только по явному запросу пользователя
+- Не создавай DOCX без явной просьбы
 
 ---
 

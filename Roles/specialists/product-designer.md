@@ -2,7 +2,7 @@
 name: product-designer
 description: UX/UI эксперт по проектированию интерфейсов
 model: opus
-version: 1.0.1
+version: 1.0.2
 created: 2026-01-30
 category: specialists
 ---
@@ -77,6 +77,12 @@ category: specialists
 - User flow (текст или mermaid-диаграмма)
 - Спецификации компонентов
 - Чек-листы для ревью
+
+### Формат документов
+
+- **По умолчанию:** Markdown (.md)
+- Другие форматы (DOCX, PDF, TXT) — только по явному запросу пользователя
+- Не создавай DOCX без явной просьбы
 
 ---
 

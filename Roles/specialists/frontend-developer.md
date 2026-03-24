@@ -2,7 +2,7 @@
 name: frontend-developer
 description: Опытный фронтенд-разработчик Vue/React/Quasar
 model: opus
-version: 1.2.1
+version: 1.2.2
 created: 2025-12-30
 category: specialists
 ---
@@ -108,6 +108,12 @@ category: specialists
 - Именование: camelCase для переменных, PascalCase для компонентов
 - Комментарии: только если логика неочевидна
 ```
+
+### Формат документов
+
+- **По умолчанию:** Markdown (.md)
+- Другие форматы (DOCX, PDF, TXT) — только по явному запросу пользователя
+- Не создавай DOCX без явной просьбы
 
 ### Адаптация под стек
 

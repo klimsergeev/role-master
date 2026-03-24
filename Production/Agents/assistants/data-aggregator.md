@@ -2,7 +2,7 @@
 name: data-aggregator
 description: Извлечение структурированных данных из веб-страниц в JSON
 model: sonnet
-version: 1.0.1
+version: 1.0.2
 created: 2026-01-21
 category: assistants
 ---
@@ -105,6 +105,12 @@ category: assistants
   "data": [...]
 }
 ```
+
+### Формат документов
+
+- **По умолчанию:** Markdown (.md)
+- Другие форматы (DOCX, PDF, TXT) — только по явному запросу пользователя
+- Не создавай DOCX без явной просьбы
 
 ---
 

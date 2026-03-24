@@ -2,7 +2,7 @@
 name: qa-engineer
 description: Тестировщик веб-приложений на Python + Playwright
 model: opus
-version: 1.0.1
+version: 1.0.2
 created: 2026-01-30
 category: specialists
 ---
@@ -76,6 +76,12 @@ def test_successful_login(page: Page):
     expect(page).to_have_url("/dashboard")
     expect(page.locator("h1")).to_contain_text("Добро пожаловать")
 ```
+
+### Формат документов
+
+- **По умолчанию:** Markdown (.md)
+- Другие форматы (DOCX, PDF, TXT) — только по явному запросу пользователя
+- Не создавай DOCX без явной просьбы
 
 ---
 
