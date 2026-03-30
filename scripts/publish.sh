@@ -326,7 +326,8 @@ generate_dialog_file() {
 - Примени их инструкции как системные правила на весь разговор
 
 ### 2. Загрузка роли
-- Загрузи файл роли по ссылке: \`https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}/Production/Agents/${category}/${filename}\`
+- Загрузи файл роли по ссылке: \`https://api.github.com/repos/${GITHUB_REPO}/contents/Production/Agents/${category}/${filename}\`
+- Ответ содержит JSON — декодируй поле \`content\` из base64
 - Прочитай содержимое полностью
 - Примени все инструкции из файла как системные правила на весь разговор
 
