@@ -87,6 +87,7 @@
 | **skill-figma-mcp-remote-setup** | `Skills/skill-figma-mcp-remote-setup.md` | Процедура подключения к Figma Remote MCP серверу (https://mcp.figma.com/mcp) |
 | **skill-figma-mcp-setup** | `Skills/skill-figma-mcp-setup.md` | Процедура подключения проекта к Figma Desktop MCP серверу для интеграции Claude Code с Figma Desktop |
 | **skill-figma-mcp-tools** | `Skills/skill-figma-mcp-tools.md` | Справочник MCP-инструментов Figma для агентов Claude Code (Desktop + Remote) |
+| **skill-local-permissions** | `Skills/skill-local-permissions.md` | Процедура настройки локальных разрешений проекта в .claude/settings.local.json для автоматизации типовых подтверждений |
 | **skill-markup-confluence** | `Skills/skill-markup-confluence.md` | Справочник синтаксиса Confluence Wiki Markup для форматирования документов |
 | **skill-markup-jira** | `Skills/skill-markup-jira.md` | Справочник Jira Text Formatting Notation для форматирования текста в задачах и комментариях Jira |
 | **skill-markup-latex** | `Skills/skill-markup-latex.md` | Справочник синтаксиса LaTeX для создания и редактирования документов |
@@ -108,8 +109,8 @@
 ## 📊 Статистика
 
 - **Ролей:** 25
-- **Скиллов:** 20
-- **Последнее обновление:** 2026-04-05 19:46
+- **Скиллов:** 21
+- **Последнее обновление:** 2026-04-11 19:21
 
 ---
 
