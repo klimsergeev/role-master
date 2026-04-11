@@ -310,7 +310,7 @@ updated: 2026-04-11
 ```
 
 4. Спросить пользователя через AskUserQuestion: "Запустить скилл настройки локальных разрешений? (skill-local-permissions)"
-   - ЕСЛИ пользователь ответил "да" -> вызвать `skill-local-permissions`
+   - ЕСЛИ пользователь ответил "да" -> вызвать `/skill-local-permissions` (путь: `~/.claude/skills/skill-local-permissions/skill.md`)
    - ЕСЛИ пользователь ответил "нет" -> продолжить работу без настройки разрешений
 
 ---
