@@ -61,7 +61,6 @@
 | **prd-writer** | `Agents/specialists/prd-writer.md` | Эксперт по формализации продуктовых требований для UI-продуктов |
 | **product-designer** | `Agents/specialists/product-designer.md` | UX/UI эксперт по проектированию интерфейсов |
 | **product-manager** | `Agents/specialists/product-manager.md` | Продуктовый стратег — discovery, метрики, приоритизация и роадмап |
-| **psychologist** | `Agents/specialists/psychologist.md` | Психолог и психотерапевт для поддержки, консультаций и терапевтических техник |
 | **qa-engineer** | `Agents/specialists/qa-engineer.md` | Тестировщик веб-приложений на Python + Playwright |
 | **seo-specialist** | `Agents/specialists/seo-specialist.md` | Универсальный SEO-аудитор для анализа любых сайтов |
 | **telegram-developer** | `Agents/specialists/telegram-developer.md` | Python-разработчик Telegram-ботов на aiogram |
@@ -74,7 +73,6 @@
 | Роль | Файл | Описание |
 |------|------|----------|
 | **prompt-engineer-tti** | `Agents/creative/prompt-engineer-tti.md` | Генератор промптов для text-to-image нейросетей |
-| **purrfect-day-editor** | `Agents/creative/purrfect-day-editor.md` | Редактор Telegram-канала с котиками — придумывает шутливые подписи к постам на каждый день |
 
 ---
 
@@ -111,9 +109,9 @@
 
 ## 📊 Статистика
 
-- **Ролей:** 25
+- **Ролей:** 23
 - **Скиллов:** 24
-- **Последнее обновление:** 2026-04-17 21:05
+- **Последнее обновление:** 2026-04-17 21:32
 
 ---
 

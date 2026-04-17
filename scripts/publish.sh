@@ -43,6 +43,8 @@ README_FILE="$TARGET_DIR/README.md"
 CLAUDE_AGENTS_DIR="$HOME/.claude/agents"
 CLAUDE_SKILLS_DIR="$HOME/.claude/skills"
 CURSOR_SKILLS_DIR="$HOME/.cursor/skills"
+PRIVATE_ROLES_DIR="$SOURCE_DIR/private"
+PRIVATE_SKILLS_DIR="$SKILLS_SOURCE_DIR/private"
 
 # GitHub репозиторий для заглушек
 GITHUB_REPO="klimsergeev/role-master"
@@ -259,6 +261,21 @@ sync_to_claude_agents() {
         fi
     done
 
+    # Синхронизация приватных ролей (только локально)
+    if [[ -d "$PRIVATE_ROLES_DIR" ]]; then
+        while IFS= read -r -d '' file; do
+            if [[ -n "$file" ]]; then
+                local role_name=$(get_role_name "$file")
+                local agent_file="$CLAUDE_AGENTS_DIR/agent-$role_name.md"
+                if [[ "$DRY_RUN" == false ]]; then
+                    cp "$file" "$agent_file"
+                fi
+                echo -e "   ${GREEN}✓${NC} $role_name -> agent-$role_name.md (private)"
+                SYNCED_COUNT=$((SYNCED_COUNT + 1))
+            fi
+        done < <(find "$PRIVATE_ROLES_DIR" -name "*.md" -type f -print0 2>/dev/null)
+    fi
+
     # Собираем список всех имён ролей из исходников
     local VALID_AGENTS=()
     for category in $CATEGORIES; do
@@ -272,6 +289,16 @@ sync_to_claude_agents() {
             done < <(find "$SOURCE_CAT" -name "*.md" -type f -print0 2>/dev/null)
         fi
     done
+
+    # Добавляем приватные роли в список валидных
+    if [[ -d "$PRIVATE_ROLES_DIR" ]]; then
+        while IFS= read -r -d '' file; do
+            if [[ -n "$file" ]]; then
+                local role_name=$(get_role_name "$file")
+                VALID_AGENTS+=("agent-$role_name.md")
+            fi
+        done < <(find "$PRIVATE_ROLES_DIR" -name "*.md" -type f -print0 2>/dev/null)
+    fi
 
     # Удаляем агентов, которых нет в исходниках
     local DELETED_COUNT=0
@@ -503,6 +530,25 @@ sync_to_claude_skills() {
         echo -e "   ${YELLOW}○${NC} Папка $SKILLS_SOURCE_DIR не найдена"
     fi
 
+    # Синхронизация приватных скиллов
+    if [[ -d "$PRIVATE_SKILLS_DIR" ]]; then
+        while IFS= read -r -d '' file; do
+            if [[ -n "$file" ]]; then
+                local filename=$(basename "$file")
+                if [[ "$filename" == "skill-template.md" ]]; then continue; fi
+                local skill_name="${filename%.md}"
+                local skill_dir="$CLAUDE_SKILLS_DIR/$skill_name"
+                local skill_file="$skill_dir/SKILL.md"
+                if [[ ! -d "$skill_dir" ]]; then
+                    if [[ "$DRY_RUN" == false ]]; then mkdir -p "$skill_dir"; fi
+                fi
+                if [[ "$DRY_RUN" == false ]]; then cp "$file" "$skill_file"; fi
+                echo -e "   ${GREEN}✓${NC} $skill_name/SKILL.md — обновлён (private)"
+                SYNCED_COUNT=$((SYNCED_COUNT + 1))
+            fi
+        done < <(find "$PRIVATE_SKILLS_DIR" -name "skill-*.md" -type f -print0 2>/dev/null)
+    fi
+
     echo ""
     echo "   Синхронизировано: $SYNCED_COUNT скиллов"
     echo ""
@@ -666,6 +712,27 @@ sync_to_cursor_skills() {
         done < <(find "$SKILLS_SOURCE_DIR" -maxdepth 1 -name "skill-*.md" -type f -print0 2>/dev/null)
     else
         echo -e "   ${YELLOW}○${NC} Папка $SKILLS_SOURCE_DIR не найдена"
+    fi
+
+    # Синхронизация приватных скиллов в Cursor
+    if [[ -d "$PRIVATE_SKILLS_DIR" ]]; then
+        while IFS= read -r -d '' file; do
+            if [[ -n "$file" ]]; then
+                local filename=$(basename "$file")
+                if [[ "$filename" == "skill-template.md" ]]; then continue; fi
+                local skill_name="${filename%.md}"
+                local skill_dir="$CURSOR_SKILLS_DIR/$skill_name"
+                local skill_file="$skill_dir/SKILL.md"
+                if [[ ! -d "$skill_dir" ]]; then
+                    if [[ "$DRY_RUN" == false ]]; then mkdir -p "$skill_dir"; fi
+                fi
+                if [[ "$DRY_RUN" == false ]]; then
+                    add_cursor_frontmatter_param "$file" "$skill_file"
+                fi
+                echo -e "   ${GREEN}✓${NC} $skill_name/SKILL.md — обновлён (private)"
+                SYNCED_COUNT=$((SYNCED_COUNT + 1))
+            fi
+        done < <(find "$PRIVATE_SKILLS_DIR" -name "skill-*.md" -type f -print0 2>/dev/null)
     fi
 
     echo ""

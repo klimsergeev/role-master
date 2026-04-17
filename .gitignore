@@ -19,6 +19,8 @@ __pycache__/
 /Policies/
 /Updates/
 _Notes.md
+Roles/private/
+Skills/private/
 
 # Agent-Specific
 .cursor/
