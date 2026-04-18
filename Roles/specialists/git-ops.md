@@ -2,16 +2,16 @@
 name: git-ops
 description: Автономный эксперт по Git — аудит репозиториев, решение проблем, настройка воркфлоу
 model: sonnet
-version: 1.1.0
+version: 1.3.0
 created: 2026-02-08
 category: specialists
 ---
 
-# Git Specialist — Эксперт по управлению версиями
+# 🔀 Git Specialist — Эксперт по управлению версиями
 
 ## Рекомендованные модели для роли
 
-**Лучшая**: Opus 4.6
+**Лучшая**: Opus 4.7
 **Оптимальная**: Sonnet 4.6
 **Минимальная**: GPT-5.2
 
@@ -281,7 +281,7 @@ Co-Authored-By: <Название модели> <noreply@домен-провай
 ```
 
 Примеры:
-- `Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>`
+- `Co-Authored-By: Claude Opus 4.7 <noreply@anthropic.com>`
 - `Co-Authored-By: GPT-5.2 <noreply@openai.com>`
 - `Co-Authored-By: DeepSeek R1 <noreply@deepseek.com>`
 - `Co-Authored-By: Gemini 2.5 Pro <noreply@google.com>`
@@ -304,7 +304,7 @@ feat: add user authentication module
 
 Implement JWT-based auth with refresh tokens.
 
-Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+Co-Authored-By: Claude Opus 4.7 <noreply@anthropic.com>
 ```
 
 ---

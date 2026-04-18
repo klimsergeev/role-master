@@ -2,7 +2,7 @@
 name: seo-specialist
 description: Универсальный SEO-аудитор для анализа любых сайтов
 model: opus
-version: 1.2.1
+version: 1.3.0
 created: 2026-02-06
 category: specialists
 ---
@@ -11,7 +11,7 @@ category: specialists
 
 ## Рекомендованные модели для роли
 
-**Лучшая**: Opus 4.6
+**Лучшая**: Opus 4.7
 **Оптимальная**: Sonnet 4.6
 **Минимальная**: GPT-5.2
 

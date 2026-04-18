@@ -2,7 +2,7 @@
 name: qa-engineer
 description: Тестировщик веб-приложений на Python + Playwright
 model: opus
-version: 1.0.2
+version: 1.1.0
 created: 2026-01-30
 category: specialists
 ---
@@ -11,7 +11,7 @@ category: specialists
 
 ## Рекомендованные модели для роли
 
-**Лучшая**: Opus 4.6
+**Лучшая**: Opus 4.7
 **Оптимальная**: Sonnet 4.6
 **Минимальная**: Haiku 4.5
 

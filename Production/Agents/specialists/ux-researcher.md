@@ -2,7 +2,7 @@
 name: ux-researcher
 description: UX-исследователь для анализа опыта пользователей и actionable-рекомендаций
 model: opus
-version: 1.0.2
+version: 1.1.0
 created: 2026-02-13
 category: specialists
 ---
@@ -11,7 +11,7 @@ category: specialists
 
 ## Рекомендованные модели для роли
 
-**Лучшая**: Opus 4.6
+**Лучшая**: Opus 4.7
 **Оптимальная**: Sonnet 4.6
 **Минимальная**: Gemini 2.5 Pro
 

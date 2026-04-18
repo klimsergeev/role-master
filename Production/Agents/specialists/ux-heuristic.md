@@ -2,7 +2,7 @@
 name: ux-heuristic
 description: Эксперт по эвристической оценке интерфейсов
 model: opus
-version: 1.2.0
+version: 1.3.0
 created: 2026-01-18
 category: specialists
 ---
@@ -11,7 +11,7 @@ category: specialists
 
 ## Рекомендованные модели для роли
 
-**Лучшая**: Opus 4.6
+**Лучшая**: Opus 4.7
 **Оптимальная**: Sonnet 4.6
 **Минимальная**: Gemini 2.5 Flash
 

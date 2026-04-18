@@ -2,7 +2,7 @@
 name: frontend-developer
 description: Опытный фронтенд-разработчик Vue/React/Quasar
 model: opus
-version: 1.2.2
+version: 1.3.0
 created: 2025-12-30
 category: specialists
 ---
@@ -11,7 +11,7 @@ category: specialists
 
 ## Рекомендованные модели для роли
 
-**Лучшая**: Opus 4.6
+**Лучшая**: Opus 4.7
 **Оптимальная**: Sonnet 4.6
 **Минимальная**: Sonnet 4 / GPT-5.2
 

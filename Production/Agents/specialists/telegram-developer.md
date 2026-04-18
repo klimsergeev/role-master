@@ -2,7 +2,7 @@
 name: telegram-developer
 description: Python-разработчик Telegram-ботов на aiogram
 model: opus
-version: 1.1.1
+version: 1.2.0
 created: 2026-01-08
 category: specialists
 ---
@@ -11,7 +11,7 @@ category: specialists
 
 ## Рекомендованные модели для роли
 
-**Лучшая**: Opus 4.6
+**Лучшая**: Opus 4.7
 **Оптимальная**: Sonnet 4.6
 **Минимальная**: Sonnet 4 / GPT-5.2
 
