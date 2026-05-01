@@ -21,7 +21,7 @@ description: Справочник MCP-инструментов Figma для аг
 |----------------|---------|--------|
 | URL | `127.0.0.1:3845/mcp` | `mcp.figma.com/mcp` |
 | Требует Figma Desktop | Да | Нет |
-| Инструментов | 8 | 16 |
+| Инструментов | 10 | 19 |
 | Write-to-canvas | Ограничено | Полный |
 | Rate limits | Нет | Да |
 | API | REST API (read-only) | Plugin API (read + write) |
@@ -74,6 +74,8 @@ description: Справочник MCP-инструментов Figma для аг
 
 ## Инструменты для чтения
 
+**Заметка о logging-параметрах:** Большинство инструментов принимают параметры `clientFrameworks` и `clientLanguages` для аналитики. В таблицах параметров они указываются только там, где влияют на результат.
+
 **Заметка о Code Connect:** Для лучших результатов переиспользования кода настройте Code Connect в Figma. Code Connect позволяет связать несколько фреймворков (например, React и SwiftUI) с компонентами Figma-библиотеки. Desktop MCP использует маппинг, выбранный в Dev Mode. Для управления маппингом через параметр `clientFrameworks` укажите точное название label из Code Connect (например, "React", "SwiftUI").
 
 ### get_design_context [D+R]
@@ -86,11 +88,13 @@ description: Справочник MCP-инструментов Figma для аг
 |----------|-----|----------|
 | nodeId | string | ID узла (формат "123:456") |
 | fileKey | string | Ключ файла [R] |
-| artifactType | string | Тип артефакта: WEB_PAGE_OR_APP_SCREEN, COMPONENT_WITHIN_A_WEB_PAGE_OR_APP_SCREEN, REUSABLE_COMPONENT, DESIGN_SYSTEM |
+| artifactType | string | Тип артефакта: WEB_PAGE_OR_APP_SCREEN, COMPONENT_WITHIN_A_WEB_PAGE_OR_APP_SCREEN, REUSABLE_COMPONENT, DESIGN_SYSTEM [D] |
+| taskType | string | Тип задачи: CREATE_ARTIFACT, CHANGE_ARTIFACT, DELETE_ARTIFACT [D] |
 | clientFrameworks | string | Фреймворки через запятую: react, vue, etc. |
 | clientLanguages | string | Языки через запятую: javascript, typescript, etc. |
 | forceCode | boolean | Принудительно вернуть код даже для больших элементов |
 | excludeScreenshot | boolean | Исключить скриншот из ответа [R] |
+| disableCodeConnect | boolean | Отключить Code Connect [R] |
 
 **Пример вызова (Desktop):**
 ```
@@ -116,6 +120,8 @@ mcp__figma__get_design_context с fileKey="abc123", nodeId="123:456", clientFram
 |----------|-----|----------|
 | nodeId | string | ID узла |
 | fileKey | string | Ключ файла [R] |
+| contentsOnly | boolean | Рендер ноды изолированно, без floating content |
+| enableBase64Response | boolean | Inline base64 для sandbox-окружений [R] |
 
 **Когда использовать:**
 - Нужно визуально понять, что верстается
@@ -193,7 +199,7 @@ mcp__figma__get_design_context с fileKey="abc123", nodeId="123:456", clientFram
 |----------|-----|----------|
 | nodeId | string | ID узла |
 | fileKey | string | Ключ файла [R] |
-| codeConnectLabel | string | Label для фильтрации по фреймворку [R] |
+| codeConnectLabel | string | Label для фильтрации по фреймворку |
 
 **Когда использовать:**
 - Проверить, какие компоненты уже связаны с кодом
@@ -221,10 +227,30 @@ mcp__figma__get_design_context с fileKey="abc123", nodeId="123:456", clientFram
 |----------|-----|----------|
 | nodeId | string | ID узла |
 | fileKey | string | Ключ файла [R] |
+| excludeMappingPrompt | boolean | Исключить prompt text и images, вернуть только список немаппленных компонентов [R] |
 
 **Когда использовать:**
 - Автоматический поиск соответствий между Figma и codebase
 - Начальная настройка Code Connect
+
+---
+
+### get_context_for_code_connect [R]
+
+**Назначение:** Возвращает метаданные компонентов (properties, variants, descendant tree) для создания Code Connect template files.
+
+**Параметры:**
+
+| Параметр | Тип | Описание |
+|----------|-----|----------|
+| nodeId | string | ID узла |
+| fileKey | string | Ключ файла |
+| clientFrameworks | string | Фреймворки через запятую |
+| clientLanguages | string | Языки через запятую |
+
+**Когда использовать:**
+- Получение детальной информации о компоненте для Code Connect
+- Создание template files для маппинга компонентов
 
 ---
 
@@ -248,13 +274,33 @@ mcp__figma__get_design_context с fileKey="abc123", nodeId="123:456", clientFram
 |----------|-----|----------|
 | nodeId | string | ID узла |
 | fileKey | string | Ключ файла [R] |
-| includeImagesOfNodes | boolean | Включить изображения узлов [R] |
+| includeImagesOfNodes | boolean | Включить изображения узлов |
 
 **Ограничение:** Работает ТОЛЬКО с FigJam-файлами, не с обычными Figma-файлами.
 
 **Когда использовать:**
 - Извлечение данных из диаграмм
 - Парсинг sticky notes и connections
+- Суммаризация существующих FigJam-бордов
+- Извлечение инсайтов и драфт next steps
+
+---
+
+### get_libraries [R]
+
+**Назначение:** Возвращает библиотеки файла: подключённые (subscribed) и доступные (available).
+
+**Параметры:**
+
+| Параметр | Тип | Обязательный | Описание |
+|----------|-----|--------------|----------|
+| fileKey | string | Да | Ключ файла |
+| offset | number | Нет | Пагинация для организационных библиотек |
+
+**Когда использовать:**
+- Просмотр подключённых библиотек файла
+- Поиск доступных библиотек организации
+- Проверка подключения библиотеки перед `search_design_system`
 
 ---
 
@@ -280,7 +326,7 @@ mcp__figma__get_design_context с fileKey="abc123", nodeId="123:456", clientFram
 
 ---
 
-### search_design_system [D+R]
+### search_design_system [R]
 
 **Назначение:** Поиск компонентов, переменных и стилей в дизайн-системе.
 
@@ -294,6 +340,7 @@ mcp__figma__get_design_context с fileKey="abc123", nodeId="123:456", clientFram
 | includeVariables | boolean | Включить переменные (default: true) |
 | includeStyles | boolean | Включить стили (default: true) |
 | includeLibraryKeys | array | Ограничить поиск конкретными библиотеками |
+| disableCodeConnect | boolean | Отключить Code Connect в результатах |
 
 **Когда использовать:**
 - Поиск существующих компонентов перед созданием новых
@@ -322,10 +369,11 @@ mcp__figma__search_design_system с query="button", fileKey="abc123", includeCom
 | label | string | Да | Фреймворк |
 | nodeId | string | Нет | ID узла в Figma |
 | fileKey | string | Да [R] | Ключ файла |
-| template | string | Нет | JS template для Code Connect [R] |
+| template | string | Нет | JS template для Code Connect |
+| templateDataJson | string | Нет | JSON string метаданных шаблона (isParserless, imports, nestable, props) |
 
 **Допустимые значения label:**
-React, Web Components, Vue, Svelte, Storybook, Javascript, Swift UIKit, Objective-C UIKit, SwiftUI, Compose, Java, Kotlin, Android XML Layout, Flutter, Markdown
+React, Web Components, Vue, Svelte, Storybook, Javascript, Swift, Swift UIKit, Objective-C UIKit, SwiftUI, Compose, Java, Kotlin, Android XML Layout, Flutter, Markdown
 
 **Пример вызова:**
 ```
@@ -352,15 +400,19 @@ mcp__figma-desktop__add_code_connect_map с source="src/components/Button.tsx", 
   "nodeId": "123:456",
   "componentName": "Button",
   "source": "src/components/Button.tsx",
-  "label": "React"
+  "label": "React",
+  "template": "...",
+  "templateDataJson": "..."
 }
 ```
+
+**Допустимые значения label:** см. add_code_connect_map.
 
 ---
 
 ### use_figma [R] [beta]
 
-**Назначение:** Главный инструмент для write-операций на canvas. Выполняет JavaScript через Plugin API.
+**Назначение:** Главный инструмент для write-операций на canvas. Выполняет JavaScript через Plugin API. Работает и с Design, и с FigJam файлами.
 
 **Параметры:**
 
@@ -369,12 +421,22 @@ mcp__figma-desktop__add_code_connect_map с source="src/components/Button.tsx", 
 | fileKey | string | Да | Ключ файла |
 | code | string | Да | JavaScript код для выполнения |
 | description | string | Да | Описание операции |
+| skillNames | string[] | Нет | Указание какой Figma Skill выполняется (для логирования) |
 
-**Операции:**
-- Создание элементов (frames, shapes, text, components)
+**Design-операции:**
+- Создание элементов (pages, frames, shapes, text, components, variants)
 - Редактирование свойств (позиция, размер, цвет, стили)
+- Работа с variables, styles, images
 - Удаление элементов
 - Инспекция node properties
+
+**FigJam-операции:**
+- Stickies (заметки)
+- Sections (секции для группировки)
+- Connectors (связи между элементами)
+- Shapes (фигуры)
+- Tables (таблицы)
+- Code blocks (блоки кода)
 
 **Требования:**
 - Edit permission на файл
@@ -432,6 +494,7 @@ mcp__figma__generate_figma_design с outputMode="newFile", fileName="My App Capt
 | fileName | string | Да | Имя файла |
 | planKey | string | Да | Ключ команды/организации |
 | editorType | string | Да | design или figjam |
+| projectId | string | Нет | ID проекта (папки) для размещения файла |
 
 **Когда использовать:**
 - Создание нового файла перед use_figma
@@ -446,6 +509,31 @@ mcp__figma__create_new_file с fileName="New Design", planKey="team123", editorT
 
 ---
 
+### upload_assets [R]
+
+**Назначение:** Загрузка изображений в Figma-файл.
+
+**Параметры:**
+
+| Параметр | Тип | Обязательный | Описание |
+|----------|-----|--------------|----------|
+| fileKey | string | Да | Ключ файла |
+| count | number | Нет | Количество изображений (1-5) |
+| nodeId | string | Нет | ID узла для размещения |
+| scaleMode | string | Нет | Режим масштабирования: FILL, FIT, CROP, TILE |
+
+**Примечание:** nodeId можно использовать только при count=1.
+
+**Форматы:** PNG, JPG, GIF, WebP (до 10MB).
+
+**Результат:** Upload URL. Для загрузки — POST raw bytes с соответствующим Content-Type.
+
+**Когда использовать:**
+- Загрузка изображений в Figma-файл
+- Замена placeholder-изображений на реальные
+
+---
+
 ### generate_diagram [R]
 
 **Назначение:** Генерация FigJam-диаграммы из Mermaid-синтаксиса.
@@ -457,12 +545,17 @@ mcp__figma__create_new_file с fileName="New Design", planKey="team123", editorT
 | name | string | Да | Название диаграммы |
 | mermaidSyntax | string | Да | Код на Mermaid.js |
 | userIntent | string | Нет | Описание цели пользователя |
+| useArchitectureLayoutCode | string | Нет | Код из ресурса architecture-diagram-instructions (для архитектурных диаграмм) |
+| planKey | string | Нет | Ключ команды/организации для сохранения файла |
+| fileKey | string | Нет | Добавление диаграммы в существующий FigJam-файл |
 
-**Поддерживаемые типы:**
+**Поддерживаемые типы (6):**
 - Flowchart (блок-схемы)
 - Gantt chart (диаграммы Ганта)
 - State diagram (диаграммы состояний)
 - Sequence diagram (диаграммы последовательности)
+- Architecture diagram (визуализация системной архитектуры)
+- Entity Relationship Diagram / ERD (схемы БД)
 
 **Пример вызова:**
 ```
@@ -471,7 +564,41 @@ mcp__figma__generate_diagram с name="Auth Flow", mermaidSyntax="graph LR\nA[Log
 
 **Ограничения:**
 - Только FigJam, не Figma Design
-- Не поддерживает: class diagrams, timelines, venn diagrams, ER diagrams
+- Не поддерживает: class diagrams, timelines, venn diagrams
+
+---
+
+## Figma Skills (MCP prompts)
+
+Figma Skills — это промпт-инструкции, которые MCP-сервер отдаёт агенту через MCP prompts. Скилл = рецепт, который говорит агенту как использовать инструменты в определённом порядке. Это НЕ отдельные MCP-инструменты и НЕ слеш-команды Claude Code.
+
+**Механизм работы:**
+1. MCP-клиент запрашивает у сервера prompts
+2. Сервер возвращает инструкции для каждого скилла
+3. Агент выполняет инструкции, вызывая обычные tools (`use_figma`, `get_design_context` и т.д.)
+4. В параметре `skillNames` у `use_figma` указывается какой скилл выполняется
+
+**Ключевое отличие Tools vs Skills:**
+- Tools = строительные блоки (один вызов, конкретные параметры)
+- Skills = workflow (мульти-шаговые, с best practices, natural language)
+
+| # | Слеш-команда | Платформа | Описание |
+|---|-------------|-----------|----------|
+| 1 | `/figma-use` | Remote | Запись в Design canvas: фреймы, компоненты, переменные, auto layout |
+| 2 | `/figma-use-figjam` | Remote | Запись в FigJam: стикеры, секции, коннекторы, фигуры, таблицы, code blocks |
+| 3 | `/figma-code-connect-components` | D+R | Маппинг Figma-компонентов на код через Code Connect (Organization/Enterprise) |
+| 4 | `/figma-create-design-system-rules` | D+R | Генерация правил дизайн-системы (.mdc): анализ кодовой базы, документирование конвенций |
+| 5 | `/figma-create-new-file` | Remote | Создание нового файла (Design или FigJam) в Drafts |
+| 6 | `/figma-implement-design` | D+R | Дизайн -> код: чтение дизайна, pull ассетов, генерация кода |
+| 7 | `/figma-generate-library` | Remote | Создание DS-библиотеки из кодовой базы. Фазы: Discovery -> Foundations -> Структура -> Компоненты -> QA |
+| 8 | `/figma-generate-design` | Remote | Сборка полных экранов из реальных компонентов дизайн-системы |
+
+**Примеры вызова:**
+- `/figma-use Create a pricing card with title, features, and button using auto layout`
+- `/figma-use-figjam Add sticky notes for sprint goals and organize into sections`
+- `/figma-create-new-file figjam "Sprint Planning"`
+- `/figma-implement-design [Figma URL]`
+- `/figma-generate-design Create mobile account settings screen with profile and security sections`
 
 ---
 
@@ -573,7 +700,7 @@ mcp__figma__generate_diagram с name="Auth Flow", mermaidSyntax="graph LR\nA[Log
 
 ---
 
-### Задача 9: Поиск компонентов в дизайн-системе [D+R]
+### Задача 9: Поиск компонентов в дизайн-системе [R]
 
 **Инструменты:** `search_design_system`
 
@@ -581,6 +708,53 @@ mcp__figma__generate_diagram с name="Auth Flow", mermaidSyntax="graph LR\nA[Log
 1. Вызвать `search_design_system` с query
 2. Проанализировать результаты
 3. Использовать найденные компоненты через import
+
+---
+
+### Задача 10: Создать элементы на FigJam-борде [R]
+
+**Инструменты:** `use_figma`
+
+**Алгоритм:**
+1. Определить тип FigJam-файла (fileKey)
+2. Вызвать `use_figma` с FigJam-операциями (stickies, sections, connectors и т.д.)
+3. Использовать `skillNames: ["figma-use-figjam"]` для логирования
+
+**Требования:** Edit permission, Full seat
+
+---
+
+### Задача 11: Суммаризировать FigJam-борд [D+R]
+
+**Инструменты:** `get_figjam`
+
+**Алгоритм:**
+1. Вызвать `get_figjam` с fileKey и `includeImagesOfNodes=true`
+2. Проанализировать структуру (sticky notes, sections, connections)
+3. Сформировать саммари с инсайтами и next steps
+
+---
+
+### Задача 12: Загрузить изображения в Figma [R]
+
+**Инструменты:** `upload_assets`
+
+**Алгоритм:**
+1. Вызвать `upload_assets` с fileKey и count
+2. Получить upload URL из ответа
+3. POST raw bytes с Content-Type на upload URL
+4. Указать scaleMode при необходимости (FILL/FIT/CROP/TILE)
+
+---
+
+### Задача 13: Просмотреть библиотеки файла [R]
+
+**Инструменты:** `get_libraries`
+
+**Алгоритм:**
+1. Вызвать `get_libraries` с fileKey
+2. Проанализировать subscribed и available библиотеки
+3. Для больших организаций использовать offset для пагинации
 
 ---
 
@@ -690,25 +864,31 @@ rect.fills = [{type: 'SOLID', color: {r: 0, g: 0, b: 1}}]
 
 Доступные инструменты:
 
-Desktop [D] (8):
+Desktop [D] (10):
 • get_design_context — генерация кода из макета
 • get_screenshot — скриншот элемента
 • get_metadata — XML-структура
 • get_variable_defs — токены дизайн-системы
 • get_code_connect_map — маппинги компонентов
-• add_code_connect_map — добавление маппинга
 • get_code_connect_suggestions — предложения
+• add_code_connect_map — добавление маппинга
 • create_design_system_rules — правила ДС
+• get_figjam — данные FigJam-файла
+• send_code_connect_mappings — batch-маппинг
 
-Remote [R] (16):
+Remote [R] (19):
 • [D+R] get_design_context, get_screenshot, get_metadata, get_variable_defs
-• [D+R] get_code_connect_map, add_code_connect_map, get_code_connect_suggestions, send_code_connect_mappings
-• [D+R] create_design_system_rules, get_figjam, search_design_system
+• [D+R] get_code_connect_map, get_code_connect_suggestions, add_code_connect_map, send_code_connect_mappings
+• [D+R] create_design_system_rules, get_figjam
+• [R] search_design_system — поиск в дизайн-системе
+• [R] get_context_for_code_connect — метаданные для Code Connect
 • [R] whoami — идентификация пользователя
-• [R] use_figma [beta] — write-операции на canvas
+• [R] get_libraries — библиотеки файла
+• [R] use_figma [beta] — write-операции на canvas (Design + FigJam)
+• [R] upload_assets — загрузка изображений
 • [R] generate_figma_design — захват web-страниц
 • [R] create_new_file — создание файлов
-• [R] generate_diagram — FigJam диаграммы
+• [R] generate_diagram — FigJam диаграммы (6 типов)
 ```
 
 ---
