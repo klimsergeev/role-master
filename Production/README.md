@@ -82,7 +82,6 @@
 |-------|------|----------|
 | **skill-agent-orchestration** | `Skills/skill-agent-orchestration.md` | Правила оркестрации субагентов в Claude Code — когда делегировать, как сохранять контекст чистым |
 | **skill-agent-teams** | `Skills/skill-agent-teams.md` | Процедура создания и управления Agent Teams в Claude Code — параллельная работа нескольких агентов с peer-to-peer коммуникацией |
-| **skill-editorial-guidelines** | `Skills/skill-editorial-guidelines.md` | Редполитика UX-текстов — свод правил написания текстов в интерфейсах |
 | **skill-figma-mcp-remote-setup** | `Skills/skill-figma-mcp-remote-setup.md` | Процедура подключения к Figma Remote MCP серверу (https://mcp.figma.com/mcp) |
 | **skill-figma-mcp-setup** | `Skills/skill-figma-mcp-setup.md` | Процедура подключения проекта к Figma Desktop MCP серверу для интеграции Claude Code с Figma Desktop |
 | **skill-figma-mcp-tools** | `Skills/skill-figma-mcp-tools.md` | Справочник MCP-инструментов Figma для агентов Claude Code (Desktop + Remote) |
@@ -110,8 +109,8 @@
 ## 📊 Статистика
 
 - **Ролей:** 23
-- **Скиллов:** 24
-- **Последнее обновление:** 2026-05-01 11:14
+- **Скиллов:** 23
+- **Последнее обновление:** 2026-05-01 18:38
 
 ---
 

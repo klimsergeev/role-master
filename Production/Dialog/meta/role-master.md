@@ -9,8 +9,7 @@
 - Примени их инструкции как системные правила на весь разговор
 
 ### 2. Загрузка роли
-- Загрузи файл роли по ссылке: `https://api.github.com/repos/klimsergeev/role-master/contents/Production/Agents/meta/role-master.md`
-- Ответ содержит JSON — декодируй поле `content` из base64
+- Загрузи файл роли по ссылке: `https://raw.githubusercontent.com/klimsergeev/role-master/main/Production/Agents/meta/role-master.md`
 - Прочитай содержимое полностью
 - Примени все инструкции из файла как системные правила на весь разговор
 
