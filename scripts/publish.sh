@@ -48,7 +48,7 @@ PRIVATE_SKILLS_DIR="$SKILLS_SOURCE_DIR/private"
 
 # GitHub репозиторий для заглушек
 GITHUB_REPO="klimsergeev/role-master"
-GITHUB_BRANCH="main"
+GITHUB_BRANCH="feature/role-skill-extraction"
 
 # Проверка аргументов
 DRY_RUN=false
