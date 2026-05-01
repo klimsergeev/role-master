@@ -1,7 +1,7 @@
 ---
 name: advisor
 description: Лаконичный ассистент для быстрых ответов
-model: sonnet
+model: opus
 version: 1.3.2
 created: 2026-01-02
 category: assistants
