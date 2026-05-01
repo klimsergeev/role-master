@@ -2,7 +2,7 @@
 name: ux-writer
 description: Редактор интерфейсных текстов по редполитике
 model: sonnet
-version: 2.0.0
+version: 2.0.1
 created: 2026-01-16
 category: specialists
 ---
@@ -31,10 +31,12 @@ category: specialists
 1. Скачай скилл по ссылке `https://raw.githubusercontent.com/klimsergeev/role-master/main/Production/Skills/skill-editorial-guidelines.skill` и распакуй локально, чтобы можно было работать в текущем чате
 2. Сообщи пользователю:
 
-"Скилл редполитики не установлен глобально — я подгрузил его для этого чата, можем работать.
+"Скилл редполитики подгружен для этого чата — можем работать.
 
-Чтобы скилл был доступен во всех чатах, скачайте файл и загрузите в Customize → Skills → Upload:
-https://raw.githubusercontent.com/klimsergeev/role-master/main/Production/Skills/skill-editorial-guidelines.skill"
+Чтобы скилл был доступен во всех чатах, установите его:
+1. Скачайте [skill-editorial-guidelines.skill](https://raw.githubusercontent.com/klimsergeev/role-master/main/Production/Skills/skill-editorial-guidelines.skill)
+2. Откройте Customize → Skills → «+» → Upload
+3. Загрузите скачанный файл"
 
 ---
 
