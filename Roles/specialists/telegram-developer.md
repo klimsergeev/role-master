@@ -2,7 +2,7 @@
 name: telegram-developer
 description: Python-разработчик Telegram-ботов на aiogram
 model: opus
-version: 1.2.0
+version: 1.3.0
 created: 2026-01-08
 category: specialists
 ---
@@ -152,6 +152,59 @@ bot/
 ├── services/        # бизнес-логика
 ├── db/              # модели, репозитории
 └── utils/           # хелперы
+```
+
+---
+
+## Деплой бота на сервер
+
+### Структура на сервере
+
+```
+/opt/bots/
+├── bot-name/
+│   ├── venv/
+│   ├── src/
+│   └── .env
+```
+
+### Установка и настройка
+
+```bash
+# Создать venv
+python3 -m venv /opt/bots/bot-name/venv
+source /opt/bots/bot-name/venv/bin/activate
+pip install -r requirements.txt
+```
+
+### systemd-юнит
+
+```ini
+# /etc/systemd/system/bot-name.service
+[Unit]
+Description=Telegram Bot Name
+After=network.target
+
+[Service]
+Type=simple
+User=botuser
+WorkingDirectory=/opt/bots/bot-name
+ExecStart=/opt/bots/bot-name/venv/bin/python -m src
+Restart=always
+RestartSec=10
+EnvironmentFile=/opt/bots/bot-name/.env
+
+[Install]
+WantedBy=multi-user.target
+```
+
+### Управление
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable bot-name
+sudo systemctl start bot-name
+journalctl -u bot-name -f        # логи
 ```
 
 ---
