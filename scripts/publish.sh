@@ -116,7 +116,7 @@ fi
 
 # Считаем файлы до синхронизации
 BEFORE_COUNT=$(find "$AGENTS_TARGET_DIR" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
-BEFORE_SKILLS_COUNT=$(find "$SKILLS_TARGET_DIR" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+BEFORE_SKILLS_COUNT=$(find "$SKILLS_TARGET_DIR" \( -name "*.md" -o -name "*.skill" \) 2>/dev/null | wc -l | tr -d ' ')
 BEFORE_CLAUDE_SKILLS_COUNT=$(find "$CLAUDE_SKILLS_DIR" -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
 
 # Список категорий (папок) — без templates (шаблоны не публикуются)
@@ -588,7 +588,11 @@ sync_to_claude_skills() {
                 local dir_name=$(basename "$skill_src_dir")
 
                 # Пропускаем шаблон и private
-                if [[ "$dir_name" == "skill-template" || "$dir_name" == "private" ]]; then
+                if [[ "$dir_name" == "skill-template" ]]; then
+                    echo -e "   ${YELLOW}○${NC} $dir_name/ — пропущено (шаблон)"
+                    continue
+                fi
+                if [[ "$dir_name" == "private" ]]; then
                     continue
                 fi
 
@@ -758,7 +762,11 @@ sync_skills() {
                 local dir_name=$(basename "$skill_src_dir")
 
                 # Пропускаем шаблон и private
-                if [[ "$dir_name" == "skill-template" || "$dir_name" == "private" ]]; then
+                if [[ "$dir_name" == "skill-template" ]]; then
+                    echo -e "   ${YELLOW}○${NC} $dir_name/ — пропущено (шаблон)"
+                    continue
+                fi
+                if [[ "$dir_name" == "private" ]]; then
                     continue
                 fi
 
@@ -1036,7 +1044,7 @@ fi
 # Считаем файлы после синхронизации
 if [[ "$DRY_RUN" == false ]]; then
     AFTER_COUNT=$(find "$AGENTS_TARGET_DIR" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
-    AFTER_SKILLS_COUNT=$(find "$SKILLS_TARGET_DIR" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+    AFTER_SKILLS_COUNT=$(find "$SKILLS_TARGET_DIR" \( -name "*.md" -o -name "*.skill" \) 2>/dev/null | wc -l | tr -d ' ')
     AFTER_CLAUDE_SKILLS_COUNT=$(find "$CLAUDE_SKILLS_DIR" -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
     echo -e "${GREEN}✅ Публикация завершена!${NC}"
     echo "   Опубликовано агентов: $AFTER_COUNT"
