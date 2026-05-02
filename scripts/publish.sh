@@ -636,8 +636,82 @@ sync_to_claude_skills() {
         done < <(find "$PRIVATE_SKILLS_DIR" -maxdepth 1 -name "skill-*" -type d -print0 2>/dev/null)
     fi
 
+    # ==========================================================================
+    # Очистка устаревших директорий в Claude Skills
+    # ==========================================================================
+
+    # Собираем список валидных имён скиллов
+    local VALID_SKILLS=()
+
+    # 1) Flat-файлы skill-*.md в Skills/ (без template)
+    if [[ -d "$SKILLS_SOURCE_DIR" ]]; then
+        while IFS= read -r -d '' file; do
+            local fname=$(basename "$file")
+            if [[ "$fname" == "skill-template.md" ]]; then continue; fi
+            VALID_SKILLS+=("${fname%.md}")
+        done < <(find "$SKILLS_SOURCE_DIR" -maxdepth 1 -name "skill-*.md" -type f -print0 2>/dev/null)
+    fi
+
+    # 2) Директории skill-*/SKILL.md в Skills/ (без template, без private)
+    if [[ -d "$SKILLS_SOURCE_DIR" ]]; then
+        while IFS= read -r -d '' dir; do
+            local dname=$(basename "$dir")
+            if [[ "$dname" == "skill-template" || "$dname" == "private" ]]; then continue; fi
+            if [[ ! -f "$dir/SKILL.md" ]]; then continue; fi
+            VALID_SKILLS+=("$dname")
+        done < <(find "$SKILLS_SOURCE_DIR" -maxdepth 1 -name "skill-*" -type d -print0 2>/dev/null)
+    fi
+
+    # 3) Приватные скиллы — файлы
+    if [[ -d "$PRIVATE_SKILLS_DIR" ]]; then
+        while IFS= read -r -d '' file; do
+            local fname=$(basename "$file")
+            if [[ "$fname" == "skill-template.md" ]]; then continue; fi
+            VALID_SKILLS+=("${fname%.md}")
+        done < <(find "$PRIVATE_SKILLS_DIR" -maxdepth 1 -name "skill-*.md" -type f -print0 2>/dev/null)
+    fi
+
+    # 4) Приватные скиллы — директории
+    if [[ -d "$PRIVATE_SKILLS_DIR" ]]; then
+        while IFS= read -r -d '' dir; do
+            local dname=$(basename "$dir")
+            if [[ "$dname" == "skill-template" ]]; then continue; fi
+            if [[ ! -f "$dir/SKILL.md" ]]; then continue; fi
+            VALID_SKILLS+=("$dname")
+        done < <(find "$PRIVATE_SKILLS_DIR" -maxdepth 1 -name "skill-*" -type d -print0 2>/dev/null)
+    fi
+
+    # Удаляем директории, которых нет в списке валидных
+    local DELETED_COUNT=0
+    if [[ -d "$CLAUDE_SKILLS_DIR" ]]; then
+        for skill_dir in "$CLAUDE_SKILLS_DIR"/*/; do
+            if [[ -d "$skill_dir" ]]; then
+                local skill_dirname=$(basename "$skill_dir")
+                local is_valid=false
+
+                for valid_skill in "${VALID_SKILLS[@]}"; do
+                    if [[ "$skill_dirname" == "$valid_skill" ]]; then
+                        is_valid=true
+                        break
+                    fi
+                done
+
+                if [[ "$is_valid" == false ]]; then
+                    if [[ "$DRY_RUN" == false ]]; then
+                        rm -rf "$skill_dir"
+                    fi
+                    echo -e "   ${YELLOW}✗${NC} $skill_dirname — удалён (устаревший)"
+                    DELETED_COUNT=$((DELETED_COUNT + 1))
+                fi
+            fi
+        done
+    fi
+
     echo ""
     echo "   Синхронизировано: $SYNCED_COUNT скиллов"
+    if [[ "$DELETED_COUNT" -gt 0 ]]; then
+        echo "   Удалено: $DELETED_COUNT устаревших скиллов"
+    fi
     echo ""
 }
 
