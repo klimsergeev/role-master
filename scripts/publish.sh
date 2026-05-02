@@ -231,14 +231,33 @@ get_role_name() {
     echo "$name"
 }
 
-# Извлекает description из frontmatter
+# Извлекает description из frontmatter (поддерживает однострочные и multiline YAML-значения)
 get_role_description() {
     local file="$1"
     local description=""
 
     # Пробуем извлечь description из frontmatter (между ---)
     if head -1 "$file" 2>/dev/null | grep -q '^---'; then
-        description=$(sed -n '2,/^---$/p' "$file" 2>/dev/null | grep '^description:' | sed 's/^description:[[:space:]]*//' | tr -d '\r')
+        # Извлекаем frontmatter (строки между первым и вторым ---)
+        local frontmatter
+        frontmatter=$(sed -n '2,/^---$/p' "$file" 2>/dev/null | sed '$d')
+
+        # Ищем строку description:
+        local desc_line
+        desc_line=$(echo "$frontmatter" | grep '^description:')
+
+        if [[ -n "$desc_line" ]]; then
+            # Извлекаем значение после "description:"
+            local inline_value
+            inline_value=$(echo "$desc_line" | sed 's/^description:[[:space:]]*//' | tr -d '\r')
+
+            if [[ "$inline_value" == ">" || "$inline_value" == "|" || -z "$inline_value" ]]; then
+                # Multiline YAML (folded > или literal |): собираем строки с отступом после description:
+                description=$(echo "$frontmatter" | sed -n '/^description:/,/^[a-zA-Z_-]*:/{ /^description:/d; /^[a-zA-Z_-]*:/d; p; }' | sed 's/^[[:space:]]*//' | tr -d '\r' | tr '\n' ' ' | sed 's/[[:space:]]*$//')
+            else
+                description="$inline_value"
+            fi
+        fi
     fi
 
     # Если не нашли, ставим прочерк
@@ -905,9 +924,9 @@ generate_readme() {
         fi
     done
 
-    # Считаем скиллы
+    # Считаем скиллы (flat .md + директории .skill)
     if [[ -d "$SKILLS_TARGET_DIR" ]]; then
-        TOTAL_SKILLS=$(find "$SKILLS_TARGET_DIR" -name "*.md" -type f 2>/dev/null | wc -l | tr -d ' ')
+        TOTAL_SKILLS=$(find "$SKILLS_TARGET_DIR" \( -name "*.md" -o -name "*.skill" \) -type f 2>/dev/null | wc -l | tr -d ' ')
     fi
 
     cat << 'HEADER'
@@ -994,7 +1013,7 @@ HEADER
     echo ""
 
     if [[ -d "$SKILLS_TARGET_DIR" ]]; then
-        local skills_files=$(find "$SKILLS_TARGET_DIR" -name "*.md" -type f 2>/dev/null | sort)
+        local skills_files=$(find "$SKILLS_TARGET_DIR" \( -name "*.md" -o -name "*.skill" \) -type f 2>/dev/null | sort)
 
         if [[ -n "$skills_files" ]]; then
             echo "| Скилл | Файл | Описание |"
@@ -1005,9 +1024,22 @@ HEADER
                     local filename=$(basename "$file")
                     local relative_path="Skills/${filename}"
 
-                    # Извлекаем название и описание из YAML frontmatter
-                    local title=$(get_role_name "$file")
-                    local description=$(get_role_description "$file")
+                    if [[ "$filename" == *.skill ]]; then
+                        # Директория-скилл: читаем метаданные из исходного SKILL.md
+                        local dir_name="${filename%.skill}"
+                        local source_skill_md="$SKILLS_SOURCE_DIR/$dir_name/SKILL.md"
+                        if [[ -f "$source_skill_md" ]]; then
+                            local title=$(get_role_name "$source_skill_md")
+                            local description=$(get_role_description "$source_skill_md")
+                        else
+                            local title="$dir_name"
+                            local description="—"
+                        fi
+                    else
+                        # Flat-скилл: читаем метаданные напрямую
+                        local title=$(get_role_name "$file")
+                        local description=$(get_role_description "$file")
+                    fi
 
                     echo "| **${title}** | \`${relative_path}\` | ${description} |"
                 fi
