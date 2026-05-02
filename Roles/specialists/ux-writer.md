@@ -28,13 +28,13 @@ category: specialists
 **Если скилл установлен** — сообщи: "Скилл skill-editorial-guidelines подключён." Используй его для проверки и написания текстов.
 
 **Если скилл НЕ установлен:**
-1. Скачай скилл по ссылке `https://raw.githubusercontent.com/klimsergeev/role-master/feature/role-skill-extraction/Production/Skills/skill-editorial-guidelines.skill?v=1777664990` и распакуй локально, чтобы можно было работать в текущем чате
+1. Скачай скилл по ссылке `https://raw.githubusercontent.com/klimsergeev/role-master/main/Production/Skills/skill-editorial-guidelines.skill` и распакуй локально, чтобы можно было работать в текущем чате
 2. Сообщи пользователю:
 
 "Скилл редполитики подгружен для этого чата — можем работать.
 
 Чтобы скилл был доступен во всех чатах, установите его:
-1. Скачайте [skill-editorial-guidelines.skill](https://raw.githubusercontent.com/klimsergeev/role-master/feature/role-skill-extraction/Production/Skills/skill-editorial-guidelines.skill?v=1777664990)
+1. Скачайте [skill-editorial-guidelines.skill](https://raw.githubusercontent.com/klimsergeev/role-master/main/Production/Skills/skill-editorial-guidelines.skill)
 2. Откройте Customize → Skills → «+» → Upload
 3. Загрузите скачанный файл"
 

@@ -780,7 +780,7 @@
 1. Проверить: `grep '^GITHUB_BRANCH=' scripts/publish.sh`
 2. Значение должно быть `"main"`
 **Ожидаемый результат:** `GITHUB_BRANCH="main"`.
-**Статус:** [!] не пройден — ожидаемо: GITHUB_BRANCH="feature/role-skill-extraction". Cleanup перед мержем ещё не выполнен.
+**Статус:** [x] пройден — GITHUB_BRANCH="main" (2026-05-01)
 
 ### TC-502: Cache bust убран из URL в publish.sh
 
@@ -791,7 +791,7 @@
 1. Проверить: `grep 'CACHE_BUST' scripts/publish.sh` — строка с `CACHE_BUST=$(date +%s)` должна быть удалена или закомментирована
 2. Проверить: `grep '?v=' scripts/publish.sh` — не должно быть в generate_dialog_file()
 **Ожидаемый результат:** Cache bust убран из publish.sh. URL в Dialog-заглушках не содержат `?v=`.
-**Статус:** [!] не пройден — ожидаемо: CACHE_BUST и ?v= ещё присутствуют. Cleanup перед мержем ещё не выполнен.
+**Статус:** [x] пройден — CACHE_BUST и ?v= отсутствуют в publish.sh (2026-05-01)
 
 ### TC-503: URL .skill в роли ux-writer указывает на main
 
@@ -802,7 +802,7 @@
 1. Проверить: `grep "feature/role-skill-extraction" Roles/specialists/ux-writer.md` — должно быть пусто
 2. Проверить: `grep "raw.githubusercontent.com.*main.*\.skill" Roles/specialists/ux-writer.md`
 **Ожидаемый результат:** URL .skill файла в роли указывает на ветку `main`, а не `feature/role-skill-extraction`. Cache bust `?v=` убран.
-**Статус:** [!] не пройден — ожидаемо: URL в роли ux-writer ссылается на feature/role-skill-extraction. Cleanup перед мержем ещё не выполнен.
+**Статус:** [x] пройден — URL указывают на /main/, без ?v= (2026-05-01)
 
 ### TC-504: Шаблон роли содержит инструкцию самопроверки скиллов
 
@@ -842,27 +842,14 @@
 
 | Статус | Количество |
 |--------|-----------|
-| [x] Пройден | 49 |
-| [!] Не пройден | 3 |
+| [x] Пройден | 52 |
+| [!] Не пройден | 0 |
 | [-] Ручной, пропущен | 0 |
 | **Итого** | **52** |
 
 ### Не пройденные тесты
 
-**TC-501: GITHUB_BRANCH не возвращён на "main"**
-- Severity: N/A (ожидаемо)
-- Текущее значение: `GITHUB_BRANCH="feature/role-skill-extraction"` -- корректно для текущей ветки
-- Действие: cleanup перед мержем в main
-
-**TC-502: Cache bust не убран из publish.sh**
-- Severity: N/A (ожидаемо)
-- CACHE_BUST и ?v= присутствуют -- нужны для работы с feature-веткой
-- Действие: cleanup перед мержем в main
-
-**TC-503: URL .skill в роли ux-writer не указывает на main**
-- Severity: N/A (ожидаемо)
-- URL ссылается на feature/role-skill-extraction -- корректно для текущей ветки
-- Действие: cleanup перед мержем в main
+Нет.
 
 ### Ручные тесты (пройдены)
 
@@ -873,4 +860,4 @@
 
 ### Найденные баги
 
-Нет открытых багов. TC-012 исправлен (publish.sh теперь выводит "skill-template/ — пропущено (шаблон)").
+Нет открытых багов. Все 52 теста пройдены, включая пост-мерж кейсы TC-501/502/503 (cleanup выполнен).

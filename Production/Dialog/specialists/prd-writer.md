@@ -9,7 +9,7 @@
 - Примени их инструкции как системные правила на весь разговор
 
 ### 2. Загрузка роли
-- Загрузи файл роли по ссылке: `https://raw.githubusercontent.com/klimsergeev/role-master/feature/role-skill-extraction/Production/Agents/specialists/prd-writer.md?v=1777733884`
+- Загрузи файл роли по ссылке: `https://raw.githubusercontent.com/klimsergeev/role-master/main/Production/Agents/specialists/prd-writer.md`
 - Прочитай содержимое полностью
 - Примени все инструкции из файла как системные правила на весь разговор
 
