@@ -46,7 +46,6 @@
 | **advisor** | `Agents/assistants/advisor.md` | Лаконичный ассистент для быстрых ответов |
 | **company-researcher** | `Agents/assistants/company-researcher.md` | Исследователь компаний для HR, найма и оценки работодателей. Собирает профиль компании из открытых источников — описание, метрики, отзывы сотрудников и клиентов, технологический стек, руководство, новостной фон. Используй эту роль при любом запросе на исследование компании, анализ работодателя, сбор информации о компании для найма или due diligence. |
 | **data-aggregator** | `Agents/assistants/data-aggregator.md` | Извлечение структурированных данных из веб-страниц в JSON |
-| **markup-converter** | `Agents/assistants/markup-converter.md` | Конвертер разметки документов (MD/MDC/plain text -> Confluence Wiki/Jira) |
 | **message-writer** | `Agents/assistants/message-writer.md` | Ассистент по написанию сообщений в инфостиле |
 | **project-logger** | `Agents/assistants/project-logger.md` | Секретарь проектной документации для портфолио |
 | **research-analyst** | `Agents/assistants/research-analyst.md` | Аналитик-исследователь для глубокого анализа и исследований |
@@ -86,12 +85,6 @@
 | **skill-figma-mcp-setup** | `Skills/skill-figma-mcp-setup.md` | Процедура подключения проекта к Figma Desktop MCP серверу для интеграции Claude Code с Figma Desktop |
 | **skill-figma-mcp-tools** | `Skills/skill-figma-mcp-tools.md` | Справочник MCP-инструментов Figma для агентов Claude Code (Desktop + Remote) |
 | **skill-local-permissions** | `Skills/skill-local-permissions.md` | Процедура настройки локальных разрешений проекта в .claude/settings.local.json для автоматизации типовых подтверждений |
-| **skill-markup-confluence** | `Skills/skill-markup-confluence.md` | Справочник синтаксиса Confluence Wiki Markup для форматирования документов |
-| **skill-markup-jira** | `Skills/skill-markup-jira.md` | Справочник Jira Text Formatting Notation для форматирования текста в задачах и комментариях Jira |
-| **skill-markup-latex** | `Skills/skill-markup-latex.md` | Справочник синтаксиса LaTeX для создания и редактирования документов |
-| **skill-markup-markdown** | `Skills/skill-markup-markdown.md` | Справочник синтаксиса Markdown, MultiMarkdown и MDC для форматирования документов |
-| **skill-markup-textile** | `Skills/skill-markup-textile.md` | Справочник синтаксиса Textile для форматирования текста в HTML |
-| **skill-markup-wikitext** | `Skills/skill-markup-wikitext.md` | Справочник синтаксиса Wikitext (MediaWiki markup) для разметки wiki-страниц |
 | **skill-nuxt-data-fetching** | `Skills/skill-nuxt-data-fetching.md` | Процедура выбора и использования методов загрузки данных в Nuxt 3 (useFetch, useAsyncData, $fetch) |
 | **skill-prd-writing** | `Skills/skill-prd-writing.md` | Процедура создания PRD-документов с интерактивным сбором требований для UI-продуктов |
 | **skill-proxy-nekobox-android** | `Skills/skill-proxy-nekobox-android.md` | Настройка NekoBox на Android с WireGuard и split tunneling |
@@ -107,9 +100,9 @@
 
 ## 📊 Статистика
 
-- **Ролей:** 23
-- **Скиллов:** 22
-- **Последнее обновление:** 2026-05-02 20:35
+- **Ролей:** 22
+- **Скиллов:** 16
+- **Последнее обновление:** 2026-05-03 00:05
 
 ---
 
