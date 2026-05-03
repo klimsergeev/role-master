@@ -1,5 +1,5 @@
 ---
-name: devops
+name: dev-ops
 description: Системный администратор Linux
 model: opus
 version: 2.0.0
