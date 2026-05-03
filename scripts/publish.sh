@@ -43,8 +43,8 @@ DIALOG_DIR="$TARGET_DIR/Dialog"
 README_FILE="$TARGET_DIR/README.md"
 CLAUDE_AGENTS_DIR="$HOME/.claude/agents"
 CLAUDE_SKILLS_DIR="$HOME/.claude/skills"
-PRIVATE_ROLES_DIR="$SOURCE_DIR/private"
-PRIVATE_SKILLS_DIR="$SKILLS_SOURCE_DIR/private"
+PRIVATE_ROLES_DIR="$PROJECT_ROOT/Roles.private"
+PRIVATE_SKILLS_DIR="$PROJECT_ROOT/Skills.private"
 
 # GitHub репозиторий для заглушек
 GITHUB_REPO="klimsergeev/role-master"
@@ -610,10 +610,6 @@ sync_to_claude_skills() {
                     echo -e "   ${YELLOW}○${NC} $dir_name/ — пропущено (шаблон)"
                     continue
                 fi
-                if [[ "$dir_name" == "private" ]]; then
-                    continue
-                fi
-
                 # Проверяем наличие SKILL.md внутри
                 if [[ ! -f "$skill_src_dir/SKILL.md" ]]; then
                     continue
@@ -675,7 +671,7 @@ sync_to_claude_skills() {
     if [[ -d "$SKILLS_SOURCE_DIR" ]]; then
         while IFS= read -r -d '' dir; do
             local dname=$(basename "$dir")
-            if [[ "$dname" == "skill-template" || "$dname" == "private" ]]; then continue; fi
+            if [[ "$dname" == "skill-template" ]]; then continue; fi
             if [[ ! -f "$dir/SKILL.md" ]]; then continue; fi
             VALID_SKILLS+=("$dname")
         done < <(find "$SKILLS_SOURCE_DIR" -maxdepth 1 -name "skill-*" -type d -print0 2>/dev/null)
@@ -853,12 +849,9 @@ sync_skills() {
             if [[ -n "$skill_src_dir" ]]; then
                 local dir_name=$(basename "$skill_src_dir")
 
-                # Пропускаем шаблон и private
+                # Пропускаем шаблон
                 if [[ "$dir_name" == "skill-template" ]]; then
                     echo -e "   ${YELLOW}○${NC} $dir_name/ — пропущено (шаблон)"
-                    continue
-                fi
-                if [[ "$dir_name" == "private" ]]; then
                     continue
                 fi
 
