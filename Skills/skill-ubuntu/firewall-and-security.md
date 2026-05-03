@@ -140,7 +140,7 @@ systemctl status apt-daily-upgrade.timer
 
 ## Что НЕ входит в этот файл
 
-- **SSH hardening** (sshd_config) -- универсален для всех дистрибутивов, остаётся в роли devops
+- **SSH hardening** (sshd_config) -- универсален для всех дистрибутивов
 - **fail2ban** -- устанавливается через apt, но настройка не Ubuntu-специфична
 - **iptables/nftables напрямую** -- универсальные инструменты, не Ubuntu-специфичные
 
