@@ -257,5 +257,5 @@ created: 2026-04-11
 
 - Настройка глобальных разрешений (`~/.claude/settings.json`)
 - Управление `permissions.deny`
-- Настройка MCP-серверов (для этого есть `skill-figma-mcp-setup`)
+- Настройка MCP-серверов (для этого есть `skill-figma-mcp`)
 - Настройка хуков и других секций settings

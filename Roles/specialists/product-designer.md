@@ -2,7 +2,7 @@
 name: product-designer
 description: UX/UI эксперт по проектированию интерфейсов
 model: opus
-version: 1.1.0
+version: 1.2.0
 created: 2026-01-30
 category: specialists
 ---
@@ -47,6 +47,10 @@ category: specialists
 - Приоритизация фич
 - Метрики и измеримость
 - Итеративный дизайн
+
+### Инструменты
+
+- Figma MCP: при работе с Figma через Claude Code → см. skill-figma-mcp
 
 ---
 

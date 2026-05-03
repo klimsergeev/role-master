@@ -57,7 +57,6 @@
 | **dev-ops** | `Agents/specialists/dev-ops.md` | Системный администратор Linux |
 | **frontend-developer** | `Agents/specialists/frontend-developer.md` | Опытный фронтенд-разработчик Vue/React/Quasar |
 | **git-ops** | `Agents/specialists/git-ops.md` | Автономный эксперт по Git — аудит репозиториев, решение проблем, настройка воркфлоу |
-| **prd-writer** | `Agents/specialists/prd-writer.md` | Эксперт по формализации продуктовых требований для UI-продуктов |
 | **product-designer** | `Agents/specialists/product-designer.md` | UX/UI эксперт по проектированию интерфейсов |
 | **product-manager** | `Agents/specialists/product-manager.md` | Продуктовый стратег — discovery, метрики, приоритизация и роадмап |
 | **qa-engineer** | `Agents/specialists/qa-engineer.md` | Тестировщик веб-приложений на Python + Playwright |
@@ -82,13 +81,11 @@
 | **skill-agent-orchestration** | `Skills/skill-agent-orchestration.md` | Правила оркестрации субагентов в Claude Code — когда делегировать, как сохранять контекст чистым |
 | **skill-agent-teams** | `Skills/skill-agent-teams.md` | Процедура создания и управления Agent Teams в Claude Code — параллельная работа нескольких агентов с peer-to-peer коммуникацией |
 | **skill-editorial-guidelines** | `Skills/skill-editorial-guidelines.skill` | Редполитика UX-текстов — свод правил написания текстов в интерфейсах. Тон, лексика, пунктуация, форматирование, ошибки. Не для перевода текстов, не для длинных статей и блогов, не для маркетинговых рассылок. |
-| **skill-figma-mcp-remote-setup** | `Skills/skill-figma-mcp-remote-setup.md` | Процедура подключения к Figma Remote MCP серверу (https://mcp.figma.com/mcp) |
-| **skill-figma-mcp-setup** | `Skills/skill-figma-mcp-setup.md` | Процедура подключения проекта к Figma Desktop MCP серверу для интеграции Claude Code с Figma Desktop |
-| **skill-figma-mcp-tools** | `Skills/skill-figma-mcp-tools.md` | Справочник MCP-инструментов Figma для агентов Claude Code (Desktop + Remote) |
+| **skill-figma-mcp** | `Skills/skill-figma-mcp.skill` | Справочник Figma MCP — инструменты, настройка подключения (Desktop и Remote), workflows для дизайн-to-код, Code Connect, диаграммы, write-операции на canvas. Покрывает 19 MCP tools, 8+ Figma Skills (MCP prompts), типичные задачи фронтенд-разработки и продуктового дизайна с Figma. |
 | **skill-local-permissions** | `Skills/skill-local-permissions.md` | Процедура настройки локальных разрешений проекта в .claude/settings.local.json для автоматизации типовых подтверждений |
 | **skill-markup** | `Skills/skill-markup.skill` | Справочник синтаксиса разметки — Markdown (CommonMark, MultiMarkdown, MDC), Confluence Wiki Markup, Jira Text Formatting, LaTeX, MediaWiki Wikitext, Textile. |
 | **skill-nuxt-data-fetching** | `Skills/skill-nuxt-data-fetching.md` | Процедура выбора и использования методов загрузки данных в Nuxt 3 (useFetch, useAsyncData, $fetch) |
-| **skill-prd-writing** | `Skills/skill-prd-writing.md` | Процедура создания PRD-документов с интерактивным сбором требований для UI-продуктов |
+| **skill-prd-writing** | `Skills/skill-prd-writing.skill` | Процедура создания PRD-документов (Product Requirements Document) через интерактивный сбор требований, проработку сценариев и формализацию функциональных/нефункциональных требований для UI-продуктов. Включает шаблон PRD, User Stories, Acceptance Criteria, состояния UI, edge-cases. Применяется продуктовиками, дизайнерами, аналитиками. |
 | **skill-proxy-nekobox-android** | `Skills/skill-proxy-nekobox-android.md` | Настройка NekoBox на Android с WireGuard и split tunneling |
 | **skill-proxy-singbox-macos** | `Skills/skill-proxy-singbox-macos.md` | Настройка sing-box VT на macOS с WireGuard endpoint и split tunneling |
 | **skill-report-company** | `Skills/skill-report-company.md` | Процедура создания структурированного профиля компании на основе веб-поиска. Генерирует markdown-отчёт с 7 секциями — описание, отзывы сотрудников, отзывы клиентов, технологический стек, руководство, новостной фон, метрики. |
@@ -105,9 +102,9 @@
 
 ## 📊 Статистика
 
-- **Ролей:** 22
-- **Скиллов:** 21
-- **Последнее обновление:** 2026-05-03 13:02
+- **Ролей:** 21
+- **Скиллов:** 19
+- **Последнее обновление:** 2026-05-03 14:02
 
 ---
 
