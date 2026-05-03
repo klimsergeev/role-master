@@ -272,6 +272,46 @@ get_role_description() {
 # Синхронизация в Claude Agents (~/.claude/agents)
 # =============================================================================
 
+# Копирует .md роли из source_dir → ~/.claude/agents/agent-<name>.md
+# Аргументы: source_dir, label ("" или " (private)")
+# Использует глобальные: CLAUDE_AGENTS_DIR, DRY_RUN, CATEGORIES
+# Изменяет глобальные: _SYNCED_AGENTS_COUNT
+process_roles_to_claude() {
+    local source_dir="$1"
+    local label="$2"
+
+    if [[ ! -d "$source_dir" ]]; then return; fi
+
+    while IFS= read -r -d '' file; do
+        if [[ -n "$file" ]]; then
+            local role_name=$(get_role_name "$file")
+            local agent_file="$CLAUDE_AGENTS_DIR/agent-$role_name.md"
+
+            if [[ "$DRY_RUN" == false ]]; then
+                cp "$file" "$agent_file"
+            fi
+
+            echo -e "   ${GREEN}✓${NC} $role_name -> agent-$role_name.md${label}"
+            _SYNCED_AGENTS_COUNT=$((_SYNCED_AGENTS_COUNT + 1))
+        fi
+    done < <(find "$source_dir" -name "*.md" -type f -print0 2>/dev/null)
+}
+
+# Собирает имена валидных агентов из source_dir в глобальный массив VALID_AGENTS
+# Аргументы: source_dir
+collect_valid_agents() {
+    local source_dir="$1"
+
+    if [[ ! -d "$source_dir" ]]; then return; fi
+
+    while IFS= read -r -d '' file; do
+        if [[ -n "$file" ]]; then
+            local role_name=$(get_role_name "$file")
+            VALID_AGENTS+=("agent-$role_name.md")
+        fi
+    done < <(find "$source_dir" -name "*.md" -type f -print0 2>/dev/null)
+}
+
 # Синхронизирует роли в Claude Agents (формат agent-{name}.md)
 sync_to_claude_agents() {
     echo -e "${BLUE}🤖 Синхронизация в Claude Agents:${NC}"
@@ -285,67 +325,22 @@ sync_to_claude_agents() {
         fi
     fi
 
-    local SYNCED_COUNT=0
+    _SYNCED_AGENTS_COUNT=0
 
+    # Публичные роли (по категориям)
     for category in $CATEGORIES; do
-        local SOURCE_CAT="$SOURCE_DIR/$category"
-
-        if [[ -d "$SOURCE_CAT" ]]; then
-            # Находим все .md файлы и обрабатываем через while read для путей с пробелами
-            while IFS= read -r -d '' file; do
-                if [[ -n "$file" ]]; then
-                    local role_name=$(get_role_name "$file")
-                    local agent_file="$CLAUDE_AGENTS_DIR/agent-$role_name.md"
-
-                    if [[ "$DRY_RUN" == false ]]; then
-                        cp "$file" "$agent_file"
-                    fi
-
-                    echo -e "   ${GREEN}✓${NC} $role_name -> agent-$role_name.md"
-                    SYNCED_COUNT=$((SYNCED_COUNT + 1))
-                fi
-            done < <(find "$SOURCE_CAT" -name "*.md" -type f -print0 2>/dev/null)
-        fi
+        process_roles_to_claude "$SOURCE_DIR/$category" ""
     done
 
-    # Синхронизация приватных ролей (только локально)
-    if [[ -d "$PRIVATE_ROLES_DIR" ]]; then
-        while IFS= read -r -d '' file; do
-            if [[ -n "$file" ]]; then
-                local role_name=$(get_role_name "$file")
-                local agent_file="$CLAUDE_AGENTS_DIR/agent-$role_name.md"
-                if [[ "$DRY_RUN" == false ]]; then
-                    cp "$file" "$agent_file"
-                fi
-                echo -e "   ${GREEN}✓${NC} $role_name -> agent-$role_name.md (private)"
-                SYNCED_COUNT=$((SYNCED_COUNT + 1))
-            fi
-        done < <(find "$PRIVATE_ROLES_DIR" -name "*.md" -type f -print0 2>/dev/null)
-    fi
+    # Приватные роли
+    process_roles_to_claude "$PRIVATE_ROLES_DIR" " (private)"
 
-    # Собираем список всех имён ролей из исходников
-    local VALID_AGENTS=()
+    # Собираем список валидных агентов для очистки устаревших
+    VALID_AGENTS=()
     for category in $CATEGORIES; do
-        local SOURCE_CAT="$SOURCE_DIR/$category"
-        if [[ -d "$SOURCE_CAT" ]]; then
-            while IFS= read -r -d '' file; do
-                if [[ -n "$file" ]]; then
-                    local role_name=$(get_role_name "$file")
-                    VALID_AGENTS+=("agent-$role_name.md")
-                fi
-            done < <(find "$SOURCE_CAT" -name "*.md" -type f -print0 2>/dev/null)
-        fi
+        collect_valid_agents "$SOURCE_DIR/$category"
     done
-
-    # Добавляем приватные роли в список валидных
-    if [[ -d "$PRIVATE_ROLES_DIR" ]]; then
-        while IFS= read -r -d '' file; do
-            if [[ -n "$file" ]]; then
-                local role_name=$(get_role_name "$file")
-                VALID_AGENTS+=("agent-$role_name.md")
-            fi
-        done < <(find "$PRIVATE_ROLES_DIR" -name "*.md" -type f -print0 2>/dev/null)
-    fi
+    collect_valid_agents "$PRIVATE_ROLES_DIR"
 
     # Удаляем агентов, которых нет в исходниках
     local DELETED_COUNT=0
@@ -372,7 +367,7 @@ sync_to_claude_agents() {
     fi
 
     echo ""
-    echo "   Синхронизировано: $SYNCED_COUNT агентов"
+    echo "   Синхронизировано: $_SYNCED_AGENTS_COUNT агентов"
     if [[ "$DELETED_COUNT" -gt 0 ]]; then
         echo "   Удалено: $DELETED_COUNT агентов"
     fi
@@ -521,6 +516,114 @@ sync_to_dialog() {
 # Синхронизация в Claude Skills (~/.claude/skills)
 # =============================================================================
 
+# Копирует flat skill-*.md файлы → ~/.claude/skills/<name>/SKILL.md
+# Аргументы: source_dir, target_dir, label ("" или " (private)")
+# Изменяет глобальные: _SYNCED_SKILLS_COUNT
+process_flat_skills_to_claude() {
+    local source_dir="$1"
+    local target_dir="$2"
+    local label="$3"
+
+    if [[ ! -d "$source_dir" ]]; then return; fi
+
+    while IFS= read -r -d '' file; do
+        if [[ -n "$file" ]]; then
+            local filename=$(basename "$file")
+
+            # Пропускаем шаблон
+            if [[ "$filename" == "skill-template.md" ]]; then
+                echo -e "   ${YELLOW}○${NC} $filename — пропущено (шаблон)"
+                continue
+            fi
+
+            # Извлекаем имя скилла (без расширения)
+            local skill_name="${filename%.md}"
+            local skill_dir="$target_dir/$skill_name"
+            local skill_file="$skill_dir/SKILL.md"
+
+            # Создаём папку скилла если не существует
+            if [[ ! -d "$skill_dir" ]]; then
+                if [[ "$DRY_RUN" == false ]]; then
+                    mkdir -p "$skill_dir"
+                    echo -e "   ${GREEN}+${NC} $skill_name/ — создана папка"
+                else
+                    echo -e "   ${GREEN}+${NC} $skill_name/ — будет создана папка"
+                fi
+            fi
+
+            # Копируем/обновляем только SKILL.md
+            if [[ "$DRY_RUN" == false ]]; then
+                cp "$file" "$skill_file"
+            fi
+
+            echo -e "   ${GREEN}✓${NC} $skill_name/SKILL.md — обновлён${label}"
+            _SYNCED_SKILLS_COUNT=$((_SYNCED_SKILLS_COUNT + 1))
+        fi
+    done < <(find "$source_dir" -maxdepth 1 -name "skill-*.md" -type f -print0 2>/dev/null)
+}
+
+# Копирует директории skill-*/SKILL.md → ~/.claude/skills/ (rsync)
+# Аргументы: source_dir, target_dir, label ("" или " (private)")
+# Изменяет глобальные: _SYNCED_SKILLS_COUNT
+process_dir_skills_to_claude() {
+    local source_dir="$1"
+    local target_dir="$2"
+    local label="$3"
+
+    if [[ ! -d "$source_dir" ]]; then return; fi
+
+    while IFS= read -r -d '' skill_src_dir; do
+        if [[ -n "$skill_src_dir" ]]; then
+            local dir_name=$(basename "$skill_src_dir")
+
+            # Пропускаем шаблон
+            if [[ "$dir_name" == "skill-template" ]]; then
+                echo -e "   ${YELLOW}○${NC} $dir_name/ — пропущено (шаблон)"
+                continue
+            fi
+
+            # Проверяем наличие SKILL.md внутри
+            if [[ ! -f "$skill_src_dir/SKILL.md" ]]; then
+                continue
+            fi
+
+            local target_skill_dir="$target_dir/$dir_name"
+
+            if [[ "$DRY_RUN" == false ]]; then
+                mkdir -p "$target_skill_dir"
+                rsync -a --delete "$skill_src_dir/" "$target_skill_dir/" > /dev/null 2>&1
+            fi
+
+            echo -e "   ${GREEN}✓${NC} $dir_name/ — обновлён (директория${label:+,$label})"
+            _SYNCED_SKILLS_COUNT=$((_SYNCED_SKILLS_COUNT + 1))
+        fi
+    done < <(find "$source_dir" -maxdepth 1 -name "skill-*" -type d -print0 2>/dev/null)
+}
+
+# Собирает имена валидных скиллов из source_dir в глобальный массив VALID_SKILLS
+# (flat .md + директории с SKILL.md, без template)
+# Аргументы: source_dir
+collect_valid_skills() {
+    local source_dir="$1"
+
+    if [[ ! -d "$source_dir" ]]; then return; fi
+
+    # Flat-файлы skill-*.md
+    while IFS= read -r -d '' file; do
+        local fname=$(basename "$file")
+        if [[ "$fname" == "skill-template.md" ]]; then continue; fi
+        VALID_SKILLS+=("${fname%.md}")
+    done < <(find "$source_dir" -maxdepth 1 -name "skill-*.md" -type f -print0 2>/dev/null)
+
+    # Директории skill-*/SKILL.md
+    while IFS= read -r -d '' dir; do
+        local dname=$(basename "$dir")
+        if [[ "$dname" == "skill-template" ]]; then continue; fi
+        if [[ ! -f "$dir/SKILL.md" ]]; then continue; fi
+        VALID_SKILLS+=("$dname")
+    done < <(find "$source_dir" -maxdepth 1 -name "skill-*" -type d -print0 2>/dev/null)
+}
+
 # Синхронизирует скиллы в Claude Skills (формат skill-{name}/SKILL.md)
 sync_to_claude_skills() {
     echo -e "${BLUE}📚 Синхронизация скиллов в Claude Skills:${NC}"
@@ -534,167 +637,20 @@ sync_to_claude_skills() {
         fi
     fi
 
-    local SYNCED_COUNT=0
+    _SYNCED_SKILLS_COUNT=0
 
-    if [[ -d "$SKILLS_SOURCE_DIR" ]]; then
-        # Находим все skill-*.md файлы, исключая skill-template.md
-        while IFS= read -r -d '' file; do
-            if [[ -n "$file" ]]; then
-                local filename=$(basename "$file")
+    # Flat-скиллы: публичные и приватные
+    process_flat_skills_to_claude "$SKILLS_SOURCE_DIR" "$CLAUDE_SKILLS_DIR" ""
+    process_flat_skills_to_claude "$PRIVATE_SKILLS_DIR" "$CLAUDE_SKILLS_DIR" " (private)"
 
-                # Пропускаем шаблон
-                if [[ "$filename" == "skill-template.md" ]]; then
-                    echo -e "   ${YELLOW}○${NC} $filename — пропущено (шаблон)"
-                    continue
-                fi
+    # Директории-скиллы: публичные и приватные
+    process_dir_skills_to_claude "$SKILLS_SOURCE_DIR" "$CLAUDE_SKILLS_DIR" ""
+    process_dir_skills_to_claude "$PRIVATE_SKILLS_DIR" "$CLAUDE_SKILLS_DIR" " private"
 
-                # Извлекаем имя скилла (без расширения)
-                local skill_name="${filename%.md}"
-                local skill_dir="$CLAUDE_SKILLS_DIR/$skill_name"
-                local skill_file="$skill_dir/SKILL.md"
-
-                # Создаём папку скилла если не существует
-                if [[ ! -d "$skill_dir" ]]; then
-                    if [[ "$DRY_RUN" == false ]]; then
-                        mkdir -p "$skill_dir"
-                        echo -e "   ${GREEN}+${NC} $skill_name/ — создана папка"
-                    else
-                        echo -e "   ${GREEN}+${NC} $skill_name/ — будет создана папка"
-                    fi
-                fi
-
-                # Копируем/обновляем только SKILL.md
-                if [[ "$DRY_RUN" == false ]]; then
-                    cp "$file" "$skill_file"
-                fi
-
-                echo -e "   ${GREEN}✓${NC} $skill_name/SKILL.md — обновлён"
-                SYNCED_COUNT=$((SYNCED_COUNT + 1))
-            fi
-        done < <(find "$SKILLS_SOURCE_DIR" -maxdepth 1 -name "skill-*.md" -type f -print0 2>/dev/null)
-    else
-        echo -e "   ${YELLOW}○${NC} Папка $SKILLS_SOURCE_DIR не найдена"
-    fi
-
-    # Синхронизация приватных скиллов (файлы)
-    if [[ -d "$PRIVATE_SKILLS_DIR" ]]; then
-        while IFS= read -r -d '' file; do
-            if [[ -n "$file" ]]; then
-                local filename=$(basename "$file")
-                if [[ "$filename" == "skill-template.md" ]]; then continue; fi
-                local skill_name="${filename%.md}"
-                local skill_dir="$CLAUDE_SKILLS_DIR/$skill_name"
-                local skill_file="$skill_dir/SKILL.md"
-                if [[ ! -d "$skill_dir" ]]; then
-                    if [[ "$DRY_RUN" == false ]]; then mkdir -p "$skill_dir"; fi
-                fi
-                if [[ "$DRY_RUN" == false ]]; then cp "$file" "$skill_file"; fi
-                echo -e "   ${GREEN}✓${NC} $skill_name/SKILL.md — обновлён (private)"
-                SYNCED_COUNT=$((SYNCED_COUNT + 1))
-            fi
-        done < <(find "$PRIVATE_SKILLS_DIR" -maxdepth 1 -name "skill-*.md" -type f -print0 2>/dev/null)
-    fi
-
-    # ==========================================================================
-    # Скиллы-директории: Skills/skill-name/SKILL.md → Claude Skills
-    # ==========================================================================
-
-    # Публичные директории-скиллы
-    if [[ -d "$SKILLS_SOURCE_DIR" ]]; then
-        while IFS= read -r -d '' skill_src_dir; do
-            if [[ -n "$skill_src_dir" ]]; then
-                local dir_name=$(basename "$skill_src_dir")
-
-                # Пропускаем шаблон и private
-                if [[ "$dir_name" == "skill-template" ]]; then
-                    echo -e "   ${YELLOW}○${NC} $dir_name/ — пропущено (шаблон)"
-                    continue
-                fi
-                # Проверяем наличие SKILL.md внутри
-                if [[ ! -f "$skill_src_dir/SKILL.md" ]]; then
-                    continue
-                fi
-
-                local target_skill_dir="$CLAUDE_SKILLS_DIR/$dir_name"
-
-                if [[ "$DRY_RUN" == false ]]; then
-                    # Копируем всю директорию целиком
-                    mkdir -p "$target_skill_dir"
-                    rsync -a --delete "$skill_src_dir/" "$target_skill_dir/" > /dev/null 2>&1
-                fi
-
-                echo -e "   ${GREEN}✓${NC} $dir_name/ — обновлён (директория)"
-                SYNCED_COUNT=$((SYNCED_COUNT + 1))
-            fi
-        done < <(find "$SKILLS_SOURCE_DIR" -maxdepth 1 -name "skill-*" -type d -print0 2>/dev/null)
-    fi
-
-    # Приватные директории-скиллы
-    if [[ -d "$PRIVATE_SKILLS_DIR" ]]; then
-        while IFS= read -r -d '' skill_src_dir; do
-            if [[ -n "$skill_src_dir" ]]; then
-                local dir_name=$(basename "$skill_src_dir")
-
-                if [[ "$dir_name" == "skill-template" ]]; then continue; fi
-                if [[ ! -f "$skill_src_dir/SKILL.md" ]]; then continue; fi
-
-                local target_skill_dir="$CLAUDE_SKILLS_DIR/$dir_name"
-
-                if [[ "$DRY_RUN" == false ]]; then
-                    mkdir -p "$target_skill_dir"
-                    rsync -a --delete "$skill_src_dir/" "$target_skill_dir/" > /dev/null 2>&1
-                fi
-
-                echo -e "   ${GREEN}✓${NC} $dir_name/ — обновлён (директория, private)"
-                SYNCED_COUNT=$((SYNCED_COUNT + 1))
-            fi
-        done < <(find "$PRIVATE_SKILLS_DIR" -maxdepth 1 -name "skill-*" -type d -print0 2>/dev/null)
-    fi
-
-    # ==========================================================================
     # Очистка устаревших директорий в Claude Skills
-    # ==========================================================================
-
-    # Собираем список валидных имён скиллов
-    local VALID_SKILLS=()
-
-    # 1) Flat-файлы skill-*.md в Skills/ (без template)
-    if [[ -d "$SKILLS_SOURCE_DIR" ]]; then
-        while IFS= read -r -d '' file; do
-            local fname=$(basename "$file")
-            if [[ "$fname" == "skill-template.md" ]]; then continue; fi
-            VALID_SKILLS+=("${fname%.md}")
-        done < <(find "$SKILLS_SOURCE_DIR" -maxdepth 1 -name "skill-*.md" -type f -print0 2>/dev/null)
-    fi
-
-    # 2) Директории skill-*/SKILL.md в Skills/ (без template, без private)
-    if [[ -d "$SKILLS_SOURCE_DIR" ]]; then
-        while IFS= read -r -d '' dir; do
-            local dname=$(basename "$dir")
-            if [[ "$dname" == "skill-template" ]]; then continue; fi
-            if [[ ! -f "$dir/SKILL.md" ]]; then continue; fi
-            VALID_SKILLS+=("$dname")
-        done < <(find "$SKILLS_SOURCE_DIR" -maxdepth 1 -name "skill-*" -type d -print0 2>/dev/null)
-    fi
-
-    # 3) Приватные скиллы — файлы
-    if [[ -d "$PRIVATE_SKILLS_DIR" ]]; then
-        while IFS= read -r -d '' file; do
-            local fname=$(basename "$file")
-            if [[ "$fname" == "skill-template.md" ]]; then continue; fi
-            VALID_SKILLS+=("${fname%.md}")
-        done < <(find "$PRIVATE_SKILLS_DIR" -maxdepth 1 -name "skill-*.md" -type f -print0 2>/dev/null)
-    fi
-
-    # 4) Приватные скиллы — директории
-    if [[ -d "$PRIVATE_SKILLS_DIR" ]]; then
-        while IFS= read -r -d '' dir; do
-            local dname=$(basename "$dir")
-            if [[ "$dname" == "skill-template" ]]; then continue; fi
-            if [[ ! -f "$dir/SKILL.md" ]]; then continue; fi
-            VALID_SKILLS+=("$dname")
-        done < <(find "$PRIVATE_SKILLS_DIR" -maxdepth 1 -name "skill-*" -type d -print0 2>/dev/null)
-    fi
+    VALID_SKILLS=()
+    collect_valid_skills "$SKILLS_SOURCE_DIR"
+    collect_valid_skills "$PRIVATE_SKILLS_DIR"
 
     # Удаляем директории, которых нет в списке валидных
     local DELETED_COUNT=0
@@ -723,7 +679,7 @@ sync_to_claude_skills() {
     fi
 
     echo ""
-    echo "   Синхронизировано: $SYNCED_COUNT скиллов"
+    echo "   Синхронизировано: $_SYNCED_SKILLS_COUNT скиллов"
     if [[ "$DELETED_COUNT" -gt 0 ]]; then
         echo "   Удалено: $DELETED_COUNT устаревших скиллов"
     fi
