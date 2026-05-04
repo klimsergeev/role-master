@@ -115,7 +115,7 @@ description: Правила оркестрации субагентов в Claud
 - "Настрой разрешения проекта" -> `/skill-local-permissions`
 - "Напиши PRD" -> `/skill-prd-writing`
 - "Как отформатировать таблицу в Jira?" -> `/skill-markup-jira`
-- "Подключи Figma MCP" -> `/skill-figma-mcp-setup`
+- "Подключи Figma MCP" -> `/skill-figma-mcp`
 
 ### Шаг 3: Запуск агентов
 

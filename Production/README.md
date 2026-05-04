@@ -78,6 +78,7 @@
 
 | Скилл | Файл | Описание |
 |-------|------|----------|
+| **skill-3d-artist** | `Skills/skill-3d-artist.skill` | Справочник Blender MCP для агентов — настройка подключения (official connector и community-сервер ahujasid), workflows моделирования через bpy API, промптинг 3D-сцен, troubleshooting, безопасность execute_blender_code, экономия токенов в agentic-сессиях. Покрывает Claude Desktop, Cowork, Code. |
 | **skill-agent-orchestration** | `Skills/skill-agent-orchestration.md` | Правила оркестрации субагентов в Claude Code — когда делегировать, как сохранять контекст чистым |
 | **skill-agent-teams** | `Skills/skill-agent-teams.md` | Процедура создания и управления Agent Teams в Claude Code — параллельная работа нескольких агентов с peer-to-peer коммуникацией |
 | **skill-editorial-guidelines** | `Skills/skill-editorial-guidelines.skill` | Редполитика UX-текстов — свод правил написания текстов в интерфейсах. Тон, лексика, пунктуация, форматирование, ошибки. Не для перевода текстов, не для длинных статей и блогов, не для маркетинговых рассылок. |
@@ -93,6 +94,7 @@
 | **skill-seo-reference** | `Skills/skill-seo-reference.skill` | SEO-справочники — E-E-A-T, Schema.org, keyword research, technical SEO, readability, internal linking, GEO. Для аудита, оптимизации и создания SEO-контента. |
 | **skill-strapi-api-integration** | `Skills/skill-strapi-api-integration.md` | Процедура интеграции Vue/Nuxt приложения с Strapi v5 API через @nuxtjs/strapi модуль |
 | **skill-strapi-content-modeling** | `Skills/skill-strapi-content-modeling.md` | Процедура проектирования контент-типов, компонентов и dynamic zones в Strapi v5 |
+| **skill-test-nested** | `Skills/skill-test-nested.skill` | Test nested skill structure |
 | **skill-tlnd-browser** | `Skills/skill-tlnd-browser.md` | Процедура доступа к Ticketland.ru через Chrome MCP |
 | **skill-tlnd-seo** | `Skills/skill-tlnd-seo.md` | SEO-стандарты Ticketland.ru — эталонные требования к мета-тегам, структурированным данным и техническому SEO для билетного сервиса |
 | **skill-ubuntu** | `Skills/skill-ubuntu.skill` | Справочник Ubuntu/Debian-специфичных процедур — apt, dpkg, snap, PPA, ufw, unattended-upgrades, управление ядрами, Netplan, systemd-resolved, AppArmor, cloud-init, do-release-upgrade. Не покрывает SSH (он универсален) и не покрывает деплой приложений (это задача роли). |
@@ -103,8 +105,8 @@
 ## 📊 Статистика
 
 - **Ролей:** 21
-- **Скиллов:** 19
-- **Последнее обновление:** 2026-05-03 14:02
+- **Скиллов:** 21
+- **Последнее обновление:** 2026-05-04 16:19
 
 ---
 
