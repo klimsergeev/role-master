@@ -49,6 +49,7 @@
 | **message-writer** | `Agents/assistants/message-writer.md` | Ассистент по написанию сообщений в инфостиле |
 | **project-logger** | `Agents/assistants/project-logger.md` | Секретарь проектной документации для портфолио |
 | **research-analyst** | `Agents/assistants/research-analyst.md` | Аналитик-исследователь для глубокого анализа и исследований |
+| **shopping-assistant** | `Agents/assistants/shopping-assistant.md` | Персональный консультант по подбору товаров — ресёрч, визуальный отбор, руководство для покупки |
 
 ### 🔧 Специалисты
 
@@ -92,6 +93,7 @@
 | **skill-report-company** | `Skills/skill-report-company.md` | Процедура создания структурированного профиля компании на основе веб-поиска. Генерирует markdown-отчёт с 7 секциями — описание, отзывы сотрудников, отзывы клиентов, технологический стек, руководство, новостной фон, метрики. |
 | **skill-semantic-core** | `Skills/skill-semantic-core.skill` | Справочник формата YAML-семантики сайта для SEO/GEO-анализа веб-страниц. Объясняет структуру YAML-файлов, полученных из HTML путём извлечения SEO-релевантной семантики: мета-теги, Open Graph, Twitter Cards, Schema.org (JSON-LD), hreflang, иерархия контента (h1-h6, p, a, img, semantic HTML). Используй для понимания формата данных при анализе страниц. |
 | **skill-seo-reference** | `Skills/skill-seo-reference.skill` | SEO-справочники — E-E-A-T, Schema.org, keyword research, technical SEO, readability, internal linking, GEO. Для аудита, оптимизации и создания SEO-контента. |
+| **skill-shopping-assistant** | `Skills/skill-shopping-assistant.skill` | Процесс подбора товаров: структурированный опрос, ресёрч с покрытием, визуальный отбор (да/нет/возможно), дожим, генерация руководства для агента-покупателя. Универсальный -- от обуви до билетов. Включает браузерный шоппинг через Chrome MCP (корзина/избранное). |
 | **skill-strapi-api-integration** | `Skills/skill-strapi-api-integration.md` | Процедура интеграции Vue/Nuxt приложения с Strapi v5 API через @nuxtjs/strapi модуль |
 | **skill-strapi-content-modeling** | `Skills/skill-strapi-content-modeling.md` | Процедура проектирования контент-типов, компонентов и dynamic zones в Strapi v5 |
 | **skill-test-nested** | `Skills/skill-test-nested.skill` | Test nested skill structure |
@@ -104,9 +106,9 @@
 
 ## 📊 Статистика
 
-- **Ролей:** 21
-- **Скиллов:** 21
-- **Последнее обновление:** 2026-05-04 16:19
+- **Ролей:** 22
+- **Скиллов:** 22
+- **Последнее обновление:** 2026-05-18 22:15
 
 ---
 
