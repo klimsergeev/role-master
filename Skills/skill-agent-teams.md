@@ -16,13 +16,13 @@ created: 2026-04-17
 ## Самопроверка при подключении (ОБЯЗАТЕЛЬНО)
 
 При подключении:
-1. Проверить наличие переменной `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` в settings
+1. Проверить наличие переменной `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` в **локальных** настройках проекта (`.claude/settings.local.json` → секция `env`)
 2. Вывести результат:
 
    **Agent Teams подключён**
    Переменная CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: [найдена / НЕ найдена]
 
-ЕСЛИ переменная не найдена -> предупредить: "Agent Teams недоступен. Добавьте `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` в settings перед использованием."
+ЕСЛИ переменная не найдена -> предупредить: "Agent Teams недоступен. Добавить `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` в `.claude/settings.local.json` → секция `env`? (Это включит Teams только для текущего проекта.)"
 
 ---
 
@@ -243,7 +243,6 @@ Backend-dev отвечает напрямую (peer-to-peer).
 
 ## Что НЕ входит в scope
 
-- Настройка переменной окружения `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` — это задача для settings
 - Создание custom агентов в `.claude/agents/` — это отдельная процедура
 - Оркестрация обычных субагентов (без Teams) — см. skill-agent-orchestration
 - Управление токен-бюджетами отдельных тиммейтов
