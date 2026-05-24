@@ -80,7 +80,7 @@
 | Скилл | Файл | Описание |
 |-------|------|----------|
 | **skill-3d-artist** | `Skills/skill-3d-artist.skill` | Справочник Blender MCP для агентов — настройка подключения (official connector и community-сервер ahujasid), workflows моделирования через bpy API, промптинг 3D-сцен, troubleshooting, безопасность execute_blender_code, экономия токенов в agentic-сессиях. Покрывает Claude Desktop, Cowork, Code. |
-| **skill-agent-orchestration** | `Skills/skill-agent-orchestration.md` | Правила оркестрации субагентов в Claude Code — когда делегировать, как сохранять контекст чистым |
+| **skill-agent-orchestration** | `Skills/skill-agent-orchestration.skill` | Правила оркестрации субагентов в Claude Code — когда делегировать задачу агенту или скиллу, как формировать промпт для субагента, как сохранять контекст оркестратора чистым. Содержит pre-flight checklist, трёхслойную модель контекста, паттерны декомпозиции, алгоритм разрешения противоречий роль vs задание. |
 | **skill-agent-teams** | `Skills/skill-agent-teams.md` | Процедура создания и управления Agent Teams в Claude Code — параллельная работа нескольких агентов с peer-to-peer коммуникацией |
 | **skill-editorial-guidelines** | `Skills/skill-editorial-guidelines.skill` | Редполитика UX-текстов — свод правил написания текстов в интерфейсах. Тон, лексика, пунктуация, форматирование, ошибки. Не для перевода текстов, не для длинных статей и блогов, не для маркетинговых рассылок. |
 | **skill-figma-mcp** | `Skills/skill-figma-mcp.skill` | Справочник Figma MCP — инструменты, настройка подключения (Desktop и Remote), workflows для дизайн-to-код, Code Connect, диаграммы, write-операции на canvas. Покрывает 19 MCP tools, 8+ Figma Skills (MCP prompts), типичные задачи фронтенд-разработки и продуктового дизайна с Figma. |
@@ -108,7 +108,7 @@
 
 - **Ролей:** 22
 - **Скиллов:** 22
-- **Последнее обновление:** 2026-05-22 12:08
+- **Последнее обновление:** 2026-05-24 19:47
 
 ---
 
