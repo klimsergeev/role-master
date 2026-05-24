@@ -84,7 +84,7 @@
 | **skill-agent-teams** | `Skills/skill-agent-teams.md` | Процедура создания и управления Agent Teams в Claude Code — параллельная работа нескольких агентов с peer-to-peer коммуникацией |
 | **skill-editorial-guidelines** | `Skills/skill-editorial-guidelines.skill` | Редполитика UX-текстов — свод правил написания текстов в интерфейсах. Тон, лексика, пунктуация, форматирование, ошибки. Не для перевода текстов, не для длинных статей и блогов, не для маркетинговых рассылок. |
 | **skill-figma-mcp** | `Skills/skill-figma-mcp.skill` | Справочник Figma MCP — инструменты, настройка подключения (Desktop и Remote), workflows для дизайн-to-код, Code Connect, диаграммы, write-операции на canvas. Покрывает 19 MCP tools, 8+ Figma Skills (MCP prompts), типичные задачи фронтенд-разработки и продуктового дизайна с Figma. |
-| **skill-local-permissions** | `Skills/skill-local-permissions.md` | Процедура настройки локальных разрешений проекта в .claude/settings.local.json для автоматизации типовых подтверждений |
+| **skill-local-permissions** | `Skills/skill-local-permissions.skill` | Процедура настройки локальных разрешений проекта в .claude/settings.local.json для автоматизации типовых подтверждений. Содержит пресеты (базовый, расширенный), алгоритм настройки, правила работы с permissions.allow. Скилл работает ТОЛЬКО с .claude/settings.local.json (уровень Local), не с глобальными или проектными settings. |
 | **skill-markup** | `Skills/skill-markup.skill` | Справочник синтаксиса разметки — Markdown (CommonMark, MultiMarkdown, MDC), Confluence Wiki Markup, Jira Text Formatting, LaTeX, MediaWiki Wikitext, Textile. |
 | **skill-nuxt-data-fetching** | `Skills/skill-nuxt-data-fetching.md` | Процедура выбора и использования методов загрузки данных в Nuxt 3 (useFetch, useAsyncData, $fetch) |
 | **skill-prd-writing** | `Skills/skill-prd-writing.skill` | Процедура создания PRD-документов (Product Requirements Document) через интерактивный сбор требований, проработку сценариев и формализацию функциональных/нефункциональных требований для UI-продуктов. Включает шаблон PRD, User Stories, Acceptance Criteria, состояния UI, edge-cases. Применяется продуктовиками, дизайнерами, аналитиками. |
@@ -109,7 +109,7 @@
 
 - **Ролей:** 22
 - **Скиллов:** 23
-- **Последнее обновление:** 2026-05-24 21:16
+- **Последнее обновление:** 2026-05-24 22:14
 
 ---
 
