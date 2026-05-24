@@ -2,7 +2,7 @@
 name: skill-seo-reference
 description: SEO-справочники — E-E-A-T, Schema.org, keyword research, technical SEO, readability, internal linking, GEO. Для аудита, оптимизации и создания SEO-контента.
 when_to_use: Используй при SEO-аудите, анализе мета-тегов, работе со структурированными данными, исследовании ключевых слов, написании SEO-текстов, оптимизации контента, технической SEO-проверке, оптимизации под AI Overviews и генеративный поиск.
-version: 1.0.0
+version: 2.0.0
 created: 2026-05-01
 ---
 

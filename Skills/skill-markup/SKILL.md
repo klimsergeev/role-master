@@ -6,7 +6,7 @@ description: >
 when_to_use: >
   Когда нужно написать или отформатировать текст в Markdown, Confluence, Jira,
   LaTeX, Wikitext или Textile. Синтаксис заголовков, таблиц, списков, кода, ссылок.
-version: 1.0.0
+version: 2.0.0
 created: 2026-05-02
 ---
 

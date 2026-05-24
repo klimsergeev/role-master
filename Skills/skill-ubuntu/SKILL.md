@@ -9,7 +9,7 @@ when_to_use: >
   Когда задача связана с Ubuntu или Debian — установка/удаление пакетов через apt,
   настройка ufw, удаление старых ядер, PPA, snap, автообновления, Netplan, DNS через
   systemd-resolved, профили AppArmor, cloud-init, обновление релиза Ubuntu.
-version: 1.0.0
+version: 2.0.0
 created: 2026-05-02
 ---
 
