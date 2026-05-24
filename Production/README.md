@@ -101,14 +101,15 @@
 | **skill-tlnd-seo** | `Skills/skill-tlnd-seo.md` | SEO-стандарты Ticketland.ru — эталонные требования к мета-тегам, структурированным данным и техническому SEO для билетного сервиса |
 | **skill-ubuntu** | `Skills/skill-ubuntu.skill` | Справочник Ubuntu/Debian-специфичных процедур — apt, dpkg, snap, PPA, ufw, unattended-upgrades, управление ядрами, Netplan, systemd-resolved, AppArmor, cloud-init, do-release-upgrade. Не покрывает SSH (он универсален) и не покрывает деплой приложений (это задача роли). |
 | **skill-vue-typescript-patterns** | `Skills/skill-vue-typescript-patterns.md` | Справочник TypeScript-паттернов для Vue 3 / Nuxt 3 — типизация props, emits, slots, composables, Pinia stores |
+| **skill-yandex-metrika** | `Skills/skill-yandex-metrika.skill` | Справочник API Яндекс Метрики для Claude Code агентов — Logs API (сырые данные визитов и хитов), API отчётов (агрегированные данные с группировками и метриками), API управления (счётчики, цели, сегменты). Включает справочник полей, Python-сниппеты для выгрузки данных, конвертации TSV в CSV, обработки через pandas. Покрывает авторизацию OAuth, работу с квотами, обработку ошибок. |
 
 ---
 
 ## 📊 Статистика
 
 - **Ролей:** 22
-- **Скиллов:** 22
-- **Последнее обновление:** 2026-05-24 19:47
+- **Скиллов:** 23
+- **Последнее обновление:** 2026-05-24 21:16
 
 ---
 
