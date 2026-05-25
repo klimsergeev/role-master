@@ -16,7 +16,7 @@ import sys
 from pathlib import Path
 from dotenv import load_dotenv
 
-# .env лежит в корне проекта, скрипт — в scripts/
+# .env лежит в корне проекта, скрипт — в scripts-metrika/
 ENV_PATH = Path(__file__).resolve().parent.parent / ".env"
 load_dotenv(ENV_PATH)
 
@@ -550,7 +550,7 @@ FIELDS_STR = "ym:s:visitID, ym:s:dateTime, ym:s:screenWidth"
 Использование:
     1. Создать .env в корне проекта с YM_TOKEN и YM_COUNTER
     2. pip install requests python-dotenv
-    3. python scripts/export_metrika.py
+    3. python scripts-metrika/export_metrika.py
 
 Что менять:
     - DATE1, DATE2 — период выгрузки (date2 < today)

@@ -12,7 +12,7 @@ when_to_use: >
   для Logs API, настроить OAuth-токен Метрики, управлять счётчиками или целями,
   понять ограничения API. Примеры: "выгрузи визиты из Метрики", "какие поля есть
   в Logs API", "напиши скрипт выгрузки", "настрой доступ к Метрике".
-version: 2.0.0
+version: 2.0.1
 created: 2026-05-24
 ---
 
@@ -55,7 +55,7 @@ created: 2026-05-24
 Проверяю окружение для работы с Яндекс Метрикой...
 ```
 
-1. Проверить наличие директории `scripts/` в проекте. Если нет — создать.
+1. Проверить наличие директории `scripts-metrika/` в проекте. Если нет — создать.
 2. Проверить наличие файла `.env` в корне проекта. Если нет — создать с шаблоном:
 
 ```
@@ -85,7 +85,7 @@ pip install requests python-dotenv
 Скилл Yandex Metrika API подключён.
 
 Окружение:
-- scripts/ — ОК
+- scripts-metrika/ — ОК
 - .env — [заполнен / ТРЕБУЕТСЯ ЗАПОЛНИТЬ]
 - requests, python-dotenv — [установлены / ТРЕБУЕТСЯ УСТАНОВИТЬ]
 
@@ -121,16 +121,16 @@ timestamp = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
 filename = f"{timestamp}-metrika_data.csv"
 ```
 
-Выгрузки сохраняются в `scripts/result/`.
+Выгрузки сохраняются в `scripts-metrika/result/`.
 
 ## Механика работы с Python-скриптами
 
 Скилл НЕ содержит готовых `.py`-файлов. Вместо этого:
 
 1. Агент **генерирует скрипт** на основе шаблона из [python-reference.md](python-reference.md), подставляя нужные поля, период и параметры.
-2. Скрипт сохраняется в `scripts/` проекта пользователя.
-3. Агент запускает скрипт через `python3 scripts/<script_name>.py`.
-4. Результат сохраняется в `scripts/result/`.
+2. Скрипт сохраняется в `scripts-metrika/` проекта пользователя.
+3. Агент запускает скрипт через `python3 scripts-metrika/<script_name>.py`.
+4. Результат сохраняется в `scripts-metrika/result/`.
 
 Это лучше, чем хранить .py-файлы в скилле, потому что:
 - Каждая выгрузка уникальна (разные поля, периоды, фильтры)
@@ -156,7 +156,7 @@ filename = f"{timestamp}-metrika_data.csv"
 
 **Маршрут:** [logs-api.md](logs-api.md), [python-reference.md](python-reference.md), при выборе полей — [logs-api-fields.md](logs-api-fields.md)
 
-**Результат:** Агент генерирует скрипт с полями `visitID, dateTime, operatingSystem, deviceCategory, screenWidth, screenHeight, physicalScreenWidth, physicalScreenHeight`, period `2026-04-01..2026-04-30`, запускает, сохраняет CSV в `scripts/result/`.
+**Результат:** Агент генерирует скрипт с полями `visitID, dateTime, operatingSystem, deviceCategory, screenWidth, screenHeight, physicalScreenWidth, physicalScreenHeight`, period `2026-04-01..2026-04-30`, запускает, сохраняет CSV в `scripts-metrika/result/`.
 
 ### Пример 2: Ошибка API (edge-case)
 
