@@ -86,6 +86,7 @@
 | **skill-figma-mcp** | `Skills/skill-figma-mcp.skill` | Справочник Figma MCP — инструменты, настройка подключения (Desktop и Remote), workflows для дизайн-to-код, Code Connect, диаграммы, write-операции на canvas. Покрывает 19 MCP tools, 8+ Figma Skills (MCP prompts), типичные задачи фронтенд-разработки и продуктового дизайна с Figma. |
 | **skill-local-permissions** | `Skills/skill-local-permissions.skill` | Процедура настройки локальных разрешений проекта в .claude/settings.local.json для автоматизации типовых подтверждений. Содержит пресеты (базовый, расширенный), алгоритм настройки, правила работы с permissions.allow. Скилл работает ТОЛЬКО с .claude/settings.local.json (уровень Local), не с глобальными или проектными settings. |
 | **skill-markup** | `Skills/skill-markup.skill` | Справочник синтаксиса разметки — Markdown (CommonMark, MultiMarkdown, MDC), Confluence Wiki Markup, Jira Text Formatting, LaTeX, MediaWiki Wikitext, Textile. |
+| **skill-mts-analytics** | `Skills/skill-mts-analytics.skill` | Справочник Data API МТС Аналитики для Claude Code агентов. Покрывает Data API (асинхронный экспорт сырых событий WEB_HIT, SESSION, MOBILE_HIT в CSV через gzip), API Link Manager (короткие ссылки с перенаправлением). Включает авторизацию Bearer token, справочник полей CSV для сайтов и приложений, Python-сниппеты полного цикла выгрузки (create task, poll, download, parse), подводные камни (cooldown, partial downloads, date format, 429). |
 | **skill-nuxt-data-fetching** | `Skills/skill-nuxt-data-fetching.md` | Процедура выбора и использования методов загрузки данных в Nuxt 3 (useFetch, useAsyncData, $fetch) |
 | **skill-prd-writing** | `Skills/skill-prd-writing.skill` | Процедура создания PRD-документов (Product Requirements Document) через интерактивный сбор требований, проработку сценариев и формализацию функциональных/нефункциональных требований для UI-продуктов. Включает шаблон PRD, User Stories, Acceptance Criteria, состояния UI, edge-cases. Применяется продуктовиками, дизайнерами, аналитиками. |
 | **skill-proxy-nekobox-android** | `Skills/skill-proxy-nekobox-android.md` | Настройка NekoBox на Android с WireGuard и split tunneling |
@@ -108,8 +109,8 @@
 ## 📊 Статистика
 
 - **Ролей:** 22
-- **Скиллов:** 23
-- **Последнее обновление:** 2026-05-25 10:40
+- **Скиллов:** 24
+- **Последнее обновление:** 2026-05-25 15:11
 
 ---
 
