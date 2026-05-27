@@ -10,10 +10,12 @@
 #
 # Структура Production:
 #   Production/
-#   ├── Agents/       — роли по категориям (assistants, specialists, creative, meta)
-#   ├── Dialog/       — заглушки с инструкцией загрузки роли с GitHub
-#   ├── Skills/       — скиллы (flat формат, префикс skill-)
-#   └── README.md     — каталог ролей и скиллов
+#   ├── Agents/           — роли по категориям (assistants, specialists, creative, meta)
+#   ├── Agents.private/   — приватные роли (flat, не коммитятся)
+#   ├── Dialog/           — заглушки с инструкцией загрузки роли с GitHub
+#   ├── Skills/           — скиллы (flat формат, префикс skill-)
+#   ├── Skills.private/   — приватные скиллы (не коммитятся)
+#   └── README.md         — каталог ролей и скиллов (только публичные)
 #
 # Дополнительно:
 #   ~/.claude/agents  — агенты для Claude Code (формат agent-{name}.md)
@@ -45,6 +47,8 @@ CLAUDE_AGENTS_DIR="$HOME/.claude/agents"
 CLAUDE_SKILLS_DIR="$HOME/.claude/skills"
 PRIVATE_ROLES_DIR="$PROJECT_ROOT/Roles.private"
 PRIVATE_SKILLS_DIR="$PROJECT_ROOT/Skills.private"
+PRIVATE_AGENTS_TARGET_DIR="$TARGET_DIR/Agents.private"
+PRIVATE_SKILLS_TARGET_DIR="$TARGET_DIR/Skills.private"
 
 # GitHub репозиторий для заглушек
 GITHUB_REPO="klimsergeev/role-master"
@@ -85,11 +89,15 @@ if [[ "$TEST_DIR" == true ]]; then
     README_FILE="$TARGET_DIR/README.md"
     CLAUDE_AGENTS_DIR="$PROJECT_ROOT/.tmp-publish/claude/agents"
     CLAUDE_SKILLS_DIR="$PROJECT_ROOT/.tmp-publish/claude/skills"
+    PRIVATE_AGENTS_TARGET_DIR="$TARGET_DIR/Agents.private"
+    PRIVATE_SKILLS_TARGET_DIR="$TARGET_DIR/Skills.private"
 fi
 
 echo -e "${BLUE}📦 Публикация ролей и скиллов${NC}"
 echo "   Роли: $SOURCE_DIR -> $AGENTS_TARGET_DIR"
+echo "   Роли (private): $PRIVATE_ROLES_DIR -> $PRIVATE_AGENTS_TARGET_DIR"
 echo "   Скиллы (Github): $SKILLS_SOURCE_DIR -> $SKILLS_TARGET_DIR"
+echo "   Скиллы (private): $PRIVATE_SKILLS_DIR -> $PRIVATE_SKILLS_TARGET_DIR"
 echo "   Скиллы (Claude): $SKILLS_SOURCE_DIR -> $CLAUDE_SKILLS_DIR"
 echo "   Для веб-диалогов: $DIALOG_DIR"
 echo ""
@@ -852,6 +860,175 @@ sync_skills() {
 }
 
 # =============================================================================
+# Синхронизация приватных ролей в Production/Agents.private/
+# =============================================================================
+
+sync_private_roles() {
+    echo -e "${BLUE}📁 Синхронизация приватных ролей в Agents.private/:${NC}"
+
+    if [[ ! -d "$PRIVATE_ROLES_DIR" ]]; then
+        echo -e "   ${YELLOW}○${NC} Папка $PRIVATE_ROLES_DIR не найдена"
+        echo ""
+        return
+    fi
+
+    local FILE_COUNT=$(find "$PRIVATE_ROLES_DIR" -maxdepth 1 -name "*.md" -type f 2>/dev/null | wc -l | tr -d ' ')
+
+    if [[ "$FILE_COUNT" -eq 0 ]]; then
+        echo -e "   ${YELLOW}○${NC} Нет приватных ролей"
+        # Удаляем директорию если пуста в источнике
+        if [[ -d "$PRIVATE_AGENTS_TARGET_DIR" && "$DRY_RUN" == false ]]; then
+            rm -rf "$PRIVATE_AGENTS_TARGET_DIR"
+        fi
+        echo ""
+        return
+    fi
+
+    # Создаём директорию если не существует
+    if [[ ! -d "$PRIVATE_AGENTS_TARGET_DIR" ]]; then
+        if [[ "$DRY_RUN" == false ]]; then
+            mkdir -p "$PRIVATE_AGENTS_TARGET_DIR"
+        fi
+    fi
+
+    local SYNCED_COUNT=0
+
+    # Копируем .md файлы
+    while IFS= read -r -d '' file; do
+        if [[ -n "$file" ]]; then
+            local filename=$(basename "$file")
+            local target_file="$PRIVATE_AGENTS_TARGET_DIR/$filename"
+
+            if [[ "$DRY_RUN" == false ]]; then
+                cp "$file" "$target_file"
+            fi
+
+            echo -e "   ${GREEN}✓${NC} $filename"
+            SYNCED_COUNT=$((SYNCED_COUNT + 1))
+        fi
+    done < <(find "$PRIVATE_ROLES_DIR" -maxdepth 1 -name "*.md" -type f -print0 2>/dev/null)
+
+    # Удаляем файлы из Agents.private, которых нет в источнике
+    if [[ -d "$PRIVATE_AGENTS_TARGET_DIR" && "$DRY_RUN" == false ]]; then
+        while IFS= read -r -d '' target_file; do
+            local fname=$(basename "$target_file")
+            if [[ ! -f "$PRIVATE_ROLES_DIR/$fname" ]]; then
+                rm -f "$target_file"
+                echo -e "   ${YELLOW}✗${NC} $fname (удалён)"
+            fi
+        done < <(find "$PRIVATE_AGENTS_TARGET_DIR" -maxdepth 1 -name "*.md" -type f -print0 2>/dev/null)
+    fi
+
+    echo ""
+    echo "   Синхронизировано: $SYNCED_COUNT приватных ролей"
+    echo ""
+}
+
+# =============================================================================
+# Синхронизация приватных скиллов в Production/Skills.private/
+# =============================================================================
+
+sync_private_skills() {
+    echo -e "${BLUE}📚 Синхронизация приватных скиллов в Skills.private/:${NC}"
+
+    if [[ ! -d "$PRIVATE_SKILLS_DIR" ]]; then
+        echo -e "   ${YELLOW}○${NC} Папка $PRIVATE_SKILLS_DIR не найдена"
+        echo ""
+        return
+    fi
+
+    # Создаём директорию если не существует
+    if [[ ! -d "$PRIVATE_SKILLS_TARGET_DIR" ]]; then
+        if [[ "$DRY_RUN" == false ]]; then
+            mkdir -p "$PRIVATE_SKILLS_TARGET_DIR"
+        fi
+    fi
+
+    local SYNCED_COUNT=0
+
+    # Flat-скиллы: skill-*.md файлы
+    while IFS= read -r -d '' file; do
+        if [[ -n "$file" ]]; then
+            local filename=$(basename "$file")
+
+            # Пропускаем шаблон
+            if [[ "$filename" == "skill-template.md" ]]; then
+                echo -e "   ${YELLOW}○${NC} $filename — пропущено (шаблон)"
+                continue
+            fi
+
+            local target_file="$PRIVATE_SKILLS_TARGET_DIR/$filename"
+
+            if [[ "$DRY_RUN" == false ]]; then
+                # Фильтруем frontmatter для совместимости с веб-версией Claude
+                filter_skill_frontmatter "$file" "$target_file"
+            fi
+
+            echo -e "   ${GREEN}✓${NC} $filename"
+            SYNCED_COUNT=$((SYNCED_COUNT + 1))
+        fi
+    done < <(find "$PRIVATE_SKILLS_DIR" -maxdepth 1 -name "skill-*.md" -type f -print0 2>/dev/null)
+
+    # Удаляем flat .md файлы из Skills.private, которых нет в источнике
+    if [[ -d "$PRIVATE_SKILLS_TARGET_DIR" && "$DRY_RUN" == false ]]; then
+        while IFS= read -r -d '' target_file; do
+            local fname=$(basename "$target_file")
+            if [[ ! -f "$PRIVATE_SKILLS_DIR/$fname" ]]; then
+                rm -f "$target_file"
+                echo -e "   ${YELLOW}✗${NC} $fname (удалён)"
+            fi
+        done < <(find "$PRIVATE_SKILLS_TARGET_DIR" -name "*.md" -type f -print0 2>/dev/null)
+    fi
+
+    # Директории-скиллы: Skills.private/skill-name/SKILL.md → .skill архив (zip)
+    while IFS= read -r -d '' skill_src_dir; do
+        if [[ -n "$skill_src_dir" ]]; then
+            local dir_name=$(basename "$skill_src_dir")
+
+            # Пропускаем шаблон
+            if [[ "$dir_name" == "skill-template" ]]; then
+                echo -e "   ${YELLOW}○${NC} $dir_name/ — пропущено (шаблон)"
+                continue
+            fi
+
+            # Проверяем наличие SKILL.md внутри
+            if [[ ! -f "$skill_src_dir/SKILL.md" ]]; then
+                continue
+            fi
+
+            local archive_file="$PRIVATE_SKILLS_TARGET_DIR/${dir_name}.skill"
+
+            if [[ "$DRY_RUN" == false ]]; then
+                # Удаляем старый архив, чтобы zip не дописывал в него
+                rm -f "$archive_file"
+                # Создаём zip-архив с папкой-обёрткой (skill-name/SKILL.md, ...)
+                local parent_dir=$(dirname "$skill_src_dir")
+                (cd "$parent_dir" && zip -q -r "$archive_file" "$dir_name")
+            fi
+
+            echo -e "   ${GREEN}✓${NC} ${dir_name}.skill"
+            SYNCED_COUNT=$((SYNCED_COUNT + 1))
+        fi
+    done < <(find "$PRIVATE_SKILLS_DIR" -maxdepth 1 -name "skill-*" -type d -print0 2>/dev/null)
+
+    # Удаляем .skill архивы, для которых нет исходных директорий
+    if [[ -d "$PRIVATE_SKILLS_TARGET_DIR" && "$DRY_RUN" == false ]]; then
+        while IFS= read -r -d '' target_file; do
+            local fname=$(basename "$target_file")
+            local dir_name="${fname%.skill}"
+            if [[ ! -d "$PRIVATE_SKILLS_DIR/$dir_name" || ! -f "$PRIVATE_SKILLS_DIR/$dir_name/SKILL.md" ]]; then
+                rm -f "$target_file"
+                echo -e "   ${YELLOW}✗${NC} $fname (удалён)"
+            fi
+        done < <(find "$PRIVATE_SKILLS_TARGET_DIR" -name "*.skill" -type f -print0 2>/dev/null)
+    fi
+
+    echo ""
+    echo "   Синхронизировано: $SYNCED_COUNT приватных скиллов"
+    echo ""
+}
+
+# =============================================================================
 # Генерация README.md с каталогом ролей и скиллов
 # =============================================================================
 
@@ -1087,6 +1264,12 @@ sync_to_claude_skills
 # Синхронизируем скиллы
 sync_skills
 
+# Синхронизируем приватные роли в Production/Agents.private/
+sync_private_roles
+
+# Синхронизируем приватные скиллы в Production/Skills.private/
+sync_private_skills
+
 # Генерируем README
 if [[ "$DRY_RUN" == false ]]; then
     echo -e "${BLUE}📝 Генерация README.md с каталогом ролей и скиллов...${NC}"
@@ -1139,7 +1322,9 @@ fi
 echo ""
 echo "📍 Production: $TARGET_DIR"
 echo "   ├── Agents: $AGENTS_TARGET_DIR"
+echo "   ├── Agents.private: $PRIVATE_AGENTS_TARGET_DIR"
 echo "   ├── Dialog: $DIALOG_DIR"
-echo "   └── Skills: $SKILLS_TARGET_DIR"
+echo "   ├── Skills: $SKILLS_TARGET_DIR"
+echo "   └── Skills.private: $PRIVATE_SKILLS_TARGET_DIR"
 echo "📍 Claude Agents: $CLAUDE_AGENTS_DIR"
 echo "📍 Claude Skills: $CLAUDE_SKILLS_DIR"
