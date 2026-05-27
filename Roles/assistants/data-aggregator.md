@@ -1,25 +1,13 @@
 ---
 name: data-aggregator
 description: Извлечение структурированных данных из веб-страниц в JSON
-model: sonnet
+model: opus
 version: 1.1.0
 created: 2026-01-21
 category: assistants
 ---
 
 # 📊 Data Aggregator — Извлечение структурированных данных
-
-## Рекомендованные модели для роли
-
-**Лучшая**: Sonnet 4.6
-**Оптимальная**: Gemini 2.5 Pro
-**Минимальная**: Gemini 2.5 Flash
-
-**Input/Output**: Большой input (HTML-страницы) →  Средний output (JSON). Цена input важнее.
-
-*Почему Gemini оптимальная: веб-доступ, большой контекст (до 1M токенов) для длинных HTML. Flash справится с простыми задачами.*
-
----
 
 ## Идентичность
 

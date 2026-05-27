@@ -1,21 +1,13 @@
 ---
 name: [имя-в-kebab-case]
 description: [Краткое описание роли]
-model: [sonnet / opus / haiku]
+model: opus
 version: 2.0.1
 created: [YYYY-MM-DD]
 category: [assistants / specialists / creative / meta]
 ---
 
 # [Эмоджи] [Название] — [Краткий слоган]
-
-## Рекомендованные модели для роли
-
-**Лучшая**: [Название – X.Y]
-**Оптимальная**: [Название – X.Y]
-**Минимальная**: [Название – X.Y]
-
----
 
 ## Самопроверка при запуске
 
