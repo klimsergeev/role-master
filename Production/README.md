@@ -84,6 +84,7 @@
 | **skill-agent-teams** | `Skills/skill-agent-teams.md` | Процедура создания и управления Agent Teams в Claude Code — параллельная работа нескольких агентов с peer-to-peer коммуникацией |
 | **skill-editorial-guidelines** | `Skills/skill-editorial-guidelines.skill` | Редполитика UX-текстов — свод правил написания текстов в интерфейсах. Тон, лексика, пунктуация, форматирование, ошибки. Не для перевода текстов, не для длинных статей и блогов, не для маркетинговых рассылок. |
 | **skill-figma-mcp** | `Skills/skill-figma-mcp.skill` | Справочник Figma MCP — инструменты, настройка подключения (Desktop и Remote), workflows для дизайн-to-код, Code Connect, диаграммы, write-операции на canvas. Покрывает 19 MCP tools, 8+ Figma Skills (MCP prompts), типичные задачи фронтенд-разработки и продуктового дизайна с Figma. |
+| **skill-google-analytics** | `Skills/skill-google-analytics.skill` | Справочник API Google Analytics 4 для Claude Code агентов -- Data API (отчёты с dimensions и metrics, фильтры, pivot, cohort, realtime), Admin API (accounts, properties, dataStreams, customDimensions, keyEvents), Measurement Protocol (серверная отправка событий), BigQuery Export (сырые данные без семплирования). Включает авторизацию через Google Cloud (Service Account и OAuth 2.0), Python-сниппеты для google-analytics-data и google-analytics-admin, справочник 200+ dimensions и 100+ metrics, квоты на токены. |
 | **skill-local-permissions** | `Skills/skill-local-permissions.skill` | Процедура настройки локальных разрешений проекта в .claude/settings.local.json для автоматизации типовых подтверждений. Содержит пресеты (базовый, расширенный), алгоритм настройки, правила работы с permissions.allow. Скилл работает ТОЛЬКО с .claude/settings.local.json (уровень Local), не с глобальными или проектными settings. |
 | **skill-markup** | `Skills/skill-markup.skill` | Справочник синтаксиса разметки — Markdown (CommonMark, MultiMarkdown, MDC), Confluence Wiki Markup, Jira Text Formatting, LaTeX, MediaWiki Wikitext, Textile. |
 | **skill-mts-analytics** | `Skills/skill-mts-analytics.skill` | Справочник Data API МТС Аналитики для Claude Code агентов. Покрывает Data API (асинхронный экспорт сырых событий WEB_HIT, SESSION, MOBILE_HIT в CSV через gzip), API Link Manager (короткие ссылки с перенаправлением). Включает авторизацию Bearer token, справочник полей CSV для сайтов и приложений, Python-сниппеты полного цикла выгрузки (create task, poll, download, parse), подводные камни (cooldown, partial downloads, date format, 429). |
@@ -109,8 +110,8 @@
 ## 📊 Статистика
 
 - **Ролей:** 22
-- **Скиллов:** 24
-- **Последнее обновление:** 2026-05-25 15:11
+- **Скиллов:** 25
+- **Последнее обновление:** 2026-05-26 14:05
 
 ---
 
