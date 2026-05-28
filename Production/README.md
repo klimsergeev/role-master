@@ -58,6 +58,7 @@
 | **dev-ops** | `Agents/specialists/dev-ops.md` | Системный администратор Linux |
 | **frontend-developer** | `Agents/specialists/frontend-developer.md` | Опытный фронтенд-разработчик Vue/React/Quasar |
 | **git-ops** | `Agents/specialists/git-ops.md` | Автономный эксперт по Git — аудит репозиториев, решение проблем, настройка воркфлоу |
+| **product-analyst** | `Agents/specialists/product-analyst.md` | Продуктовый аналитик для анализа данных, метрик, воронок, когорт, A/B-тестов и обоснования продуктовых решений |
 | **product-designer** | `Agents/specialists/product-designer.md` | UX/UI эксперт по проектированию интерфейсов |
 | **product-manager** | `Agents/specialists/product-manager.md` | Продуктовый стратег — discovery, метрики, приоритизация и роадмап |
 | **qa-engineer** | `Agents/specialists/qa-engineer.md` | Тестировщик веб-приложений на Python + Playwright |
@@ -80,8 +81,10 @@
 | Скилл | Файл | Описание |
 |-------|------|----------|
 | **skill-3d-artist** | `Skills/skill-3d-artist.skill` | Справочник Blender MCP для агентов — настройка подключения (official connector и community-сервер ahujasid), workflows моделирования через bpy API, промптинг 3D-сцен, troubleshooting, безопасность execute_blender_code, экономия токенов в agentic-сессиях. Покрывает Claude Desktop, Cowork, Code. |
+| **skill-ab-test-analysis** | `Skills/skill-ab-test-analysis.skill` | Процедура анализа результатов A/B-тестов и принятия ship/no-ship решений. Покрывает полный цикл: валидация эксперимента (SRM, длительность, мощность), расчёт primary metric (lift, CI, p-value), проверка guardrail-метрик, сегментный анализ (новые/старые, mobile/desktop, гео), финальная рекомендация (ship/no-ship/iterate). Включает статистический фреймворк (frequentist и bayesian подходы), матрицу принятия решений, типичные ошибки анализа (peeking, multiple comparisons, Simpson's paradox). |
 | **skill-agent-orchestration** | `Skills/skill-agent-orchestration.skill` | Правила оркестрации субагентов в Claude Code — когда делегировать задачу агенту или скиллу, как формировать промпт для субагента, как сохранять контекст оркестратора чистым. Содержит pre-flight checklist, трёхслойную модель контекста, паттерны декомпозиции, алгоритм разрешения противоречий роль vs задание. |
 | **skill-agent-teams** | `Skills/skill-agent-teams.md` | Процедура создания и управления Agent Teams в Claude Code — параллельная работа нескольких агентов с peer-to-peer коммуникацией |
+| **skill-cohort-analysis** | `Skills/skill-cohort-analysis.skill` | Процедура когортного анализа продуктовых данных -- построение retention-таблиц, диагностика кривых удержания (healthy/declining/dying), поиск activation metric ("aha moment"), сравнение когорт по типам (acquisition, behavioral, segment). Включает формулы N-day и rolling retention, шаблон когортной таблицы, алгоритм activation analysis, формат продуктовых рекомендаций. Применяется продуктовыми аналитиками и product-менеджерами. |
 | **skill-editorial-guidelines** | `Skills/skill-editorial-guidelines.skill` | Редполитика UX-текстов — свод правил написания текстов в интерфейсах. Тон, лексика, пунктуация, форматирование, ошибки. Не для перевода текстов, не для длинных статей и блогов, не для маркетинговых рассылок. |
 | **skill-figma-mcp** | `Skills/skill-figma-mcp.skill` | Справочник Figma MCP — инструменты, настройка подключения (Desktop и Remote), workflows для дизайн-to-код, Code Connect, диаграммы, write-операции на canvas. Покрывает 19 MCP tools, 8+ Figma Skills (MCP prompts), типичные задачи фронтенд-разработки и продуктового дизайна с Figma. |
 | **skill-google-analytics** | `Skills/skill-google-analytics.skill` | Справочник API Google Analytics 4 для Claude Code агентов -- Data API (отчёты с dimensions и metrics, фильтры, pivot, cohort, realtime), Admin API (accounts, properties, dataStreams, customDimensions, keyEvents), Measurement Protocol (серверная отправка событий), BigQuery Export (сырые данные без семплирования). Включает авторизацию через Google Cloud (Service Account и OAuth 2.0), Python-сниппеты для google-analytics-data и google-analytics-admin, справочник 200+ dimensions и 100+ metrics, квоты на токены. |
@@ -90,6 +93,7 @@
 | **skill-mts-analytics** | `Skills/skill-mts-analytics.skill` | Справочник Data API МТС Аналитики для Claude Code агентов. Покрывает Data API (асинхронный экспорт сырых событий WEB_HIT, SESSION, MOBILE_HIT в CSV через gzip), API Link Manager (короткие ссылки с перенаправлением). Включает авторизацию Bearer token, справочник полей CSV для сайтов и приложений, Python-сниппеты полного цикла выгрузки (create task, poll, download, parse), подводные камни (cooldown, partial downloads, date format, 429). |
 | **skill-nuxt-data-fetching** | `Skills/skill-nuxt-data-fetching.md` | Процедура выбора и использования методов загрузки данных в Nuxt 3 (useFetch, useAsyncData, $fetch) |
 | **skill-prd-writing** | `Skills/skill-prd-writing.skill` | Процедура создания PRD-документов (Product Requirements Document) через интерактивный сбор требований, проработку сценариев и формализацию функциональных/нефункциональных требований для UI-продуктов. Включает шаблон PRD, User Stories, Acceptance Criteria, состояния UI, edge-cases. Применяется продуктовиками, дизайнерами, аналитиками. |
+| **skill-product-analytics-methods** | `Skills/skill-product-analytics-methods.skill` | Справочник методов продуктовой аналитики -- воронки (funnel analysis, drop-off, конверсия, оптимизация), сегментация пользователей (RFM, поведенческая, демографическая, выбор типа), фреймворки метрик (North Star Metric, дерево метрик, guardrail-метрики, AARRR/пиратские метрики). Содержит пошаговые процедуры анализа, шаблоны отчётов, критерии выбора метода. Дополняет skill-ab-test-analysis (эксперименты) и skill-cohort-analysis (удержание), покрывая остальные методы продуктового анализа. |
 | **skill-proxy-nekobox-android** | `Skills/skill-proxy-nekobox-android.md` | Настройка NekoBox на Android с WireGuard и split tunneling |
 | **skill-proxy-singbox-macos** | `Skills/skill-proxy-singbox-macos.md` | Настройка sing-box VT на macOS с WireGuard endpoint и split tunneling |
 | **skill-report-company** | `Skills/skill-report-company.md` | Процедура создания структурированного профиля компании на основе веб-поиска. Генерирует markdown-отчёт с 7 секциями — описание, отзывы сотрудников, отзывы клиентов, технологический стек, руководство, новостной фон, метрики. |
@@ -109,9 +113,9 @@
 
 ## 📊 Статистика
 
-- **Ролей:** 22
-- **Скиллов:** 25
-- **Последнее обновление:** 2026-05-28 01:20
+- **Ролей:** 23
+- **Скиллов:** 28
+- **Последнее обновление:** 2026-05-28 13:41
 
 ---
 
