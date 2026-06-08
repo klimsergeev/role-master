@@ -91,6 +91,7 @@
 | **skill-google-analytics** | `Skills/skill-google-analytics.skill` | Справочник API Google Analytics 4 для Claude Code агентов -- Data API (отчёты с dimensions и metrics, фильтры, pivot, cohort, realtime), Admin API (accounts, properties, dataStreams, customDimensions, keyEvents), Measurement Protocol (серверная отправка событий), BigQuery Export (сырые данные без семплирования). Включает авторизацию через Google Cloud (Service Account и OAuth 2.0), Python-сниппеты для google-analytics-data и google-analytics-admin, справочник 200+ dimensions и 100+ metrics, квоты на токены. |
 | **skill-local-permissions** | `Skills/skill-local-permissions.skill` | Процедура настройки локальных разрешений проекта в .claude/settings.json для автоматизации типовых подтверждений. Содержит единый максимальный набор разрешений (файловые операции, Bash, веб, MCP), алгоритм настройки, правила работы с permissions.allow. Скилл работает ТОЛЬКО с .claude/settings.json (уровень Local), не с глобальными или проектными settings. |
 | **skill-markup** | `Skills/skill-markup.skill` | Справочник синтаксиса разметки — Markdown (CommonMark, MultiMarkdown, MDC), Confluence Wiki Markup, Jira Text Formatting, LaTeX, MediaWiki Wikitext, Textile. |
+| **skill-moodboard** | `Skills/skill-moodboard.skill` | Создание визуальных мудбордов и тематических коллекций UI-паттернов. Два типа: (1) визуальное направление проекта — палитра, типографика, лейаут, настроение; (2) тематическая коллекция паттернов (FOMO, онбординг, empty states и т.п.) — категории, вариации, визуальные мокапы, do/don't. Три режима сбора источников: из URL пользователя, поисковый (агент сам ищет примеры по теме через WebSearch), fallback (по описанию настроения). Два формата выдачи: markdown и/или Figma-фрейм с визуальными мокапами. |
 | **skill-mts-analytics** | `Skills/skill-mts-analytics.skill` | Справочник Data API МТС Аналитики для Claude Code агентов. Покрывает Data API (асинхронный экспорт сырых событий WEB_HIT, SESSION, MOBILE_HIT в CSV через gzip), API Link Manager (короткие ссылки с перенаправлением). Включает авторизацию Bearer token, справочник полей CSV для сайтов и приложений, Python-сниппеты полного цикла выгрузки (create task, poll, download, parse), подводные камни (cooldown, partial downloads, date format, 429). |
 | **skill-nuxt-data-fetching** | `Skills/skill-nuxt-data-fetching.md` | Процедура выбора и использования методов загрузки данных в Nuxt 3 (useFetch, useAsyncData, $fetch) |
 | **skill-prd-writing** | `Skills/skill-prd-writing.skill` | Процедура создания PRD-документов (Product Requirements Document) через интерактивный сбор требований, проработку сценариев и формализацию функциональных/нефункциональных требований для UI-продуктов. Включает шаблон PRD, User Stories, Acceptance Criteria, состояния UI, edge-cases. Применяется продуктовиками, дизайнерами, аналитиками. |
@@ -114,8 +115,8 @@
 ## 📊 Статистика
 
 - **Ролей:** 23
-- **Скиллов:** 28
-- **Последнее обновление:** 2026-05-30 18:53
+- **Скиллов:** 29
+- **Последнее обновление:** 2026-06-08 15:21
 
 ---
 
