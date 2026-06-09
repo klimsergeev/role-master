@@ -105,6 +105,7 @@
 | **skill-shopping-assistant** | `Skills/skill-shopping-assistant.skill` | Процесс подбора товаров: структурированный опрос, ресёрч с покрытием, визуальный отбор (да/нет/возможно), дожим, генерация руководства для агента-покупателя. Универсальный -- от обуви до билетов. Включает браузерный шоппинг через Chrome MCP (корзина/избранное). |
 | **skill-strapi-api-integration** | `Skills/skill-strapi-api-integration.md` | Процедура интеграции Vue/Nuxt приложения с Strapi v5 API через @nuxtjs/strapi модуль |
 | **skill-strapi-content-modeling** | `Skills/skill-strapi-content-modeling.md` | Процедура проектирования контент-типов, компонентов и dynamic zones в Strapi v5 |
+| **skill-suno** | `Skills/skill-suno.skill` | Генерация ready-to-paste промптов для Suno AI (AI-генерация музыки) и полный workflow от идеи до финального трека. По описанию пользователя создаёт три поля Suno Custom Mode: Style (жанр, темп, инструменты, вокал, продакшн, настроение), Lyrics (текст с метатегами структуры и параметризованными секциями), Title. Валидирует лимиты символов, проверяет конфликтные дескрипторы, подбирает надёжные метатеги, учитывает версию модели (V4.5-All / V5.5) и язык текста (включая русский). Покрывает Extend, Song Editor, Covers, Remixes, Album art. |
 | **skill-tlnd-browser** | `Skills/skill-tlnd-browser.md` | Процедура доступа к Ticketland.ru через Chrome MCP |
 | **skill-tlnd-seo** | `Skills/skill-tlnd-seo.md` | SEO-стандарты Ticketland.ru — эталонные требования к мета-тегам, структурированным данным и техническому SEO для билетного сервиса |
 | **skill-ubuntu** | `Skills/skill-ubuntu.skill` | Справочник Ubuntu/Debian-специфичных процедур — apt, dpkg, snap, PPA, ufw, unattended-upgrades, управление ядрами, Netplan, systemd-resolved, AppArmor, cloud-init, do-release-upgrade. Не покрывает SSH (он универсален) и не покрывает деплой приложений (это задача роли). |
@@ -116,8 +117,8 @@
 ## 📊 Статистика
 
 - **Ролей:** 23
-- **Скиллов:** 30
-- **Последнее обновление:** 2026-06-08 19:56
+- **Скиллов:** 31
+- **Последнее обновление:** 2026-06-10 00:31
 
 ---
 
