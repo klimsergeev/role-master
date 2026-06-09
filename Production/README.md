@@ -88,6 +88,7 @@
 | **skill-cohort-analysis** | `Skills/skill-cohort-analysis.skill` | Процедура когортного анализа продуктовых данных -- построение retention-таблиц, диагностика кривых удержания (healthy/declining/dying), поиск activation metric ("aha moment"), сравнение когорт по типам (acquisition, behavioral, segment). Включает формулы N-day и rolling retention, шаблон когортной таблицы, алгоритм activation analysis, формат продуктовых рекомендаций. Применяется продуктовыми аналитиками и product-менеджерами. |
 | **skill-editorial-guidelines** | `Skills/skill-editorial-guidelines.skill` | Редполитика UX-текстов — свод правил написания текстов в интерфейсах. Тон, лексика, пунктуация, форматирование, ошибки. Не для перевода текстов, не для длинных статей и блогов, не для маркетинговых рассылок. |
 | **skill-figma-mcp** | `Skills/skill-figma-mcp.skill` | Справочник Figma MCP — инструменты, настройка подключения (Desktop и Remote), workflows для дизайн-to-код, Code Connect, диаграммы, write-операции на canvas. Покрывает 19 MCP tools, 8+ Figma Skills (MCP prompts), типичные задачи фронтенд-разработки и продуктового дизайна с Figma. |
+| **skill-figma-plugin** | `Skills/skill-figma-plugin.skill` | Справочник и процедура разработки плагинов Figma с Plugin API. Архитектура плагинов (sandbox main thread + UI iframe), манипуляция нодами, стили, компоненты, переменные (Variables), UI-разработка с postMessage-коммуникацией, настройка проекта (manifest.json, TypeScript, esbuild), тестирование и публикация в Figma Community. Пошаговый workflow от идеи до опубликованного плагина. |
 | **skill-google-analytics** | `Skills/skill-google-analytics.skill` | Справочник API Google Analytics 4 для Claude Code агентов -- Data API (отчёты с dimensions и metrics, фильтры, pivot, cohort, realtime), Admin API (accounts, properties, dataStreams, customDimensions, keyEvents), Measurement Protocol (серверная отправка событий), BigQuery Export (сырые данные без семплирования). Включает авторизацию через Google Cloud (Service Account и OAuth 2.0), Python-сниппеты для google-analytics-data и google-analytics-admin, справочник 200+ dimensions и 100+ metrics, квоты на токены. |
 | **skill-local-permissions** | `Skills/skill-local-permissions.skill` | Процедура настройки локальных разрешений проекта в .claude/settings.json для автоматизации типовых подтверждений. Содержит единый максимальный набор разрешений (файловые операции, Bash, веб, MCP), алгоритм настройки, правила работы с permissions.allow. Скилл работает ТОЛЬКО с .claude/settings.json (уровень Local), не с глобальными или проектными settings. |
 | **skill-markup** | `Skills/skill-markup.skill` | Справочник синтаксиса разметки — Markdown (CommonMark, MultiMarkdown, MDC), Confluence Wiki Markup, Jira Text Formatting, LaTeX, MediaWiki Wikitext, Textile. |
@@ -115,8 +116,8 @@
 ## 📊 Статистика
 
 - **Ролей:** 23
-- **Скиллов:** 29
-- **Последнее обновление:** 2026-06-08 15:21
+- **Скиллов:** 30
+- **Последнее обновление:** 2026-06-08 19:56
 
 ---
 
