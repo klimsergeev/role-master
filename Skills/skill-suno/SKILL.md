@@ -15,7 +15,7 @@ when_to_use: >
   Примеры: "сгенерируй промпт для Suno", "напиши песню в стиле инди-фолк",
   "создай трек для рекламного ролика", "помоги с промптом для Suno",
   "сделай промпт для песни на русском языке", "как продлить трек в Suno".
-version: 1.0.0
+version: 1.1.0
 created: 2026-06-10
 ---
 
@@ -47,6 +47,7 @@ created: 2026-06-10
 | Cover / Remix / Add Vocals | [platform-workflow.md](platform-workflow.md) | [style-reference.md](style-reference.md) |
 | Сгенерировать обложку (Album art) | [platform-workflow.md](platform-workflow.md) | — |
 | Узнать о тарифах / кредитах / возможностях | [platform-workflow.md](platform-workflow.md) | — |
+| Описать голос по аудиозаписи | [voice-analysis.md](voice-analysis.md) | [style-reference.md](style-reference.md) |
 | Вариации промпта (Conservative / Balanced / Experimental) | [style-reference.md](style-reference.md), [metatags-reference.md](metatags-reference.md) | [genre-vocabulary.md](genre-vocabulary.md) |
 
 ## Рабочий процесс
@@ -70,7 +71,7 @@ created: 2026-06-10
 - Формула: `Genre, Subgenre, Tempo/Energy, Key Instruments, Vocal Style, Production Quality, Mood`
 - Жанр первым (позиционное взвешивание)
 - 4-7 дескрипторов через запятые
-- Без скобок, без предложений, без имён артистов
+- Без скобок, без описательных предложений, без имён артистов; допустимы структурные метки (`Lead vocalist:`, `Chorus:`)
 - Проверить на конфликтные пары
 
 **Lyrics** — текст + метатеги по [metatags-reference.md](metatags-reference.md) и [lyrics-formatting.md](lyrics-formatting.md):
@@ -95,6 +96,7 @@ created: 2026-06-10
 | Lyrical contamination | Производственные указания вне `[]` в Lyrics | Обернуть в метатеги или убрать |
 | Конфликтные пары | См. [style-reference.md](style-reference.md) | Убрать один из конфликтующих дескрипторов |
 | Надёжность метатегов | См. матрицу в [metatags-reference.md](metatags-reference.md) | Заменить ненадёжные на проверенные аналоги |
+| Кириллица в метатегах | Нет кириллицы внутри `[]` (regex: `\[[^\]]*[а-яА-ЯёЁ][^\]]*\]`) | Перевести содержимое тега на английский |
 | Количество куплетов | Макс. 3 (при 4-5 модель пропускает часть) | Сократить |
 
 ### Шаг: Рекомендовать параметры
@@ -131,37 +133,49 @@ created: 2026-06-10
 - ЕСЛИ «хочу этот стиль, но другую мелодию/аранжировку» -> Cover или Remix, детали в [platform-workflow.md](platform-workflow.md)
 - ЕСЛИ «нужна обложка» -> промпт для Album art, детали в [platform-workflow.md](platform-workflow.md)
 
+**Предупреждение о «качелях»:** модель легко перелетает цель (шансон → блатняк → поп-панк). Менять **1-2 дескриптора за итерацию**, иначе непонятно, что сработало.
+
+**Ручки подстройки:** к каждой версии промпта прикладывать ручки в обе стороны («слишком X → замени A на B; слишком Y → замени C на D»), чтобы пользователь мог корректировать сам без повторного обращения.
+
 ## Формат выдачи
 
 ```
+**Title:**
+[готовый текст]
+
 **Style:**
-[готовый текст для copy-paste в поле Style]
+[готовый текст]
+
+**Exclude Styles:** (если Pro/Premier)
+[список через запятые]
 
 **Lyrics:**
-[готовый текст для copy-paste в поле Lyrics — метатеги + текст песни]
+[готовый текст]
 
-**Title:**
-[готовый текст для copy-paste в поле Title]
-
-**Параметры:**
+**Параметры:** (если Pro/Premier)
 - Weirdness: [рекомендация]
 - Style Influence: [рекомендация]
-- Exclude Styles: [если применимо]
 - Vocal Gender: [если применимо]
+
+**Ручки подстройки:** (если итерация)
+- Слишком [X] → замени [A] на [B]
+- Слишком [Y] → замени [C] на [D]
 
 ---
 Символов: Style [N]/1000 | Lyrics [N]/5000 | Title [N]/100
 Модель: [V4.5-All / V5.5]
 ```
 
-ЕСЛИ пользователь на Free-тарифе -> секцию «Параметры» не выводить (слайдеры и Exclude недоступны).
+ЕСЛИ пользователь на Free-тарифе -> секции «Exclude Styles» и «Параметры» не выводить.
 ЕСЛИ инструментал -> добавить пометку «Включите тумблер Instrumental в интерфейсе Suno».
+ЕСЛИ был анализ голоса -> добавить секцию «Голос вокалиста» с дескрипторами и пометкой из какой метрики получены.
+Опциональные вставки (бонус-куплеты) помечать: куда вставлять + условие («если трек >3:30 — замени, а не добавляй»).
 
 ## Что НЕ делать
 
 - НЕ использовать квадратные скобки `[]` в поле Style — они вызывают артефакты; скобки только в Lyrics
 - НЕ ставить имена реальных артистов в Style — ненадёжно и фильтруется; заменять описанием стиля
-- НЕ писать предложения в Style — только ключевые слова через запятые
+- НЕ писать описательные предложения в Style — допустимы структурные метки (`Lead vocalist:`, `Chorus:`)
 - НЕ оставлять производственные указания в Lyrics вне метатегов — модель споёт их как текст (lyrical contamination)
 - НЕ генерировать более 3 куплетов — модель пропускает 4-й и 5-й
 - НЕ использовать метатеги на русском/другом языке — только английский
@@ -183,8 +197,14 @@ created: 2026-06-10
 **Результат:**
 
 ```
+**Title:**
+Open Roads
+
 **Style:**
-Indie folk, mid-tempo, acoustic guitar and mandolin, warm female vocals, lo-fi production, dreamy and wistful
+Indie folk, mid-tempo, acoustic guitar and mandolin. Lead vocalist: warm female vocals, breathy. Lo-fi production, dreamy and wistful
+
+**Exclude Styles:**
+electronic, synth, drum machine
 
 **Lyrics:**
 [Short Instrumental Intro]
@@ -225,15 +245,16 @@ Every road is calling out to me
 
 [Big Finish]
 
-**Title:**
-Open Roads
-
 **Параметры:**
 - Weirdness: Low
 - Style Influence: Strong
 
+**Ручки подстройки:**
+- Слишком «бардовское» → убери fingerpicking, добавь full strumming
+- Слишком «попсовое» → замени polished на lo-fi, убери drum machine из Exclude
+
 ---
-Символов: Style 94/1000 | Lyrics 867/5000 | Title 10/100
+Символов: Style 121/1000 | Lyrics 867/5000 | Title 10/100
 Модель: V5.5
 ```
 
@@ -246,8 +267,14 @@ Open Roads
 **Результат:**
 
 ```
+**Title:**
+Танцуй
+
 **Style:**
-Pop, upbeat, synth-driven, catchy hooks, energetic male vocals, polished production, fun and playful
+Pop, upbeat, synth-driven, catchy hooks, polished production, fun and playful. Lead vocalist: energetic male vocals, youthful
+
+**Exclude Styles:**
+rock, acoustic, ballad
 
 **Lyrics:**
 [Short Instrumental Intro]
@@ -295,16 +322,17 @@ Pop, upbeat, synth-driven, catchy hooks, energetic male vocals, polished product
 
 [End]
 
-**Title:**
-Танцуй
-
 **Параметры:**
 - Weirdness: Low
 - Style Influence: Strong
 - Vocal Gender: Male
 
+**Ручки подстройки:**
+- Слишком «детское» → замени youthful на mature and confident
+- Слишком «электронное» → замени synth-driven на live band, добавь acoustic drums
+
 ---
-Символов: Style 85/1000 | Lyrics 815/5000 | Title 7/100
+Символов: Style 104/1000 | Lyrics 815/5000 | Title 7/100
 Модель: V5.5
 Язык: русский (метатеги на английском, текст на русском)
 ```
@@ -325,6 +353,9 @@ Pop, upbeat, synth-driven, catchy hooks, energetic male vocals, polished product
 **Результат:**
 
 ```
+**Title:**
+Quiet Signals
+
 **Style:**
 Ambient electronic, slow tempo, soft synth pads, gentle piano, no vocals, instrumental, calm and meditative, lo-fi production
 
@@ -348,9 +379,6 @@ Ambient electronic, slow tempo, soft synth pads, gentle piano, no vocals, instru
 
 [Big Finish]
 
-**Title:**
-Quiet Signals
-
 ---
 Символов: Style 101/1000 | Lyrics 152/5000 | Title 14/100
 Модель: V4.5-All (Free)
@@ -362,4 +390,4 @@ Quiet Signals
 - Тумблер Instrumental — главный механизм, Style подкрепляет
 - Многоточия (`...`) в инструментальных секциях — контролируемая импровизация
 - Восклицания и точки (`!! . !! .`) — ритмический паттерн для модели
-- Параметры не выводятся — Free-тариф
+- Секции «Exclude Styles» и «Параметры» не выводятся — Free-тариф
