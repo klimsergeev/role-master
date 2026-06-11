@@ -26,6 +26,7 @@
 | `Slow down the tempo` | `[Bridge: slow tempo, stripped down]` |
 | `Add some reverb` | Нет аналога — модель не понимает термины сведения |
 | `Female voice sings softly` | `[Verse: soft female vocals]` |
+| `Am F G Em` (аккорды в тексте) | `[Chord progression: Am, F, G, Em]` |
 
 **Правило:** всё, что не является текстом песни, должно быть внутри метатегов `[]` или убрано.
 
