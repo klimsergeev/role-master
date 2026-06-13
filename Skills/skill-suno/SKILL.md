@@ -16,7 +16,7 @@ when_to_use: >
   Примеры: "сгенерируй промпт для Suno", "напиши песню в стиле инди-фолк",
   "создай трек для рекламного ролика", "помоги с промптом для Suno",
   "сделай промпт для песни на русском языке", "как продлить трек в Suno".
-version: 1.1.0
+version: 1.1.1
 created: 2026-06-10
 ---
 
@@ -48,7 +48,8 @@ created: 2026-06-10
 | Cover / Remix / Add Vocals | [platform-workflow.md](platform-workflow.md) | [style-reference.md](style-reference.md) |
 | Сгенерировать обложку (Album art) | [platform-workflow.md](platform-workflow.md) | — |
 | Узнать о тарифах / кредитах / возможностях | [platform-workflow.md](platform-workflow.md) | — |
-| Задать тональность / аккорды / гармонию | [style-reference.md](style-reference.md) | [platform-workflow.md](platform-workflow.md) |
+| Задать тональность / направление гармонии (текстом) | [style-reference.md](style-reference.md) | [metatags-reference.md](metatags-reference.md) |
+| Задать конкретную гармонию / точные аккорды | [platform-workflow.md](platform-workflow.md) (аудио-референс, не текстовый тег) | [style-reference.md](style-reference.md) |
 | Описать голос по аудиозаписи | [voice-analysis.md](voice-analysis.md) | [style-reference.md](style-reference.md) |
 | Вариации промпта (Conservative / Balanced / Experimental) | [style-reference.md](style-reference.md), [metatags-reference.md](metatags-reference.md) | [genre-vocabulary.md](genre-vocabulary.md) |
 
@@ -77,7 +78,7 @@ created: 2026-06-10
 - Жанр первым (позиционное взвешивание)
 - 4-7 дескрипторов через запятые
 - Без скобок, без описательных предложений, без имён артистов; допустимы структурные метки (`Lead vocalist:`, `Chorus:`)
-- Тональность (если важна) — рядом с жанром: `A minor, melancholic`
+- Тональность (если важна) — рядом с жанром: `A minor key, melancholic` (слово `key` помогает трактовать как тональность, не аккорд). Задаёт лад/направление; точную гармонию текстом не задать — только аудио-референс (см. [platform-workflow.md](platform-workflow.md))
 - Проверить на конфликтные пары
 
 **Lyrics** — текст + метатеги по [metatags-reference.md](metatags-reference.md) и [lyrics-formatting.md](lyrics-formatting.md):
@@ -195,7 +196,7 @@ created: 2026-06-10
 - НЕ использовать технические термины сведения в Style (sidechain compression, EQ) — модель их игнорирует
 - НЕ ставить конфликтные пары дескрипторов (Very Slow + High Energy, Minimal + Orchestral и др.)
 - НЕ ставить буквенные аккорды в Lyrics вне `[]` — модель споёт их как текст (lyrical contamination)
-- НЕ обещать точное следование прогрессии аккордов — Suno воспринимает аккорды как ориентир, не точную инструкцию
+- НЕ обещать точное следование текстовой прогрессии аккордов — текст задаёт направление, не конкретные аккорды/инверсии. Для точной гармонии — только аудио-референс с высоким Audio Influence (75–90%, оценка комьюнити)
 
 ## Примеры
 
