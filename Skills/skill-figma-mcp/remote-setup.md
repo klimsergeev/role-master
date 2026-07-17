@@ -82,8 +82,8 @@ claude mcp add --transport http --scope user figma https://mcp.figma.com/mcp
 
 | Причина | Решение |
 |---------|---------|
-| Превышен лимит вызовов | Подождать (15/min для Pro, 20/min для Enterprise) |
-| Starter/View seat | Только 6 вызовов/месяц — нужен Full seat |
+| Превышен лимит вызовов | Подождать. Per-minute у Dev/Full: Starter 10, Pro 15, Org/Enterprise 20 |
+| View / Collab seat | 6 вызовов/месяц — нужен Dev/Full seat (тогда 200/день, 10/мин на Starter) |
 
 ### "Permission denied" при write-операциях
 

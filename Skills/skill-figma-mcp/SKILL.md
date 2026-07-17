@@ -11,7 +11,7 @@ when_to_use: >
   диаграмму, захватить UI, настроить подключение Desktop или Remote MCP.
   Примеры запросов: "сверстай компонент из Figma", "синхронизируй цвета из Figma",
   "подключи Figma MCP", "создай диаграмму в FigJam".
-version: 2.0.0
+version: 2.0.1
 created: 2026-05-03
 ---
 
@@ -37,13 +37,16 @@ created: 2026-05-03
 
 ## Rate Limits (Remote only)
 
-| План/Seat | Лимит |
-|-----------|-------|
-| Starter/View/Collab | 6 calls/месяц |
-| Dev/Full (Pro) | 15/min, 200/day |
-| Dev/Full (Enterprise) | 20/min, 600/day |
+Лимиты зависят от связки **тариф × место (seat)**, а не от тарифа одного. Считаются только read-инструменты.
 
-`use_figma` в beta — free during beta period, лимиты могут измениться.
+| Seat | Starter | Professional | Organization | Enterprise |
+|------|---------|--------------|--------------|------------|
+| View / Collab | 6/мес | 6/мес | 6/мес | 6/мес |
+| Dev / Full | 200/день, 10/мин | 200/день, 15/мин | 600/день, 20/мин | не указано в доке |
+
+**Вне лимитов (write-инструменты):** `generate_figma_design`, `add_code_connect_map`, `whoami`.
+
+Источник: developers.figma.com/docs/figma-mcp-server/rate-limits-access. `use_figma` в beta — free during beta period, лимиты могут измениться.
 
 ## Quick Start
 
