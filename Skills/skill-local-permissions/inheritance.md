@@ -12,13 +12,13 @@ Settings из разных источников **объединяются** (me
 |---|---------|------|------------|
 | 1 | Managed | Устанавливается организацией | Нельзя переопределить |
 | 2 | CLI arguments | Флаги при запуске | Временные override |
-| 3 | Local | `.claude/settings.json` | Скилл local-permissions работает здесь |
-| 4 | Project | `.claude/settings.json` | Коммитится в git, общий для команды |
+| 3 | Local | `.claude/settings.local.json` | Личные настройки, gitignored |
+| 4 | Project | `.claude/settings.json` | Скилл local-permissions работает здесь; коммитится в git, общий для команды |
 | 5 | User | `~/.claude/settings.json` | Глобальные настройки пользователя |
 
 ## Ключевые правила
 
 - `deny` проверяется ПЕРВЫМ -- если команда в deny на ЛЮБОМ уровне, allow на более низком уровне не поможет
 - Разрешения из всех уровней складываются (union), не заменяются
-- `.claude/settings.json` НЕ коммитится в git -- персональные настройки
-- `.claude/settings.json` коммитится -- используйте для общих командных разрешений
+- `.claude/settings.local.json` НЕ коммитится в git -- личные настройки (Claude Code сам добавляет файл в gitignore)
+- `.claude/settings.json` коммитится -- общие командные (shared) разрешения
