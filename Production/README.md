@@ -92,6 +92,7 @@
 | **skill-figma-mcp** | `Skills/skill-figma-mcp.skill` | Справочник Figma MCP — инструменты, настройка подключения (Desktop и Remote), workflows для дизайн-to-код, Code Connect, диаграммы, write-операции на canvas. Покрывает 19 MCP tools, 8+ Figma Skills (MCP prompts), типичные задачи фронтенд-разработки и продуктового дизайна с Figma. |
 | **skill-figma-plugin** | `Skills/skill-figma-plugin.skill` | Справочник и процедура разработки плагинов Figma с Plugin API. Архитектура плагинов (sandbox main thread + UI iframe), манипуляция нодами, стили, компоненты, переменные (Variables), UI-разработка с postMessage-коммуникацией, настройка проекта (manifest.json, TypeScript, esbuild), тестирование и публикация в Figma Community. Пошаговый workflow от идеи до опубликованного плагина. |
 | **skill-google-analytics** | `Skills/skill-google-analytics.skill` | Справочник API Google Analytics 4 для Claude Code агентов -- Data API (отчёты с dimensions и metrics, фильтры, pivot, cohort, realtime), Admin API (accounts, properties, dataStreams, customDimensions, keyEvents), Measurement Protocol (серверная отправка событий), BigQuery Export (сырые данные без семплирования). Включает авторизацию через Google Cloud (Service Account и OAuth 2.0), Python-сниппеты для google-analytics-data и google-analytics-admin, справочник 200+ dimensions и 100+ metrics, квоты на токены. |
+| **skill-humanizer-ru** | `Skills/skill-humanizer-ru.skill` | Очеловечивание русскоязычного текста — редактура ради живого авторского тона. Убирает признаки AI-генерации (канцелярит, кальки с английского, штампы, шаблонный ритм и структуру), возвращает голос, мнение и живой ритм. Три режима: полное редактирование / аудит / точечная правка. Работает ТОЛЬКО с русским языком. Триггеры-глаголы: «очеловечь», «убери следы нейросети», «сделай живым/естественным», «перепиши как человек», «убери канцелярит», «звучит как робот», «слишком формально/искусственно», «проверь на AI-маркеры». |
 | **skill-local-permissions** | `Skills/skill-local-permissions.skill` | Процедура настройки проектных/командных (shared) разрешений в .claude/settings.json для автоматизации типовых подтверждений. Содержит единый максимальный набор разрешений (файловые операции, Bash, веб, MCP), алгоритм настройки, правила работы с permissions.allow. Скилл работает ТОЛЬКО с .claude/settings.json (проектный/командный уровень, .claude/settings.json — коммитится), не с глобальными (~/.claude) или личными (.claude/settings.local.json) settings. |
 | **skill-markup** | `Skills/skill-markup.skill` | Справочник синтаксиса разметки — Markdown (CommonMark, MultiMarkdown, MDC), Confluence Wiki Markup, Jira Text Formatting, LaTeX, MediaWiki Wikitext, Textile. |
 | **skill-moodboard** | `Skills/skill-moodboard.skill` | Создание визуальных мудбордов и тематических коллекций UI-паттернов. Два типа: (1) визуальное направление проекта — палитра, типографика, лейаут, настроение; (2) тематическая коллекция паттернов (FOMO, онбординг, empty states и т.п.) — категории, вариации, визуальные мокапы, do/don't. Три режима сбора источников: из URL пользователя, поисковый (агент сам ищет примеры по теме через WebSearch), fallback (по описанию настроения). Два формата выдачи: markdown и/или Figma-фрейм с визуальными мокапами. |
@@ -124,8 +125,8 @@
 ## 📊 Статистика
 
 - **Ролей:** 25
-- **Скиллов:** 36
-- **Последнее обновление:** 2026-07-22 17:22
+- **Скиллов:** 37
+- **Последнее обновление:** 2026-07-25 17:39
 
 ---
 
