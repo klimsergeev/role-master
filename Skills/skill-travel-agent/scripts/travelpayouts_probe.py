@@ -29,9 +29,14 @@ BASE = "https://api.travelpayouts.com"
 
 
 def _ssl_context():
-    """Полная проверка TLS. На macOS/python.org дефолтный cert.pem часто НЕ настроен
-    (иначе CERTIFICATE_VERIFY_FAILED) — берём CA-бандл из certifi, если он есть.
-    Это нюанс окружения, а не проблема API. Установка: pip install certifi."""
+    """CA-бандл зависит от окружения. Сначала env (SSL_CERT_FILE/REQUESTS_CA_BUNDLE):
+    в проксированных окружениях там системный бандл с CA egress-прокси, которого нет
+    в certifi. Если env не задан — падаем на certifi (напр. macOS/python.org без
+    настроенного cert.pem). Это нюанс окружения, а не проблема API."""
+    for var in ("SSL_CERT_FILE", "REQUESTS_CA_BUNDLE"):
+        p = os.environ.get(var)
+        if p and os.path.exists(p):
+            return ssl.create_default_context(cafile=p)
     try:
         import certifi
         return ssl.create_default_context(cafile=certifi.where())
