@@ -2,11 +2,15 @@
 name: skill-markup
 description: >
   Справочник синтаксиса разметки — Markdown (CommonMark, MultiMarkdown, MDC),
-  Confluence Wiki Markup, Jira Text Formatting, LaTeX, MediaWiki Wikitext, Textile.
+  Confluence Wiki Markup, Jira Text Formatting, LaTeX, MediaWiki Wikitext, Textile,
+  разметка Telegram — клиентская (Desktop и macOS) и Rich Markdown / Rich HTML в Bot API.
 when_to_use: >
   Когда нужно написать или отформатировать текст в Markdown, Confluence, Jira,
   LaTeX, Wikitext или Textile. Синтаксис заголовков, таблиц, списков, кода, ссылок.
-version: 2.0.0
+  Также когда нужно оформить сообщение в приложении Telegram (какие символы работают
+  при наборе, почему разметка не сработала) или rich-сообщение, отправляемое ботом
+  через Bot API (Rich Markdown, Rich HTML, sendRichMessage, лимиты).
+version: 2.2.0
 created: 2026-05-02
 ---
 
@@ -14,13 +18,13 @@ created: 2026-05-02
 
 ## Назначение
 
-Справочный скилл с синтаксисом 6 языков разметки: Markdown (CommonMark, MultiMarkdown, MDC), Confluence Wiki Markup, Jira Text Formatting Notation, LaTeX, MediaWiki Wikitext, Textile. Подключается к агенту для написания и форматирования текста в нужной разметке.
+Справочный скилл с синтаксисом 8 наборов разметки: Markdown (CommonMark, MultiMarkdown, MDC), Confluence Wiki Markup, Jira Text Formatting Notation, LaTeX, MediaWiki Wikitext, Textile, клиентская разметка Telegram, Rich Markdown / Rich HTML в Telegram Bot API. Подключается к агенту для написания и форматирования текста в нужной разметке.
 
 ## Принципы
 
 1. **Один формат на документ** — не смешивай синтаксисы разных форматов в одном документе.
 2. **Загружай только нужное** — читай справочник только того формата, который требуется для задачи.
-3. **Формат определяет целевая система** — выбирай синтаксис по платформе: GitHub/документация = Markdown, Atlassian Confluence = Confluence Wiki Markup, Atlassian Jira = Jira Formatting, академические документы = LaTeX, Wikipedia/MediaWiki = Wikitext, Redmine/Textpattern = Textile.
+3. **Формат определяет целевая система** — выбирай синтаксис по платформе: GitHub/документация = Markdown, Atlassian Confluence = Confluence Wiki Markup, Atlassian Jira = Jira Formatting, академические документы = LaTeX, Wikipedia/MediaWiki = Wikitext, Redmine/Textpattern = Textile, сообщение в приложении Telegram = клиентская разметка Telegram, rich-сообщение от бота = Telegram Rich Markdown / Rich HTML.
 
 ## Таблица маршрутизации
 
@@ -36,6 +40,8 @@ created: 2026-05-02
 | Написать/отформатировать в LaTeX | [latex.md](latex.md) | — |
 | Написать/отформатировать в Wikitext | [wikitext.md](wikitext.md) | — |
 | Написать/отформатировать в Textile | [textile.md](textile.md) | — |
+| Оформить сообщение в приложении Telegram | [telegram.md](telegram.md) | [telegram-bot-api.md](telegram-bot-api.md) |
+| Отправить rich-сообщение ботом через Bot API | [telegram-bot-api.md](telegram-bot-api.md) | [telegram.md](telegram.md) |
 
 ## Рабочий процесс
 
