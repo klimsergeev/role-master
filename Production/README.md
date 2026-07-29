@@ -102,7 +102,7 @@
 | **skill-product-analytics-methods** | `Skills/skill-product-analytics-methods.skill` | Справочник методов продуктовой аналитики -- воронки (funnel analysis, drop-off, конверсия, оптимизация), сегментация пользователей (RFM, поведенческая, демографическая, выбор типа), фреймворки метрик (North Star Metric, дерево метрик, guardrail-метрики, AARRR/пиратские метрики). Содержит пошаговые процедуры анализа, шаблоны отчётов, критерии выбора метода. Дополняет skill-ab-test-analysis (эксперименты) и skill-cohort-analysis (удержание), покрывая остальные методы продуктового анализа. |
 | **skill-product-strategy** | `Skills/skill-product-strategy.skill` | Процедура построения полной продуктовой стратегии для любого digital-продукта (мобильное приложение, web, SaaS) — от исследования рынка до дорожной карты. Охватывает: анализ рынка и трендов, конкурентный анализ (включая AI-стартапы и быстрорастущих), персоны и JTBD, CJM, симулятор интервью и AI-касдев (синтетические интервью, анализ отзывов, проверка гипотез), стратегическое видение (несколько вижинов), дорожную карту, продуктовые метрики. Итог — Markdown-документ, опционально выгружаемый в интерактивный HTML; каждая цифра сопровождается свежим источником и датой. |
 | **skill-proxy-nekobox-android** | `Skills/skill-proxy-nekobox-android.md` | Настройка NekoBox на Android с WireGuard и split tunneling |
-| **skill-proxy-singbox-macos** | `Skills/skill-proxy-singbox-macos.md` | Настройка sing-box VT на macOS с WireGuard endpoint и split tunneling |
+| **skill-proxy-singbox** | `Skills/skill-proxy-singbox.skill` | Настройка VPN-клиента sing-box на macOS, Android и iOS: сборка JSON-конфига под протоколы TUIC и WireGuard, split tunneling по доменам и приложениям, импорт профиля (локальный файл, QR-код, share link), проверка и отладка подключения. Учитывает различия формата конфига между версиями ядра 1.11.x и 1.12+ и платформенные ограничения (stack, strict_route, route_exclude_address, per-app фильтрация). Клиенты: sing-box VT (SFM/SFI) в App Store, SFA в Google Play, альтернативы Hiddify и NekoBox. |
 | **skill-report-company** | `Skills/skill-report-company.md` | Процедура создания структурированного профиля компании на основе веб-поиска. Генерирует markdown-отчёт с 7 секциями — описание, отзывы сотрудников, отзывы клиентов, технологический стек, руководство, новостной фон, метрики. |
 | **skill-semantic-core** | `Skills/skill-semantic-core.skill` | Справочник формата YAML-семантики сайта для SEO/GEO-анализа веб-страниц. Объясняет структуру YAML-файлов, полученных из HTML путём извлечения SEO-релевантной семантики: мета-теги, Open Graph, Twitter Cards, Schema.org (JSON-LD), hreflang, иерархия контента (h1-h6, p, a, img, semantic HTML). Используй для понимания формата данных при анализе страниц. |
 | **skill-seo-reference** | `Skills/skill-seo-reference.skill` | SEO-справочники — E-E-A-T, Schema.org, keyword research, technical SEO, readability, internal linking, GEO. Для аудита, оптимизации и создания SEO-контента. |
@@ -126,7 +126,7 @@
 
 - **Ролей:** 25
 - **Скиллов:** 37
-- **Последнее обновление:** 2026-07-29 11:46
+- **Последнее обновление:** 2026-07-29 14:38
 
 ---
 
