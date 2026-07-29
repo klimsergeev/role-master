@@ -51,12 +51,15 @@ def _request_with_retry(
     url: str,
     *,
     params: dict | None = None,
-    timeout: int = 30,
+    timeout: int | tuple[int, int] = (10, 30),   # (connect, read)
     stream: bool = False,
     max_retries: int = MAX_RETRIES,
 ) -> requests.Response:
     """HTTP-запрос с retry при 429 / 5xx / таймаутах.
     Backoff: экспоненциальный, начиная с 5с (сеть) или 10с (429).
+
+    timeout — кортеж (connect, read). Скалярное значение применяется к обеим
+    фазам сразу и не ловит вовремя ситуацию «соединение живо, данные не идут».
     """
     for attempt in range(max_retries):
         try:
@@ -108,11 +111,20 @@ def _request_with_retry(
     raise RuntimeError(f"Не удалось выполнить запрос после {max_retries} попыток: {method} {url}")
 
 
-def api_get(path: str, params: dict | None = None, timeout: int = 30, stream: bool = False) -> requests.Response:
+def api_get(
+    path: str,
+    params: dict | None = None,
+    timeout: int | tuple[int, int] = (10, 30),
+    stream: bool = False,
+) -> requests.Response:
     return _request_with_retry("GET", f"{BASE}{path}", params=params, timeout=timeout, stream=stream)
 
 
-def api_post(path: str, params: dict | None = None, timeout: int = 30) -> requests.Response:
+def api_post(
+    path: str,
+    params: dict | None = None,
+    timeout: int | tuple[int, int] = (10, 30),
+) -> requests.Response:
     return _request_with_retry("POST", f"{BASE}{path}", params=params, timeout=timeout)
 ```
 
@@ -214,7 +226,7 @@ def download_part_to_file(
 
     r = api_get(
         f"/logrequest/{req_id}/part/{part_number}/download",
-        timeout=600,
+        timeout=(30, 120),   # 30с на соединение, 120с на чтение чанка
         stream=True,
     )
 
@@ -246,6 +258,18 @@ def download_part_to_file(
     print(f" -> {rows_written} строк")
     return rows_written
 ```
+
+> **Если сохранять часть на диск как `.gz`, а не парсить на лету.**
+> `iter_lines` / `iter_content` распаковывают transfer-encoding сами
+> (`raw.stream(..., decode_content=True)`), а вот `r.raw` отдаёт тело **как есть**.
+> Запись `r.raw` в `gzip.open(...)` даёт файл, сжатый дважды. Ошибка тихая: файл
+> создаётся, размер правдоподобный, ломается только чтение.
+>
+> ```python
+> r.raw.decode_content = True          # обязательно перед копированием
+> with open(part_path, "wb") as f:     # уже распакованный TSV
+>     shutil.copyfileobj(r.raw, f)
+> ```
 
 ### 2.5. clean_request() — очистка (освобождение квоты)
 
@@ -279,8 +303,15 @@ def check_pending_requests() -> None:
             st = req.get("status")
             d1 = req.get("date1", "?")
             d2 = req.get("date2", "?")
-            print(f"  request_id={rid}  status={st}  period={d1}..{d2}")
+            action = "cancel" if st == "created" else "clean"
+            print(f"  request_id={rid}  status={st}  period={d1}..{d2}  -> {action}")
 ```
+
+Статус определяет способ освобождения квоты:
+- `created` (лог ещё готовится) — снимается только `cancel`
+- `processed` (лог готов) — освобождается `clean`
+
+Это нужно после **аварийной** остановки: `finally` не выполняется при SIGKILL, и подготовленный запрос остаётся висеть и занимать квоту (проверено — после kill в списке остался запрос в статусе `created`). Прогон `check_pending_requests()` в начале скрипта — дешёвая страховка.
 
 ### 2.7. Обработка прерываний (try/finally + clean)
 
@@ -536,6 +567,10 @@ FIELDS_STR = "ym:s:visitID, ym:s:dateTime, ym:s:screenWidth"
 
 Если не вызвать `clean` после скачивания, квота остаётся занятой. Новые запросы будут отклоняться. Всегда вызывать в `finally`-блоке.
 
+### 5.11. Скачивание части зависает без раздельного таймаута
+
+Соединение живо, данные не идут — скалярный `timeout` этого не ловит вовремя. Использовать кортеж `(connect, read)`: для download `(30, 120)` плюс до 5 попыток на часть. Зависшая часть после повтора скачивается за секунды.
+
 ## 6. Шаблон скрипта
 
 Минимальный рабочий скрипт выгрузки. Копировать, менять FIELDS/DATE1/DATE2, запускать.
@@ -622,7 +657,7 @@ def _request_with_retry(
     url: str,
     *,
     params: dict | None = None,
-    timeout: int = 30,
+    timeout: int | tuple[int, int] = (10, 30),   # (connect, read)
     stream: bool = False,
 ) -> requests.Response:
     for attempt in range(MAX_RETRIES):
@@ -711,7 +746,7 @@ def wait_until_ready(req_id: int, poll_sec: int = 15, timeout_sec: int = 3600) -
 
 
 def download_part(req_id: int, part: int, writer: csv.writer, first: bool) -> int:
-    r = api_get(f"/logrequest/{req_id}/part/{part}/download", timeout=600, stream=True)
+    r = api_get(f"/logrequest/{req_id}/part/{part}/download", timeout=(30, 120), stream=True)
     rows = 0
     header_done = False
     for line in r.iter_lines(decode_unicode=True):
