@@ -82,7 +82,7 @@
 
 | Скилл | Файл | Описание |
 |-------|------|----------|
-| **skill-3d-artist** | `Skills/skill-3d-artist.skill` | Справочник Blender MCP для агентов — настройка подключения (official connector и community-сервер ahujasid), workflows моделирования через bpy API, промптинг 3D-сцен, troubleshooting, безопасность execute_blender_code, экономия токенов в agentic-сессиях. Покрывает Claude Desktop, Cowork, Code. |
+| **skill-3d-artist** | `Skills/skill-3d-artist.skill` | Справочник Blender MCP для агентов — настройка подключения (official connector и community-сервер ahujasid), workflows моделирования через bpy API, промптинг 3D-сцен, troubleshooting, безопасность execute_blender_code, механика MCP-канала и env-переменные. Покрывает Claude Desktop, Cowork, Code. |
 | **skill-ab-test-analysis** | `Skills/skill-ab-test-analysis.skill` | Процедура анализа результатов A/B-тестов и принятия ship/no-ship решений. Покрывает полный цикл: валидация эксперимента (SRM, длительность, мощность), расчёт primary metric (lift, CI, p-value), проверка guardrail-метрик, сегментный анализ (новые/старые, mobile/desktop, гео), финальная рекомендация (ship/no-ship/iterate). Включает статистический фреймворк (frequentist и bayesian подходы), матрицу принятия решений, типичные ошибки анализа (peeking, multiple comparisons, Simpson's paradox). |
 | **skill-agent-orchestration** | `Skills/skill-agent-orchestration.skill` | Правила оркестрации субагентов в Claude Code — когда делегировать задачу агенту или скиллу, как формировать промпт для субагента, как сохранять контекст оркестратора чистым. Содержит pre-flight checklist, трёхслойную модель контекста, паттерны декомпозиции, алгоритм разрешения противоречий роль vs задание. |
 | **skill-agent-teams** | `Skills/skill-agent-teams.skill` | Процедура запуска и управления Agent Teams в Claude Code — параллельная работа нескольких агентов-тиммейтов, каждый в своём контексте, с прямой peer-to-peer коммуникацией через SendMessage и общим task list. Покрывает включение фичи (env CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS), спавн тиммейтов на естественном языке через Agent tool (команда формируется автоматически, TeamCreate/TeamDelete больше не нужны), общий список задач (TaskCreate/TaskUpdate/TaskList), режимы отображения (in-process и split-panes), plan approval, тиммейты из subagent-определений, завершение и ограничения (один team на сессию, нет вложенных команд, /resume не восстанавливает). Для обычных субагентов без взаимной коммуникации — см. skill-agent-orchestration. |
@@ -125,7 +125,7 @@
 
 - **Ролей:** 25
 - **Скиллов:** 36
-- **Последнее обновление:** 2026-08-05 13:05
+- **Последнее обновление:** 2026-08-07 15:07
 
 ---
 
