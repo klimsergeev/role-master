@@ -39,7 +39,7 @@ Claude in Chrome — **мост в веб, у которого нет API, ра�
 | **Процессы через несколько сайтов** | Работа в нескольких вкладках сразу | «Check my calendar for meetings tomorrow, then for each meeting with an external attendee, look up their company website …» |
 | **Запись демонстрации** | GIF с наложениями для документации | «Record a GIF showing how to complete the checkout flow …» |
 | **Сайты без API** | Внутренние панели, устаревшие системы, порталы поставщиков | Собрать суммы и даты счетов из нескольких порталов поставщиков и построить таблицу |
-| **Сайты с защитой от ботов** | HTTP-клиенты не проходят, живой браузер проходит | Прецедент в библиотеке — скилл `skill-tlnd-browser` описывает сайт, где работает только настоящий Chrome |
+| **Сайты с защитой от ботов** | HTTP-клиенты не проходят, живой браузер проходит | «Сайт отдаёт HTTP-клиенту заглушку — открой страницу в Chrome и собери данные оттуда» |
 
 Полезная деталь: «Claude has built-in knowledge of how to navigate popular platforms including Slack, Google Calendar, Gmail, Google Docs, and GitHub. Simple commands like "schedule a meeting" or "update the doc" work without detailed step-by-step instructions.»
 
@@ -140,4 +140,4 @@ Claude in Chrome — **мост в веб, у которого нет API, ра�
 
 **Темп**
 
-- Ждать после навигации. Прямого требования в схемах нет; статья справки признаёт «Some sites with heavy JavaScript may require a moment to fully load», а внутренний прецедент библиотеки (скилл `skill-tlnd-browser`) фиксирует практику: 2–3 секунды после перехода и 1–2 секунды между страницами при пакетной обработке.
+- Ждать после навигации. Прямого требования в схемах нет; статья справки признаёт «Some sites with heavy JavaScript may require a moment to fully load», но конкретных интервалов не задаёт ни она, ни схемы. Значение по умолчанию в этом скилле — 2–3 секунды после перехода и 1–2 секунды между страницами при пакетной обработке; это отправная точка, а не измеренная величина: готовность страницы сверять чтением, а не таймером, и увеличивать паузу, если содержимое ещё не пришло.
