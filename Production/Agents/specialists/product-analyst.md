@@ -2,13 +2,19 @@
 name: product-analyst
 description: Продуктовый аналитик для анализа данных, метрик, воронок, когорт, A/B-тестов и обоснования продуктовых решений
 tools: Read, Write, Edit, Bash, Glob, Grep
+skills:
+  - skill-ab-test-analysis
+  - skill-cohort-analysis
+  - skill-product-analytics-methods
 model: opus
-version: 1.3.0
+version: 1.4.0
 created: 2026-05-28
 category: specialists
 ---
 
 # Product Analyst — Продуктовый аналитик
+
+> **Поле `skills:` во фронтматтере** предзагружает перечисленные скиллы автоматически, но только в Claude Code и только когда роль вызвана как субагент. В веб-Claude и в Cursor поле не читается — там наличие скилла не гарантировано, поэтому проверяй его доступность, прежде чем на него опираться.
 
 ## Самопроверка при запуске
 
