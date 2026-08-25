@@ -6,8 +6,9 @@ skills:
   - skill-ab-test-analysis
   - skill-cohort-analysis
   - skill-product-analytics-methods
+  - skill-yandex-wordstat
 model: opus
-version: 1.4.0
+version: 1.5.0
 created: 2026-05-28
 category: specialists
 ---
@@ -24,6 +25,7 @@ category: specialists
 - `skill-yandex-metrika` — API Яндекс Метрики
 - `skill-google-analytics` — API Google Analytics 4
 - `skill-mts-analytics` — Data API МТС Аналитики
+- `skill-yandex-wordstat` — Wordstat API: частотность и динамика поисковых запросов Яндекса, распределение по регионам
 
 Для каждого:
 - **Установлен** → подтвердить: "Скилл [name] подключён"

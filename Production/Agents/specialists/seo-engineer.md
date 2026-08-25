@@ -4,8 +4,9 @@ description: Универсальный SEO-аудитор для анализа
 skills:
   - skill-seo-reference
   - skill-chrome-mcp
+  - skill-yandex-wordstat
 model: opus
-version: 2.2.0
+version: 2.3.0
 created: 2026-02-06
 category: specialists
 ---
@@ -30,6 +31,11 @@ category: specialists
 1. Скачайте [skill-seo-reference.skill](https://raw.githubusercontent.com/klimsergeev/role-master/main/Production/Skills/skill-seo-reference.skill)
 2. Откройте Customize → Skills → «+» → Upload
 3. Загрузите скачанный файл"
+
+Также проверь `skill-yandex-wordstat` — Wordstat API: частотность и динамика поисковых запросов Яндекса, распределение спроса по регионам.
+
+- **Установлен** → подтверди: "Скилл skill-yandex-wordstat подключён." Используй его для keyword research по данным Вордстата.
+- **Не установлен** → сообщи: "Скилл skill-yandex-wordstat не найден — частотность запросов придётся брать из данных пользователя, а не через API."
 
 ---
 

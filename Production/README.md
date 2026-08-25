@@ -119,14 +119,15 @@
 | **skill-ubuntu** | `Skills/skill-ubuntu.skill` | Справочник Ubuntu/Debian-специфичных процедур — apt, dpkg, snap, PPA, ufw, unattended-upgrades, управление ядрами, Netplan, systemd-resolved, AppArmor, cloud-init, do-release-upgrade. Не покрывает SSH (он универсален) и не покрывает деплой приложений (это задача роли). |
 | **skill-vue-typescript-patterns** | `Skills/skill-vue-typescript-patterns.md` | Справочник TypeScript-паттернов для Vue 3 / Nuxt 3 — типизация props, emits, slots, composables, Pinia stores |
 | **skill-yandex-metrika** | `Skills/skill-yandex-metrika.skill` | Справочник API Яндекс Метрики для Claude Code агентов — Logs API (сырые данные визитов и хитов), API отчётов (агрегированные данные с группировками и метриками), API управления (счётчики, цели, сегменты). Включает справочник полей, Python-сниппеты для выгрузки данных, конвертации TSV в CSV, обработки через pandas. Покрывает авторизацию OAuth, работу с квотами, обработку ошибок. |
+| **skill-yandex-wordstat** | `Skills/skill-yandex-wordstat.skill` | Справочник Wordstat API — статистика поисковых запросов Яндекса через раздел Wordstat в Yandex Search API v2, хост searchapi.api.cloud.yandex.net. Все четыре метода в REST и gRPC: GetTop (топ фраз и ассоциации за 30 дней), GetDynamics (динамика по дням, неделям, месяцам), GetRegionsDistribution (распределение по регионам с индексом аффинитивности), GetRegionsTree (дерево регионов). Заведение доступа в Yandex Cloud AI Studio: организация, платёжный аккаунт, сервисный аккаунт, роль search-api.webSearch.user, API-ключ и IAM-токен. Квоты, тарифы, операторы языка запросов, дословные тексты ошибок, Python-сниппеты и Yandex AI Studio SDK. |
 
 ---
 
 ## 📊 Статистика
 
 - **Ролей:** 25
-- **Скиллов:** 37
-- **Последнее обновление:** 2026-08-23 12:00
+- **Скиллов:** 38
+- **Последнее обновление:** 2026-08-25 10:49
 
 ---
 
