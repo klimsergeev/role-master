@@ -18,7 +18,7 @@ when_to_use: >
   «выгрузи Вордстат по списку фраз», «настрой доступ к Wordstat API», «почему 400
   The from field value should be Monday», «сколько стоит 1000 запросов к Вордстату»,
   «есть ли у Вордстата официальное API».
-version: 1.0.0
+version: 1.0.1
 created: 2026-08-24
 ---
 

@@ -18,6 +18,8 @@ python3 -c "import requests; from dotenv import load_dotenv; print('OK')"
 python3 -c "import yandex_ai_studio_sdk; print('OK')"
 ```
 
+**Почему `requests`, а не `urllib`.** У системного Python на macOS нет доступа к корневым сертификатам, пока не выполнен `Install Certificates.command`, и вызов через `urllib` падает с `SSL: CERTIFICATE_VERIFY_FAILED: unable to get local issuer certificate`. Ошибка выглядит как проблема API или ключа, а к ним отношения не имеет. `requests` несёт собственный набор сертификатов через `certifi` и проходит с первого раза. Засвидетельствовано двумя прогонами одного и того же тела запроса, 25.08.2026.
+
 ## 1. Загрузка учётных данных
 
 ```python
