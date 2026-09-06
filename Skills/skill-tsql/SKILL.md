@@ -21,7 +21,7 @@ when_to_use: >
   «безопасно ли это выполнить, это точно чтение», «что значит NOLOCK»,
   «покажи план без выполнения», «сколько строк в таблице без COUNT(*)».
   Не про подключение и настройку MCP-сервера — это skill-mssql-mcp.
-version: 1.0.0
+version: 1.1.0
 created: 2026-08-21
 ---
 
@@ -54,28 +54,28 @@ created: 2026-08-21
 
 ## Таблица маршрутизации
 
-> Читай только те файлы, которые нужны под задачу. Не загружай все сразу.
+> Читай файлы под задачу, а не скилл целиком. Колонка «Обязательно» — открыть до начала работы. Колонка «Читать, если» — открыть, когда условие выполнено; условие проверяется по задаче, а не по желанию. Файлы с пометкой `(справочник)` устроены как таблицы для точечного поиска — в них допустим поиск нужной строки вместо чтения целиком.
 
-| Задача | Минимум | Добавить при необходимости |
+| Задача | Обязательно | Читать, если |
 |---|---|---|
-| Первое подключение к незнакомой базе, «что здесь вообще есть» | [server-profile.md](server-profile.md), [recipes.md](recipes.md) | [permissions-visibility.md](permissions-visibility.md) |
-| Узнать версию, редакцию, уровень совместимости, коллацию | [server-profile.md](server-profile.md) | [version-matrix.md](version-matrix.md) |
-| Работает ли конструкция на этой версии; чем заменить | [version-matrix.md](version-matrix.md) | [server-profile.md](server-profile.md) |
-| Найти таблицы, столбцы, ключи, связи; описать схему | [schema-discovery.md](schema-discovery.md), [recipes.md](recipes.md) | [permissions-visibility.md](permissions-visibility.md) |
-| Получить определение представления, процедуры, функции | [schema-discovery.md](schema-discovery.md) | [permissions-visibility.md](permissions-visibility.md) |
-| Узнать число строк и объём таблиц | [schema-discovery.md](schema-discovery.md), [recipes.md](recipes.md) | [permissions-visibility.md](permissions-visibility.md) |
-| Написать аналитический запрос; синтаксис отличается от привычного | [dialect-differences.md](dialect-differences.md) | [version-matrix.md](version-matrix.md), [traps.md](traps.md) |
-| Постраничная выдача, ограничение числа строк | [dialect-differences.md](dialect-differences.md) | [traps.md](traps.md) |
-| Безопасно ли это выполнить; это точно чтение | [read-semantics.md](read-semantics.md) | [permissions-visibility.md](permissions-visibility.md) |
-| Уровни изоляции, `NOLOCK`, блокировки | [read-semantics.md](read-semantics.md) | [dmv-diagnostics.md](dmv-diagnostics.md) |
-| Посмотреть план запроса, не выполняя его | [read-semantics.md](read-semantics.md), [recipes.md](recipes.md) | [permissions-visibility.md](permissions-visibility.md) |
-| Запрос вернул пусто / `NULL` / «доступ запрещён» | [permissions-visibility.md](permissions-visibility.md) | [schema-discovery.md](schema-discovery.md) |
-| Понять, что вообще доступно на этом подключении, до первого отказа | [permissions-visibility.md](permissions-visibility.md), [recipes.md](recipes.md) | [server-profile.md](server-profile.md) |
-| Функция или конструкция не найдена, хотя должна быть | [version-matrix.md](version-matrix.md), [server-profile.md](server-profile.md) | [dialect-differences.md](dialect-differences.md) |
-| Числа, даты или строки выглядят неправильно | [traps.md](traps.md) | [dialect-differences.md](dialect-differences.md) |
-| Запрос упал на арифметике, переполнении или коллации | [traps.md](traps.md) | [server-profile.md](server-profile.md), [dialect-differences.md](dialect-differences.md) |
-| Медленно; кто кого блокирует; что сейчас выполняется | [dmv-diagnostics.md](dmv-diagnostics.md), [recipes.md](recipes.md) | [permissions-visibility.md](permissions-visibility.md), [read-semantics.md](read-semantics.md) |
-| Оценить пользу и стоимость индексов | [dmv-diagnostics.md](dmv-diagnostics.md) | [schema-discovery.md](schema-discovery.md) |
+| Первое подключение к незнакомой базе, «что здесь вообще есть» | [server-profile.md](server-profile.md), [permissions-visibility.md](permissions-visibility.md), [recipes.md](recipes.md) (справочник) | если профиль показал `EngineEdition` вне 2–4 или `compatibility_level` ниже уровня по умолчанию для этой версии: [version-matrix.md](version-matrix.md) (справочник) |
+| Узнать версию, редакцию, уровень совместимости, коллацию | [server-profile.md](server-profile.md) | если по версии надо ответить, какие конструкции на ней работают: [version-matrix.md](version-matrix.md) (справочник) |
+| Работает ли конструкция на этой версии; чем заменить | [version-matrix.md](version-matrix.md) (справочник) | если версия сервера и `compatibility_level` ещё не сняты: [server-profile.md](server-profile.md) |
+| Найти таблицы, столбцы, ключи, связи; описать схему | [schema-discovery.md](schema-discovery.md), [recipes.md](recipes.md) (справочник) | если каталог вернул пусто или объектов меньше, чем ожидалось: [permissions-visibility.md](permissions-visibility.md) |
+| Получить определение представления, процедуры, функции | [schema-discovery.md](schema-discovery.md) | если `definition` пришёл как `NULL` без ошибки: [permissions-visibility.md](permissions-visibility.md) |
+| Узнать число строк и объём таблиц | [schema-discovery.md](schema-discovery.md), [recipes.md](recipes.md) (справочник) | если `sys.dm_db_partition_stats` ответил отказом или `sys.tables` вернул пусто: [permissions-visibility.md](permissions-visibility.md) |
+| Написать аналитический запрос; синтаксис отличается от привычного | [dialect-differences.md](dialect-differences.md) | если в запросе есть конструкция новее SQL Server 2016: [version-matrix.md](version-matrix.md) (справочник); если в нём есть даты, `N''`, `COUNT`, деление целых или сравнение строк разных коллаций: [traps.md](traps.md); если запрос будет выполнен, а не только показан: [read-semantics.md](read-semantics.md) |
+| Постраничная выдача, ограничение числа строк | [dialect-differences.md](dialect-differences.md) | если `TOP` стоит без `ORDER BY` либо применяется к `UNION`, `EXCEPT`, `INTERSECT`: [traps.md](traps.md) |
+| Безопасно ли это выполнить; это точно чтение | [read-semantics.md](read-semantics.md) | если выполнение упёрлось в права — отказ, пусто или `NULL`: [permissions-visibility.md](permissions-visibility.md) |
+| Уровни изоляции, `NOLOCK`, блокировки | [read-semantics.md](read-semantics.md) | если исход зависит от `is_read_committed_snapshot_on` или `snapshot_isolation_state_desc`: [server-profile.md](server-profile.md); если надо увидеть, кто кого блокирует прямо сейчас: [dmv-diagnostics.md](dmv-diagnostics.md) |
+| Посмотреть план запроса, не выполняя его | [read-semantics.md](read-semantics.md), [recipes.md](recipes.md) (справочник) | если `SET SHOWPLAN_XML` отклонён или `SHOWPLAN` не выдан: [permissions-visibility.md](permissions-visibility.md) |
+| Запрос вернул пусто / `NULL` / «доступ запрещён» | [permissions-visibility.md](permissions-visibility.md) | если пусто вернул каталог `sys.*` или `NULL` пришёл в `definition`: [schema-discovery.md](schema-discovery.md) |
+| Понять, что вообще доступно на этом подключении, до первого отказа | [permissions-visibility.md](permissions-visibility.md), [recipes.md](recipes.md) (справочник) | если версия сервера ещё не снята — на 2022+ модель прав на DMV другая: [server-profile.md](server-profile.md) |
+| Функция или конструкция не найдена, хотя должна быть | [version-matrix.md](version-matrix.md) (справочник), [server-profile.md](server-profile.md) | если конструкция принесена из PostgreSQL или MySQL — `LIMIT`, `LATERAL`: [dialect-differences.md](dialect-differences.md) |
+| Числа, даты или строки выглядят неправильно | [traps.md](traps.md) | если дело в типе или в неявном преобразовании: [dialect-differences.md](dialect-differences.md); если расхождение зависит от сессии — `LANGUAGE`, `DATEFORMAT`, `ARITHABORT`: [server-profile.md](server-profile.md) |
+| Запрос упал на арифметике, переполнении или коллации | [traps.md](traps.md) | если в сообщении названа коллация: [dialect-differences.md](dialect-differences.md); если ошибка зависит от `ANSI_WARNINGS` и `ARITHABORT`: [server-profile.md](server-profile.md) |
+| Медленно; кто кого блокирует; что сейчас выполняется | [dmv-diagnostics.md](dmv-diagnostics.md), [recipes.md](recipes.md) (справочник) | если DMV вернуло только свою сессию или отказ: [permissions-visibility.md](permissions-visibility.md); если запрос ждёт блокировку или обсуждается `NOLOCK`: [read-semantics.md](read-semantics.md) |
+| Оценить пользу и стоимость индексов | [dmv-diagnostics.md](dmv-diagnostics.md) | если в ответ входят уже существующие индексы таблицы: [schema-discovery.md](schema-discovery.md) |
 
 ## Рабочий процесс
 

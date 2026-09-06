@@ -12,7 +12,7 @@ when_to_use: >
   для Logs API, настроить OAuth-токен Метрики, управлять счётчиками или целями,
   понять ограничения API. Примеры: "выгрузи визиты из Метрики", "какие поля есть
   в Logs API", "напиши скрипт выгрузки", "настрой доступ к Метрике".
-version: 2.1.0
+version: 2.2.1
 created: 2026-05-24
 ---
 
@@ -33,17 +33,17 @@ created: 2026-05-24
 
 ## Таблица маршрутизации
 
-> Читай только те файлы, которые нужны под задачу. Не загружай все сразу.
+> Читай файлы под задачу, а не скилл целиком. Колонка «Обязательно» — открыть до начала работы. Колонка «Читать, если» — открыть, когда условие выполнено; условие проверяется по задаче, а не по желанию. Файлы с пометкой `(справочник)` устроены как таблицы для точечного поиска — в них допустим поиск нужной строки вместо чтения целиком.
 
-| Задача | Минимум | Добавить при необходимости |
+| Задача | Обязательно | Читать, если |
 |---|---|---|
-| Первое подключение к API | [auth-and-setup.md](auth-and-setup.md) | [gotchas.md](gotchas.md) |
-| Выгрузить сырые данные (Logs API) | [logs-api.md](logs-api.md), [python-reference.md](python-reference.md) | [logs-api-fields.md](logs-api-fields.md), [gotchas.md](gotchas.md) |
-| Выбрать поля для выгрузки | [logs-api-fields.md](logs-api-fields.md) | — |
-| Построить агрегированный отчёт | [reports-api.md](reports-api.md) | [auth-and-setup.md](auth-and-setup.md) |
-| Управлять счётчиками или целями | [management-api.md](management-api.md) | [auth-and-setup.md](auth-and-setup.md) |
-| Написать Python-скрипт для Метрики | [python-reference.md](python-reference.md) | [logs-api.md](logs-api.md), [gotchas.md](gotchas.md) |
-| Отладить ошибку API | [gotchas.md](gotchas.md) | [auth-and-setup.md](auth-and-setup.md) |
+| Первое подключение к API | [auth-and-setup.md](auth-and-setup.md) | если подключение проверяется Python-скриптом: [python-reference.md](python-reference.md) |
+| Выгрузить сырые данные (Logs API) | [logs-api.md](logs-api.md), [python-reference.md](python-reference.md), [gotchas.md](gotchas.md) | если состав полей ещё не зафиксирован дословно: [logs-api-fields.md](logs-api-fields.md) (справочник) |
+| Выбрать поля для выгрузки | [logs-api-fields.md](logs-api-fields.md) (справочник) | если в выборку попали поля экрана, `goalsID`, ecommerce или бинарные флаги: [gotchas.md](gotchas.md) |
+| Построить агрегированный отчёт | [reports-api.md](reports-api.md) (справочник) | если токена ещё нет или запрос вернул 401/403: [auth-and-setup.md](auth-and-setup.md) |
+| Управлять счётчиками или целями | [management-api.md](management-api.md) (справочник) | если объекты создаются или правятся — нужен scope `metrika:write`: [auth-and-setup.md](auth-and-setup.md) |
+| Написать Python-скрипт для Метрики | [python-reference.md](python-reference.md) | если скрипт ходит в Logs API: [logs-api.md](logs-api.md), [gotchas.md](gotchas.md) |
+| Отладить ошибку API | [gotchas.md](gotchas.md) | если код 401/403 или в теле `invalid_token` / `access_denied`: [auth-and-setup.md](auth-and-setup.md); если 429 или запрос висит в статусе `created`: [logs-api.md](logs-api.md) |
 
 ## Самопроверка при подключении
 
@@ -103,7 +103,7 @@ pip install requests python-dotenv
 
 ### Шаг 2: Загрузить нужные файлы
 
-По таблице маршрутизации загрузить минимум. Если задача неясна — начать с [auth-and-setup.md](auth-and-setup.md).
+Найти в таблице строку своей задачи. Файлы из колонки «Обязательно» открыть до первого обращения к API. Условия колонки «Читать, если» проверить по фактам задачи — код ответа, наличие токена, состав полей, статус запроса — и открыть файл там, где условие выполнено. В файлах с пометкой `(справочник)` искать подходящую строку точечно, читать целиком не требуется. Запрос не даёт определить строку таблицы — начать с [auth-and-setup.md](auth-and-setup.md) и уточнить постановку у пользователя.
 
 ### Шаг 3: Выполнить задачу
 

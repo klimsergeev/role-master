@@ -15,7 +15,7 @@ when_to_use: >
   Примеры: "создай плагин для Figma", "как работает Plugin API",
   "настрой проект для Figma-плагина", "как опубликовать плагин в Figma Community",
   "помоги с UI для плагина Figma".
-version: 1.0.0
+version: 1.1.0
 created: 2026-06-08
 ---
 
@@ -75,18 +75,18 @@ created: 2026-06-08
 
 ## Таблица маршрутизации
 
-> Читай только те файлы, которые нужны под задачу. Не загружай все сразу.
+> Читай файлы под задачу, а не скилл целиком. Колонка «Обязательно» — открыть до начала работы. Колонка «Читать, если» — открыть, когда условие выполнено; условие проверяется по задаче, а не по желанию. Файлы с пометкой `(справочник)` устроены как таблицы для точечного поиска — в них допустим поиск нужной строки вместо чтения целиком.
 
-| Задача | Минимум | Добавить при необходимости |
+| Задача | Обязательно | Читать, если |
 |---|---|---|
-| Понять архитектуру плагина, написать первый плагин | [plugin-architecture.md](plugin-architecture.md) | [project-setup.md](project-setup.md) |
-| Настроить проект (manifest, TypeScript, бандлер) | [project-setup.md](project-setup.md) | — |
-| Работа с нодами, стилями, переменными | [plugin-api.md](plugin-api.md) | [common-patterns.md](common-patterns.md) |
-| Создание UI для плагина | [ui-development.md](ui-development.md) | [plugin-architecture.md](plugin-architecture.md) |
-| Паттерны: selection, traversal, batch, цвета | [common-patterns.md](common-patterns.md) | [plugin-api.md](plugin-api.md) |
-| Тестирование и публикация | [project-setup.md](project-setup.md) | — |
-| Типичные ошибки и антипаттерны | [plugin-architecture.md](plugin-architecture.md) | [common-patterns.md](common-patterns.md) |
-| Полный workflow: от идеи до публикации | SKILL.md (рабочий процесс ниже) | все файлы по мере необходимости |
+| Понять архитектуру плагина, написать первый плагин | [plugin-architecture.md](plugin-architecture.md), [project-setup.md](project-setup.md) | если у плагина есть UI: [ui-development.md](ui-development.md) |
+| Настроить проект (manifest, TypeScript, бандлер) | [project-setup.md](project-setup.md) | если в manifest есть поле `ui`: [ui-development.md](ui-development.md) |
+| Работа с нодами, стилями, переменными | [plugin-api.md](plugin-api.md) (справочник), [plugin-architecture.md](plugin-architecture.md) | если задача обходит дерево нод, меняет текст или обрабатывает ноды пачкой: [common-patterns.md](common-patterns.md) (справочник) |
+| Создание UI для плагина | [ui-development.md](ui-development.md), [plugin-architecture.md](plugin-architecture.md) | если UI собирается бандлером или ходит в сеть: [project-setup.md](project-setup.md) |
+| Паттерны: selection, traversal, batch, цвета | [common-patterns.md](common-patterns.md) (справочник) | если паттерн читает или пишет свойства нод, стили, переменные: [plugin-api.md](plugin-api.md) (справочник) |
+| Тестирование и публикация | [project-setup.md](project-setup.md) | если у плагина есть UI — проверка light/dark темы: [ui-development.md](ui-development.md) |
+| Типичные ошибки и антипаттерны | [plugin-architecture.md](plugin-architecture.md), [project-setup.md](project-setup.md) | если ошибка в selection, тексте, цвете или batch-обработке: [common-patterns.md](common-patterns.md) (справочник) |
+| Полный workflow: от идеи до публикации | раздел «Рабочий процесс» ниже, [plugin-architecture.md](plugin-architecture.md), [project-setup.md](project-setup.md), [plugin-api.md](plugin-api.md) (справочник) | если у плагина есть UI: [ui-development.md](ui-development.md); если плагин обходит дерево нод, работает с текстом или массово меняет ноды: [common-patterns.md](common-patterns.md) (справочник) |
 
 ## Рабочий процесс: от идеи до публикации
 

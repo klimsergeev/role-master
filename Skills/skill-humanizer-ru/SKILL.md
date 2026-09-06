@@ -14,7 +14,7 @@ when_to_use: >
   НЕ использовать для: перевода, написания текста с нуля, грамматики как
   самоцели, кода, англоязычного текста (для английского — оригинальный
   humanizer). Это редактура качества, не обход детекторов.
-version: 1.0.0
+version: 1.1.0
 created: 2026-07-25
 ---
 
@@ -76,17 +76,17 @@ created: 2026-07-25
 
 ## Таблица маршрутизации
 
-> Читай только те файлы, которые нужны под задачу. Не загружай все сразу.
+> Читай файлы под задачу, а не скилл целиком. Колонка «Обязательно» — открыть до начала работы. Колонка «Читать, если» — открыть, когда условие выполнено; условие проверяется по задаче, а не по желанию. Файлы с пометкой `(справочник)` устроены как таблицы для точечного поиска — в них допустим поиск нужной строки вместо чтения целиком.
 
-| Задача | Минимум | Добавить при необходимости |
+| Задача | Обязательно | Читать, если |
 |---|---|---|
-| Полное редактирование текста | [workflow.md](workflow.md), [hard-bans.md](hard-bans.md), [pattern-catalog.md](pattern-catalog.md) | [article-formulas.md](article-formulas.md), [checklist.md](checklist.md), [false-positives.md](false-positives.md), [examples.md](examples.md) |
-| Аудит (только диагностика) | [workflow.md](workflow.md), [quick-scanner.md](quick-scanner.md), [pattern-catalog.md](pattern-catalog.md) | [false-positives.md](false-positives.md), [examples.md](examples.md) |
-| Точечная правка одной категории | [pattern-catalog.md](pattern-catalog.md) | [hard-bans.md](hard-bans.md) |
-| Убрать только канцелярит | [pattern-catalog.md](pattern-catalog.md) (B) | [quick-scanner.md](quick-scanner.md) |
-| Финальная вычитка | [checklist.md](checklist.md) | [hard-bans.md](hard-bans.md) |
+| Полное редактирование текста | [workflow.md](workflow.md), [hard-bans.md](hard-bans.md), [pattern-catalog.md](pattern-catalog.md) (справочник), [checklist.md](checklist.md) | если пользователь назвал тип текста и правка меняет структуру, а не только фразы: [article-formulas.md](article-formulas.md); если класс текста по таблице интенсивности — деловая переписка, документация или юридический, либо в тексте есть авторское тире, намеренный повтор или «является» как термин: [false-positives.md](false-positives.md); если текст — пост в блог, соцсети или описание продукта: [examples.md](examples.md) |
+| Аудит (только диагностика) | [workflow.md](workflow.md), [hard-bans.md](hard-bans.md), [quick-scanner.md](quick-scanner.md) (справочник), [pattern-catalog.md](pattern-catalog.md) (справочник), [false-positives.md](false-positives.md), [examples.md](examples.md) | если пользователь спрашивает, почему паттерн считается маркером, или просит источники: [detectors-and-sources.md](detectors-and-sources.md) (справочник) |
+| Точечная правка одной категории | [pattern-catalog.md](pattern-catalog.md) (справочник), [hard-bans.md](hard-bans.md) | если указанная категория — тире, повторы, триады, «является» или формальный регистр: [false-positives.md](false-positives.md) |
+| Убрать только канцелярит | [pattern-catalog.md](pattern-catalog.md) (справочник, раздел B «Языковые»), [quick-scanner.md](quick-scanner.md) (справочник), [hard-bans.md](hard-bans.md) | если текст деловой, юридический или документация — формальный регистр там оправдан: [false-positives.md](false-positives.md) |
+| Финальная вычитка | [checklist.md](checklist.md), [hard-bans.md](hard-bans.md) | если пункт чеклиста конфликтует с жанром текста («является» как термин, формальный регистр, разрешённое пользователем длинное тире): [false-positives.md](false-positives.md) |
 | Нужен образец «до/после» и формат вывода аудита | [examples.md](examples.md) | — |
-| Понять, что и как ловят детекторы, откуда правила | [detectors-and-sources.md](detectors-and-sources.md) | — |
+| Понять, что и как ловят детекторы, откуда правила | [detectors-and-sources.md](detectors-and-sources.md) (справочник) | если вопрос про конкретный паттерн, а не про механику в целом: [pattern-catalog.md](pattern-catalog.md) (справочник) |
 
 ## Что НЕ делать
 
@@ -103,7 +103,7 @@ created: 2026-07-25
 
 **Запрос:** Пользователь вставляет русский пост для блога: «Перепиши, звучит как робот».
 
-**Маршрут:** [workflow.md](workflow.md), [hard-bans.md](hard-bans.md), [pattern-catalog.md](pattern-catalog.md); при необходимости [examples.md](examples.md).
+**Маршрут:** [workflow.md](workflow.md), [hard-bans.md](hard-bans.md), [pattern-catalog.md](pattern-catalog.md), [checklist.md](checklist.md); плюс [examples.md](examples.md) — текст для блога, условие строки выполнено.
 
 **Результат:** Режим «Полное редактирование», класс «соцсети» (максимальная интенсивность). Светофорная разметка, снятие HARD BANS, контрастное вычитание, quad-pass. Выдача: переписанный текст + 3-5 пунктов правок.
 
@@ -111,6 +111,6 @@ created: 2026-07-25
 
 **Запрос:** «Проверь договор на AI-маркеры, но ничего не переписывай».
 
-**Маршрут:** [workflow.md](workflow.md), [quick-scanner.md](quick-scanner.md), [pattern-catalog.md](pattern-catalog.md), [false-positives.md](false-positives.md).
+**Маршрут:** [workflow.md](workflow.md), [hard-bans.md](hard-bans.md), [quick-scanner.md](quick-scanner.md), [pattern-catalog.md](pattern-catalog.md), [false-positives.md](false-positives.md), [examples.md](examples.md).
 
 **Результат:** Режим «Аудит», класс «юридический» (минимальная интенсивность). Список маркеров с категориями и качественным вердиктом. «Является» как термин и формальный регистр помечаются как ложные срабатывания, а не дефекты. Текст не трогается.

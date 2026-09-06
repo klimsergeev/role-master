@@ -10,7 +10,7 @@ when_to_use: >
   запросов, формирование промптов для Agent tool, синтез результатов от нескольких
   агентов, разрешение конфликтов между ролью и заданием, настройка оркестратора,
   выбор между обычным субагентом и тиммейтом при вызове Agent tool.
-version: 2.10.0
+version: 2.11.0
 created: 2026-02-08
 ---
 
@@ -28,16 +28,16 @@ created: 2026-02-08
 
 ## Таблица маршрутизации
 
-> Читай только те файлы, которые нужны под задачу. Не загружай все сразу.
+> Читай файлы под задачу, а не скилл целиком. Колонка «Обязательно» — открыть до начала работы. Колонка «Читать, если» — открыть, когда условие выполнено; условие проверяется по задаче, а не по желанию. Файлы с пометкой `(справочник)` устроены как таблицы для точечного поиска — в них допустим поиск нужной строки вместо чтения целиком.
 
-| Задача | Минимум | Добавить при необходимости |
+| Задача | Обязательно | Читать, если |
 |---|---|---|
-| Решить, кому делегировать | [delegation-rules.md](delegation-rules.md) | — |
+| Решить, кому делегировать | [delegation-rules.md](delegation-rules.md) | если в запросе больше одного действия или задеты разные домены: [decomposition.md](decomposition.md) |
 | Решить, субагент или тиммейт | [delegation-rules.md](delegation-rules.md) | — |
-| Сформировать промпт субагенту | [prompt-format.md](prompt-format.md) | [context-model.md](context-model.md) |
-| Понять, что субагент видит/не видит | [context-model.md](context-model.md) | — |
-| Разбить запрос на подзадачи | [decomposition.md](decomposition.md) | [delegation-rules.md](delegation-rules.md) |
-| Субагент вернул вопрос о противоречии | [conflict-resolution.md](conflict-resolution.md) | — |
+| Сформировать промпт субагенту | [prompt-format.md](prompt-format.md), [context-model.md](context-model.md) | если субагент получает результат предыдущего исполнителя в цепочке: [decomposition.md](decomposition.md); если заполняешь параметр `name`: [delegation-rules.md](delegation-rules.md) |
+| Понять, что субагент видит/не видит | [context-model.md](context-model.md) | если по итогу проверки правишь промпт: [prompt-format.md](prompt-format.md) |
+| Разбить запрос на подзадачи | [decomposition.md](decomposition.md), [delegation-rules.md](delegation-rules.md) | если результат одной подзадачи уходит в промпт другой: [prompt-format.md](prompt-format.md) |
+| Субагент вернул вопрос о противоречии | [conflict-resolution.md](conflict-resolution.md) | если субагент вернул частичный результат и остаток уходит другому исполнителю: [delegation-rules.md](delegation-rules.md); если после решения пользователя субагента нужно перезапустить: [prompt-format.md](prompt-format.md) |
 
 ## Рабочий процесс
 

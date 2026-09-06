@@ -10,7 +10,7 @@ when_to_use: >
   Когда пользователь просит подобрать товар, найти что купить, сравнить
   модели, составить шоппинг-лист, сделать ресёрч покупки, помочь выбрать
   подарок. Также для визуального отбора и генерации buying guide.
-version: 2.1.0
+version: 2.2.0
 created: 2026-05-18
 ---
 
@@ -33,18 +33,18 @@ created: 2026-05-18
 
 ## Таблица маршрутизации
 
-> Читай только те файлы, которые нужны под задачу. Не загружай все сразу.
+> Читай файлы под задачу, а не скилл целиком. Колонка «Обязательно» — открыть до начала работы. Колонка «Читать, если» — открыть, когда условие выполнено; условие проверяется по задаче, а не по желанию. Файлы с пометкой `(справочник)` устроены как таблицы для точечного поиска — в них допустим поиск нужной строки вместо чтения целиком.
 
-| Задача | Минимум | Добавить при необходимости |
+| Задача | Обязательно | Читать, если |
 |---|---|---|
-| Полный цикл с нуля | [task-intake.md](task-intake.md), [survey.md](survey.md) | [product-parameters.md](product-parameters.md) |
-| Ресёрч товаров | [research.md](research.md), [anti-counterfeit.md](anti-counterfeit.md) | [product-parameters.md](product-parameters.md) |
-| Промежуточный документ | [intermediate-document.md](intermediate-document.md) | -- |
-| Визуальный отбор | [visual-selection.md](visual-selection.md) | -- |
-| Генерация руководства для покупки | [buying-guide.md](buying-guide.md), [anti-counterfeit.md](anti-counterfeit.md) | -- |
-| Браузерный шоппинг (корзина/избранное) | [browser-shopping.md](browser-shopping.md) + скилл skill-chrome-mcp (инструменты) | [anti-counterfeit.md](anti-counterfeit.md) |
-| Товар без визуального компонента | [task-intake.md](task-intake.md), [survey.md](survey.md), [research.md](research.md), [buying-guide.md](buying-guide.md) | -- |
-| Известная модель (short-circuit) | [research.md](research.md), [buying-guide.md](buying-guide.md) | [browser-shopping.md](browser-shopping.md) |
+| Полный цикл с нуля | [task-intake.md](task-intake.md), [survey.md](survey.md), [product-parameters.md](product-parameters.md) (справочник), [research.md](research.md), [anti-counterfeit.md](anti-counterfeit.md) (справочник), [intermediate-document.md](intermediate-document.md), [buying-guide.md](buying-guide.md) | если has_visual_component = true: [visual-selection.md](visual-selection.md); если пользователь подтвердил браузерную фазу: [browser-shopping.md](browser-shopping.md) + скилл skill-chrome-mcp |
+| Ресёрч товаров | [research.md](research.md), [anti-counterfeit.md](anti-counterfeit.md) (справочник) | если параметры категории не собраны на опросе: [product-parameters.md](product-parameters.md) (справочник) |
+| Промежуточный документ | [intermediate-document.md](intermediate-document.md) | если карточки моделей ещё не собраны: [research.md](research.md); если риски контрафакта по категории не собраны на ресёрче: [anti-counterfeit.md](anti-counterfeit.md) (справочник) |
+| Визуальный отбор | [visual-selection.md](visual-selection.md) | если флаг has_visual_component ещё не определён: [task-intake.md](task-intake.md) |
+| Генерация руководства для покупки | [buying-guide.md](buying-guide.md), [anti-counterfeit.md](anti-counterfeit.md) (справочник) | — |
+| Браузерный шоппинг (корзина/избранное) | [browser-shopping.md](browser-shopping.md), [anti-counterfeit.md](anti-counterfeit.md) (справочник) + скилл skill-chrome-mcp (инструменты) | если руководство для покупки ещё не сформировано: [buying-guide.md](buying-guide.md) |
+| Товар без визуального компонента | [task-intake.md](task-intake.md), [survey.md](survey.md), [product-parameters.md](product-parameters.md) (справочник), [research.md](research.md), [anti-counterfeit.md](anti-counterfeit.md) (справочник), [buying-guide.md](buying-guide.md) | если результаты ресёрча предъявляются пользователю до руководства: [intermediate-document.md](intermediate-document.md) |
+| Известная модель (short-circuit) | [research.md](research.md), [anti-counterfeit.md](anti-counterfeit.md) (справочник), [buying-guide.md](buying-guide.md) | если пользователь подтвердил добавление в корзину или избранное: [browser-shopping.md](browser-shopping.md) + скилл skill-chrome-mcp |
 
 ## Адаптация по категориям товаров
 

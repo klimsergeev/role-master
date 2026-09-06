@@ -18,7 +18,7 @@ when_to_use: >
   Примеры: «продуктовая стратегия для приложения», «кто наши конкуренты»,
   «как позиционироваться», «product vision», «roadmap на 12 месяцев»,
   «проведи интервью с персоной», «найди паттерны боли в отзывах».
-version: 1.0.0
+version: 1.1.0
 created: 2026-07-03
 ---
 
@@ -42,22 +42,22 @@ created: 2026-07-03
 
 ## Таблица маршрутизации
 
-> Читай только те файлы, которые нужны под задачу. Не загружай все сразу.
+> Читай файлы под задачу, а не скилл целиком. Колонка «Обязательно» — открыть до начала работы. Колонка «Читать, если» — открыть, когда условие выполнено; условие проверяется по задаче, а не по желанию. Файлы с пометкой `(справочник)` устроены как таблицы для точечного поиска — в них допустим поиск нужной строки вместо чтения целиком.
 
-| Задача | Минимум | Добавить при необходимости |
+| Задача | Обязательно | Читать, если |
 |---|---|---|
-| Построить стратегию с нуля (весь цикл) | [research-blocks.md](research-blocks.md), [users-and-jtbd.md](users-and-jtbd.md), [vision.md](vision.md) | [roadmap.md](roadmap.md), [metrics.md](metrics.md), [document-format.md](document-format.md) |
+| Построить стратегию с нуля (весь цикл) | [research-blocks.md](research-blocks.md), [users-and-jtbd.md](users-and-jtbd.md), [product-as-is.md](product-as-is.md), [vision.md](vision.md), [roadmap.md](roadmap.md), [metrics.md](metrics.md), [document-format.md](document-format.md) | если реальных интервью нет либо есть сырьё — отзывы, транскрипты, заметки: [ai-customer-dev.md](ai-customer-dev.md) |
 | Анализ рынка и трендов | [research-blocks.md](research-blocks.md) | — |
-| Конкурентный анализ / эшелоны / матрица JTBD×конкурент | [research-blocks.md](research-blocks.md) | [users-and-jtbd.md](users-and-jtbd.md) |
+| Конкурентный анализ / эшелоны / матрица JTBD×конкурент | [research-blocks.md](research-blocks.md) | если строишь матрицу JTBD × конкурент — её строки берутся из 5 ключевых JTBD: [users-and-jtbd.md](users-and-jtbd.md); если «боли пользователей» конкурентов извлекаются из отзывов: [ai-customer-dev.md](ai-customer-dev.md) |
 | AI-новички и быстрорастущие стартапы | [research-blocks.md](research-blocks.md) | — |
-| Персоны и JTBD, симулятор интервью | [users-and-jtbd.md](users-and-jtbd.md) | — |
-| Провести AI-касдев (синт. интервью, анализ отзывов, проверка гипотез, синтез JTBD) | [ai-customer-dev.md](ai-customer-dev.md) | [users-and-jtbd.md](users-and-jtbd.md) |
-| Касдев и первичные наблюдения (as-is, воронка доверия) | [product-as-is.md](product-as-is.md), [ai-customer-dev.md](ai-customer-dev.md) | — |
-| Продукт сегодня (as-is), аудит монетизации | [product-as-is.md](product-as-is.md) | — |
-| Видение, ставка, два вижина | [vision.md](vision.md) | [research-blocks.md](research-blocks.md) |
-| Стратегические фокусы и дорожная карта | [roadmap.md](roadmap.md) | [vision.md](vision.md) |
-| Продуктовые метрики и риски | [metrics.md](metrics.md) | — |
-| Собрать/оформить итоговый документ (MD или HTML) | [document-format.md](document-format.md) | — |
+| Персоны и JTBD, симулятор интервью | [users-and-jtbd.md](users-and-jtbd.md) | если заполняешь таблицу эволюции JTBD или колонку «сколько конкурентов закрывают»: [research-blocks.md](research-blocks.md); если персоны и ответы генерирует модель либо JTBD выводятся из сырых данных: [ai-customer-dev.md](ai-customer-dev.md); если симулятор интервью выгружается в HTML: [document-format.md](document-format.md) |
+| Провести AI-касдев (синт. интервью, анализ отзывов, проверка гипотез, синтез JTBD) | [ai-customer-dev.md](ai-customer-dev.md) | если запускаешь Режим 1 или Режим 3 — им нужны готовые персоны: [users-and-jtbd.md](users-and-jtbd.md) |
+| Касдев и первичные наблюдения (as-is, воронка доверия) | [product-as-is.md](product-as-is.md), [ai-customer-dev.md](ai-customer-dev.md) | если воронка доверия и наблюдения выгружаются в HTML: [document-format.md](document-format.md) |
+| Продукт сегодня (as-is), аудит монетизации | [product-as-is.md](product-as-is.md) | если значения as-is переносятся в таблицу целей: [metrics.md](metrics.md); если блок касдева дозаполняется наблюдениями: [ai-customer-dev.md](ai-customer-dev.md) |
+| Видение, ставка, два вижина | [vision.md](vision.md) | если рыночные доказательства и матрица JTBD × конкурент ещё не собраны: [research-blocks.md](research-blocks.md), [users-and-jtbd.md](users-and-jtbd.md); если гипотезы вижинов проверяются на персонах (Режим 3): [ai-customer-dev.md](ai-customer-dev.md) |
+| Стратегические фокусы и дорожная карта | [roadmap.md](roadmap.md) | если вижин и ставка ещё не выбраны: [vision.md](vision.md); если целевые KPI для колонки «KPI / Target» ещё не зафиксированы: [metrics.md](metrics.md); если этап 1 включает починку монетизации или paywall: [product-as-is.md](product-as-is.md) |
+| Продуктовые метрики и риски | [metrics.md](metrics.md) | если значений as-is для колонки AS-IS ещё нет: [product-as-is.md](product-as-is.md); если собираешь реестр источников документа: [document-format.md](document-format.md) |
+| Собрать/оформить итоговый документ (MD или HTML) | [document-format.md](document-format.md) | если реестр источников ещё не собран: [metrics.md](metrics.md) |
 
 ## Рабочий процесс
 

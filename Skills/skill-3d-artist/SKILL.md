@@ -11,7 +11,7 @@ when_to_use: >
   timeout, обрезанные ответы), проверить безопасность .blend файлов.
   Примеры: "подключи Blender MCP", "создай low-poly сцену", "Blender не
   подключается", "почему ответ Blender обрезается".
-version: 3.0.0
+version: 3.1.0
 created: 2026-05-03
 ---
 
@@ -50,14 +50,14 @@ created: 2026-05-03
 
 ## Таблица маршрутизации
 
-> Читай только те файлы, которые нужны под задачу. Не загружай все сразу.
+> Читай файлы под задачу, а не скилл целиком. Колонка «Обязательно» — открыть до начала работы. Колонка «Читать, если» — открыть, когда условие выполнено; условие проверяется по задаче, а не по желанию. Файлы с пометкой `(справочник)` устроены как таблицы для точечного поиска — в них допустим поиск нужной строки вместо чтения целиком.
 
-| Задача | Минимум | Добавить при необходимости |
+| Задача | Обязательно | Читать, если |
 |---|---|---|
-| Настроить Blender MCP | [setup.md](tools/blender/setup.md) | [troubleshooting.md](tools/blender/troubleshooting.md) |
-| Работать с Blender сценой | [workflows.md](tools/blender/workflows.md) | — |
-| Создать 3D-контент | [workflows.md](tools/blender/workflows.md) | [troubleshooting.md](tools/blender/troubleshooting.md) |
-| Проблема с подключением | [troubleshooting.md](tools/blender/troubleshooting.md) | [setup.md](tools/blender/setup.md) |
+| Настроить Blender MCP | [setup.md](tools/blender/setup.md) | если подключение не поднялось с первой попытки или Claude не видит Blender-инструменты: [troubleshooting.md](tools/blender/troubleshooting.md) (справочник) |
+| Работать с Blender сценой | [workflows.md](tools/blender/workflows.md) | если ответ MCP обрезан либо в задаче есть viewport-скриншот или сцена на сотни объектов: [setup.md](tools/blender/setup.md), раздел «Env-переменные» |
+| Создать 3D-контент | [workflows.md](tools/blender/workflows.md) | если вызов вернул ошибку или таймаут, либо в работе `.blend` из внешнего источника: [troubleshooting.md](tools/blender/troubleshooting.md) (справочник) |
+| Проблема с подключением | [troubleshooting.md](tools/blender/troubleshooting.md) (справочник) + [setup.md](tools/blender/setup.md) | — |
 
 ## Рабочий процесс
 

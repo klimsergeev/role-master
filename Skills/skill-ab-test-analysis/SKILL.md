@@ -16,7 +16,7 @@ when_to_use: >
   A/B-теста", "p-value 0.03 — это значимо?", "можно ли шипить фичу",
   "тест показал +2% конверсии", "guardrail метрики упали", "достаточно ли
   данных для выводов", "как интерпретировать результаты эксперимента".
-version: 1.1.0
+version: 1.2.0
 created: 2026-05-28
 ---
 
@@ -36,16 +36,16 @@ created: 2026-05-28
 
 ## Таблица маршрутизации
 
-> Читай только те файлы, которые нужны под задачу. Не загружай все сразу.
+> Читай файлы под задачу, а не скилл целиком. Колонка «Обязательно» — открыть до начала работы. Колонка «Читать, если» — открыть, когда условие выполнено; условие проверяется по задаче, а не по желанию. Файлы с пометкой `(справочник)` устроены как таблицы для точечного поиска — в них допустим поиск нужной строки вместо чтения целиком.
 
-| Задача | Минимум | Добавить при необходимости |
+| Задача | Обязательно | Читать, если |
 |---|---|---|
-| Полный анализ A/B-теста | Этот файл (рабочий процесс) | [statistical-framework.md](statistical-framework.md), [decision-framework.md](decision-framework.md) |
-| Интерпретация p-value / CI | [statistical-framework.md](statistical-framework.md) | -- |
-| Решение ship/no-ship | [decision-framework.md](decision-framework.md) | [statistical-framework.md](statistical-framework.md) |
-| Проверка ошибок анализа | [common-errors.md](common-errors.md) | [statistical-framework.md](statistical-framework.md) |
-| Выбор frequentist vs bayesian | [statistical-framework.md](statistical-framework.md) | -- |
-| Формат отчёта по результатам | [decision-framework.md](decision-framework.md) | -- |
+| Полный анализ A/B-теста | Этот файл (рабочий процесс), [statistical-framework.md](statistical-framework.md) (справочник), [decision-framework.md](decision-framework.md) | если валидация из шага 1 провалена (SRM, сдвиг invariant-метрики, тест остановлен раньше плана) ИЛИ сегменты дают противоположные по знаку эффекты: [common-errors.md](common-errors.md) (справочник) |
+| Интерпретация p-value / CI | [statistical-framework.md](statistical-framework.md) (справочник) | если в том же запросе требуется вывод ship/no-ship: [decision-framework.md](decision-framework.md) |
+| Решение ship/no-ship | [decision-framework.md](decision-framework.md), [statistical-framework.md](statistical-framework.md) (справочник) | если в исходных данных есть SRM, ранняя остановка, несколько «значимых» метрик или расхождение агрегата с сегментами: [common-errors.md](common-errors.md) (справочник) |
+| Проверка ошибок анализа | [common-errors.md](common-errors.md) (справочник) | если разбираемая ошибка касается порогов значимости, мощности или коррекции на множественные сравнения: [statistical-framework.md](statistical-framework.md) (справочник) |
+| Выбор frequentist vs bayesian | [statistical-framework.md](statistical-framework.md) (справочник) | если тест уже мониторят по ходу или хотят остановить досрочно: [common-errors.md](common-errors.md) (справочник) |
+| Формат отчёта по результатам | [decision-framework.md](decision-framework.md) | если в отчёт попадает p-value, посчитанное кодом, или значение меньше 1e-15: [statistical-framework.md](statistical-framework.md) (справочник) |
 
 ## Рабочий процесс
 

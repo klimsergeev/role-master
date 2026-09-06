@@ -10,7 +10,7 @@ when_to_use: >
   Также когда нужно оформить сообщение в приложении Telegram (какие символы работают
   при наборе, почему разметка не сработала) или rich-сообщение, отправляемое ботом
   через Bot API (Rich Markdown, Rich HTML, sendRichMessage, лимиты).
-version: 2.2.0
+version: 2.3.0
 created: 2026-05-02
 ---
 
@@ -28,20 +28,21 @@ created: 2026-05-02
 
 ## Таблица маршрутизации
 
-> Читай только те файлы, которые нужны под задачу. Не загружай все сразу.
+> Читай файлы под задачу, а не скилл целиком. Колонка «Обязательно» — открыть до начала работы. Колонка «Читать, если» — открыть, когда условие выполнено; условие проверяется по задаче, а не по желанию. Файлы с пометкой `(справочник)` устроены как таблицы для точечного поиска — в них допустим поиск нужной строки вместо чтения целиком.
 
-| Задача | Минимум | Добавить при необходимости |
+| Задача | Обязательно | Читать, если |
 |---|---|---|
-| Написать/отформатировать в Markdown | [markdown.md](markdown.md) | — |
-| Написать MDC / компонент в Markdown | [markdown.md](markdown.md) | — |
-| MultiMarkdown (сноски, метаданные, расширенные таблицы) | [markdown.md](markdown.md) | — |
-| Написать/отформатировать в Confluence | [confluence.md](confluence.md) | — |
-| Написать/отформатировать в Jira | [jira.md](jira.md) | — |
-| Написать/отформатировать в LaTeX | [latex.md](latex.md) | — |
-| Написать/отформатировать в Wikitext | [wikitext.md](wikitext.md) | — |
-| Написать/отформатировать в Textile | [textile.md](textile.md) | — |
-| Оформить сообщение в приложении Telegram | [telegram.md](telegram.md) | [telegram-bot-api.md](telegram-bot-api.md) |
-| Отправить rich-сообщение ботом через Bot API | [telegram-bot-api.md](telegram-bot-api.md) | [telegram.md](telegram.md) |
+| Написать/отформатировать в Markdown | [markdown.md](markdown.md) (справочник) | если текст уйдёт сообщением в приложение Telegram: [telegram.md](telegram.md); если его отправит бот через Bot API: [telegram-bot-api.md](telegram-bot-api.md) |
+| Написать MDC / компонент в Markdown | [markdown.md](markdown.md) (справочник) | — |
+| MultiMarkdown (сноски, метаданные, расширенные таблицы) | [markdown.md](markdown.md) (справочник) | если в документе есть математические формулы: [latex.md](latex.md) (справочник) |
+| Написать/отформатировать в Confluence | [confluence.md](confluence.md) (справочник) | — |
+| Написать/отформатировать в Jira | [jira.md](jira.md) (справочник) | — |
+| Написать/отформатировать в LaTeX | [latex.md](latex.md) (справочник) | — |
+| Написать/отформатировать в Wikitext | [wikitext.md](wikitext.md) (справочник) | — |
+| Написать/отформатировать в Textile | [textile.md](textile.md) (справочник) | — |
+| Оформить сообщение в приложении Telegram | [telegram.md](telegram.md) | если то же сообщение отправляет бот через Bot API, а не человек в клиенте: [telegram-bot-api.md](telegram-bot-api.md) |
+| Отправить rich-сообщение ботом через Bot API | [telegram-bot-api.md](telegram-bot-api.md) | если тот же текст набирают руками в приложении Telegram: [telegram.md](telegram.md); если в сообщении есть формулы — их источник обрабатывается как сырой LaTeX: [latex.md](latex.md) (справочник) |
+| Перевести текст из одного формата в другой | файлы обоих форматов — исходного и целевого, по строкам выше | — |
 
 ## Рабочий процесс
 

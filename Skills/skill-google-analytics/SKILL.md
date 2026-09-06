@@ -15,7 +15,7 @@ when_to_use: >
   написать SQL для BigQuery GA4, управлять GA4 property через Admin API.
   Примеры: "GA4 отчёт по странам", "Google Analytics API", "BigQuery GA4 запрос",
   "отправить серверное событие GA4", "checkCompatibility GA4".
-version: 2.0.0
+version: 2.1.0
 created: 2026-05-24
 ---
 
@@ -36,19 +36,19 @@ created: 2026-05-24
 
 ## Таблица маршрутизации
 
-> Читай только те файлы, которые нужны под задачу. Не загружай все сразу.
+> Читай файлы под задачу, а не скилл целиком. Колонка «Обязательно» -- открыть до начала работы. Колонка «Читать, если» -- открыть, когда условие выполнено; условие проверяется по задаче, а не по желанию. Файлы с пометкой `(справочник)` устроены как таблицы для точечного поиска -- в них допустим поиск нужной строки вместо чтения целиком.
 
-| Задача | Минимум | Добавить при необходимости |
+| Задача | Обязательно | Читать, если |
 |---|---|---|
-| Первое подключение к GA4 API | [auth-and-setup.md](auth-and-setup.md) | [gotchas.md](gotchas.md) |
-| Построить отчёт (runReport) | [data-api.md](data-api.md), [python-reference.md](python-reference.md) | [data-api-fields.md](data-api-fields.md), [gotchas.md](gotchas.md) |
-| Выбрать dimensions/metrics | [data-api-fields.md](data-api-fields.md) | [data-api.md](data-api.md) (checkCompatibility) |
-| Запрос в реальном времени | [data-api.md](data-api.md) | [python-reference.md](python-reference.md) |
-| Управлять GA4 property | [admin-api.md](admin-api.md) | [auth-and-setup.md](auth-and-setup.md) |
-| Написать SQL по BigQuery GA4 | [bigquery-export.md](bigquery-export.md) | [gotchas.md](gotchas.md) |
-| Отправить серверное событие | [measurement-protocol.md](measurement-protocol.md) | [auth-and-setup.md](auth-and-setup.md) (api_secret) |
-| Написать Python-скрипт для GA4 | [python-reference.md](python-reference.md) | [data-api.md](data-api.md), [gotchas.md](gotchas.md) |
-| Отладить ошибку API | [gotchas.md](gotchas.md) | [auth-and-setup.md](auth-and-setup.md) |
+| Первое подключение к GA4 API | [auth-and-setup.md](auth-and-setup.md) | если тестовый запрос вернул 403, ошибку credentials или пустой список аккаунтов: [gotchas.md](gotchas.md) |
+| Построить отчёт (runReport) | [data-api.md](data-api.md), [data-api-fields.md](data-api-fields.md) (справочник), [python-reference.md](python-reference.md) | если период охватывает больше 10 млн событий или в ответе есть `samplingMetadatas`, `dataLossFromOtherRow` либо код 4xx: [gotchas.md](gotchas.md) |
+| Выбрать dimensions/metrics | [data-api-fields.md](data-api-fields.md) (справочник) | если комбинация dimensions+metrics используется впервые: [data-api.md](data-api.md) (checkCompatibility); если поля нет в справочнике: [data-api.md](data-api.md) (getMetadata) |
+| Запрос в реальном времени | [data-api.md](data-api.md) | если запрос выполняется Python-скриптом, а не curl: [python-reference.md](python-reference.md) |
+| Управлять GA4 property | [admin-api.md](admin-api.md) | если Service Account ещё не заведён или требуется scope на запись (`analytics.edit`): [auth-and-setup.md](auth-and-setup.md); если управление выполняется Python-скриптом: [python-reference.md](python-reference.md) |
+| Написать SQL по BigQuery GA4 | [bigquery-export.md](bigquery-export.md) | если экспорт GA4 в BigQuery ещё не подключён: [admin-api.md](admin-api.md) (bigQueryLinks); если Data API уже упёрся в семплирование, строку `(other)` или квоты: [gotchas.md](gotchas.md) |
+| Отправить серверное событие | [measurement-protocol.md](measurement-protocol.md) | если `api_secret` ещё не получен: [admin-api.md](admin-api.md) (measurementProtocolSecrets); если событие отправляется из Python: [python-reference.md](python-reference.md) |
+| Написать Python-скрипт для GA4 | [python-reference.md](python-reference.md) | если скрипт обращается к Data API: [data-api.md](data-api.md), [data-api-fields.md](data-api-fields.md) (справочник); если скрипт меняет конфигурацию property: [admin-api.md](admin-api.md); если скрипт отправляет события: [measurement-protocol.md](measurement-protocol.md) |
+| Отладить ошибку API | [gotchas.md](gotchas.md) | если 403 PERMISSION_DENIED или отказ по credentials: [auth-and-setup.md](auth-and-setup.md); если 400 по несовместимости полей: [data-api.md](data-api.md) (checkCompatibility), [data-api-fields.md](data-api-fields.md) (справочник) |
 
 ## Самопроверка при подключении
 

@@ -24,7 +24,7 @@ when_to_use: >
   билет/отель», «посмотри цену на сайте», «это поставщик или агрегатор»,
   «когда дешевле лететь», «открой сайт и проверь часы», «положи в корзину»,
   «добавь в избранное», «забронируй».
-version: 1.4.0
+version: 1.5.1
 created: 2026-07-20
 ---
 
@@ -40,33 +40,33 @@ created: 2026-07-20
 2. **Цена — ТОЛЬКО от первоисточника, и первоисточников два.** Ценовой travel-API (read-only) и страница поставщика, прочитанная в браузере, равноправны: и то и другое идёт в план и в бюджет, каждое со своим провенансом (вендор + дата — для API; адрес + дата и время просмотра — для страницы). НИКОГДА из памяти модели (правдоподобная галлюцинация), НИКОГДА из сниппета веб-поиска (решение пользователя), НИКОГДА с агрегатора — даже открытого в том же браузере. Различает не инструмент, а **автор числа**: сайт перевозчика, отеля, музея, собственный движок оператора — поставщик; Kayak, Aviasales, Booking и подобные витрины — пересказ. Тест и разбор краёв — в [price-sources.md](price-sources.md). Нет ни API, ни доступной страницы поставщика → роль честно говорит «цену дать не могу», а не выдумывает.
 3. **Браузерная цена персонализирована — это оговаривается вслух.** Она зависит от авторизованной сессии, региона, валюты профиля и куки, а на оформлении может вырасти за счёт сборов и налогов. API отдаёт цену вне персонализации, страница — нет. Подавать как «то, что показывают тебе сейчас, до сборов», а не как «цену для всех».
 4. **Веб-поиск и браузер — рабочие инструменты верификации.** Часы работы, расписания транспорта, визы, сезонные закрытия, существование локаций проверяются с пометкой даты; где доступна официальная страница объекта или перевозчика — первоисточник предпочтительнее сниппета выдачи. Для цен сниппет как источник запрещён, страница поставщика — разрешена.
-5. **Обязательная верификация.** Ни один времязависимый факт не выдаётся без проверки и провенанса. Прикладная конкретизация `.claude/rules/anti-bias.md` под travel.
+5. **Обязательная верификация.** Ни один времязависимый факт не выдаётся без проверки и провенанса. Прикладная конкретизация принципа anti-bias под travel.
 6. **Граница — финансовое обязательство, а не платёж.** Браузер разрешён: смотреть, читать цену, сравнивать, класть в корзину и в избранное. Запрещено всё, что создаёт обязанность заплатить — сейчас или потом: бронь, оплата, ввод платёжных данных, подтверждение платежа. Невозвратный тариф и карта-гарантия создают обязательство без всякой платёжной формы, поэтому бронирование исключено вместе с оплатой; book/prebook/order у travel-API не вызываются, все ценовые API — строго read-only. Разрешение читать цену со страницы этой границы не сдвигает: прочитать — не значит пройти на шаг дальше, чтобы «уточнить». Правила и тест перед действием — в [browser-use.md](browser-use.md).
 7. **Прогрессивное раскрытие.** Читай только те файлы, которые нужны под задачу. Не загружай все сразу.
 
 ## Таблица маршрутизации
 
-> Читай только те файлы, которые нужны под задачу. Не загружай все сразу.
+> Читай файлы под задачу, а не скилл целиком. Колонка «Обязательно» — открыть до начала работы. Колонка «Читать, если» — открыть, когда условие выполнено; условие проверяется по задаче, а не по желанию. Файлы с пометкой `(справочник)` устроены как таблицы для точечного поиска — в них допустим поиск нужной строки вместо чтения целиком.
 
-| Задача | Минимум | Добавить при необходимости |
+| Задача | Обязательно | Читать, если |
 |---|---|---|
-| Полный цикл планирования с нуля | [phases.md](phases.md), [prompt-patterns.md](prompt-patterns.md) | [traveler-profile.md](traveler-profile.md) |
-| Собрать/обновить профиль путешественника | [traveler-profile.md](traveler-profile.md) | — |
-| Выбор направления | [phases.md](phases.md), [prompt-patterns.md](prompt-patterns.md) | — |
-| Логистика по городам / маршрут по дням | [phases.md](phases.md) | [verification.md](verification.md) |
-| Верификация плана (проверь план поездки) | [verification.md](verification.md), [risk-practices.md](risk-practices.md) | — |
-| Сопровождение в поездке | [on-trip-support.md](on-trip-support.md) | [verification.md](verification.md) |
-| Упаковка итогового документа | [trip-document.md](trip-document.md) | [verification.md](verification.md) |
-| Узнать цену/бюджет билетов и отелей | [price-sources.md](price-sources.md), [verification.md](verification.md) | [browser-use.md](browser-use.md) (цена читается со страницы) |
-| Взять цену со страницы: можно ли, это поставщик или агрегатор | [price-sources.md](price-sources.md) | [verification.md](verification.md), [browser-use.md](browser-use.md) |
-| Оформить провенанс цены и строку бюджета | [verification.md](verification.md), [trip-document.md](trip-document.md) | [price-sources.md](price-sources.md) |
-| Какой ценовой API взять / «куда дёшево» | [price-sources.md](price-sources.md) | [verification.md](verification.md) |
-| Когда дешевле лететь/покупать (день недели, окно бронирования) | [price-sources.md](price-sources.md) | [phases.md](phases.md), [verification.md](verification.md) |
-| Проверить конкретный нефинансовый времязависимый факт (часы, визы, расписание) | [verification.md](verification.md) | [browser-use.md](browser-use.md) (проверка по первоисточнику) |
-| Работа в браузере: открыть сайт, собрать варианты, корзина/избранное | [browser-use.md](browser-use.md) | [verification.md](verification.md) |
-| Просят забронировать/оплатить/ввести карту | [browser-use.md](browser-use.md) | — |
-| Где смотреть цену / куда уводить (не бронь) | [trip-document.md](trip-document.md) | [price-sources.md](price-sources.md) |
-| Высокорисковый сегмент (горы/здоровье/отдалённость) | [risk-practices.md](risk-practices.md) | [verification.md](verification.md) |
+| Полный цикл планирования с нуля | [phases.md](phases.md), [prompt-patterns.md](prompt-patterns.md) (справочник), [traveler-profile.md](traveler-profile.md), [verification.md](verification.md), [trip-document.md](trip-document.md) | если в плане называется цена или считается бюджет: [price-sources.md](price-sources.md) (справочник); если в поездке есть высокорисковый сегмент — горы, здоровье, отдалённость: [risk-practices.md](risk-practices.md) |
+| Собрать/обновить профиль путешественника | [traveler-profile.md](traveler-profile.md) | если профиль собирается опросом с нуля: [prompt-patterns.md](prompt-patterns.md) (справочник) |
+| Выбор направления | [phases.md](phases.md), [prompt-patterns.md](prompt-patterns.md) (справочник) | если профиля ещё нет: [traveler-profile.md](traveler-profile.md); если даты гибкие и нужен ориентир «когда дешевле»: [price-sources.md](price-sources.md) (справочник) |
+| Логистика по городам / маршрут по дням | [phases.md](phases.md), [verification.md](verification.md) | если в маршруте есть высокорисковый сегмент: [risk-practices.md](risk-practices.md); если часы или расписание проверяются на официальной странице в браузере: [browser-use.md](browser-use.md) |
+| Верификация плана (проверь план поездки) | [verification.md](verification.md), [risk-practices.md](risk-practices.md) | если в плане стоят цены: [price-sources.md](price-sources.md) (справочник); если проверка идёт по официальной странице в браузере: [browser-use.md](browser-use.md) |
+| Сопровождение в поездке | [on-trip-support.md](on-trip-support.md), [verification.md](verification.md) | если на месте нужна цена — музей, билет, ночлег: [price-sources.md](price-sources.md) (справочник), [browser-use.md](browser-use.md); если форс-мажор или высокорисковый сегмент: [risk-practices.md](risk-practices.md) |
+| Упаковка итогового документа | [trip-document.md](trip-document.md), [verification.md](verification.md) | если в бюджете есть цены: [price-sources.md](price-sources.md) (справочник) |
+| Узнать цену/бюджет билетов и отелей | [price-sources.md](price-sources.md) (справочник), [verification.md](verification.md) | если цена читается со страницы поставщика — ценовой API не подключён или кэш-цену сверяют живым числом: [browser-use.md](browser-use.md); если цена уходит в строку бюджета: [trip-document.md](trip-document.md) |
+| Взять цену со страницы: можно ли, это поставщик или агрегатор | [price-sources.md](price-sources.md) (справочник), [browser-use.md](browser-use.md), [verification.md](verification.md) | если число уходит в бюджет итогового документа: [trip-document.md](trip-document.md) |
+| Оформить провенанс цены и строку бюджета | [verification.md](verification.md), [trip-document.md](trip-document.md) | если цена прочитана со страницы в браузере: [price-sources.md](price-sources.md) (справочник) |
+| Какой ценовой API взять / «куда дёшево» | [price-sources.md](price-sources.md) (справочник), [verification.md](verification.md) | если исполнения кода или токена нет и цена идёт со страницы поставщика: [browser-use.md](browser-use.md) |
+| Когда дешевле лететь/покупать (день недели, окно бронирования) | [price-sources.md](price-sources.md) (справочник) | если после эвристики называется конкретная цена на даты: [verification.md](verification.md); если даты подбираются внутри фазы выбора направления или логистики: [phases.md](phases.md) |
+| Проверить конкретный нефинансовый времязависимый факт (часы, визы, расписание) | [verification.md](verification.md) | если факт проверяется на официальной странице в браузере: [browser-use.md](browser-use.md) |
+| Работа в браузере: открыть сайт, собрать варианты, корзина/избранное | [browser-use.md](browser-use.md) | если со страницы берётся цена: [price-sources.md](price-sources.md) (справочник), [verification.md](verification.md) |
+| Просят забронировать/оплатить/ввести карту | [browser-use.md](browser-use.md) | если после отказа пользователю показывают, где смотреть и оформлять самому: [trip-document.md](trip-document.md) |
+| Где смотреть цену / куда уводить (не бронь) | [trip-document.md](trip-document.md) | если рядом с указателем называется цена: [price-sources.md](price-sources.md) (справочник), [verification.md](verification.md); если пользователя доводят до страницы в браузере: [browser-use.md](browser-use.md) |
+| Высокорисковый сегмент (горы/здоровье/отдалённость) | [risk-practices.md](risk-practices.md), [verification.md](verification.md) | если сегмент встраивается в маршрут по дням: [phases.md](phases.md) |
 
 ## Разведение с skill-chrome-mcp
 

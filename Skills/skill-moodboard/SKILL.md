@@ -18,7 +18,7 @@ when_to_use: >
   "собери примеры FOMO-плашек", "найди референсы онбординга",
   "подбери палитру и шрифты для проекта", "создай мудборд в Figma",
   "покажи лучшие примеры empty states", "собери коллекцию паттернов".
-version: 1.1.0
+version: 1.2.0
 created: 2026-06-08
 ---
 
@@ -43,19 +43,19 @@ created: 2026-06-08
 
 ## Таблица маршрутизации
 
-> Читай только те файлы, которые нужны под задачу. Не загружай все сразу.
+> Читай файлы под задачу, а не скилл целиком. Колонка «Обязательно» — открыть до начала работы. Колонка «Читать, если» — открыть, когда условие выполнено; условие проверяется по задаче, а не по желанию. Файлы с пометкой `(справочник)` устроены как таблицы для точечного поиска — в них допустим поиск нужной строки вместо чтения целиком.
 
-| Задача | Минимум | Добавить при необходимости |
+| Задача | Обязательно | Читать, если |
 |---|---|---|
-| Создать мудборд с нуля (markdown) | [moodboard-workflow.md](moodboard-workflow.md) | [element-extraction.md](element-extraction.md), [moodboard-templates.md](moodboard-templates.md) |
-| Создать мудборд в Figma | [moodboard-workflow.md](moodboard-workflow.md), [figma-output.md](figma-output.md) | [element-extraction.md](element-extraction.md) |
-| Собрать коллекцию паттернов (FOMO, онбординг и т.п.) | [moodboard-workflow.md](moodboard-workflow.md), [moodboard-templates.md](moodboard-templates.md) | [element-extraction.md](element-extraction.md), [figma-output.md](figma-output.md) |
-| Собрать коллекцию паттернов в Figma с мокапами | [moodboard-workflow.md](moodboard-workflow.md), [figma-output.md](figma-output.md), [moodboard-templates.md](moodboard-templates.md) | [element-extraction.md](element-extraction.md) |
-| Мудборд по теме без конкретных URL (поисковый режим) | [moodboard-workflow.md](moodboard-workflow.md) | [element-extraction.md](element-extraction.md), [moodboard-templates.md](moodboard-templates.md), [figma-output.md](figma-output.md) |
-| Итерировать существующий мудборд | [moodboard-workflow.md](moodboard-workflow.md) | [figma-output.md](figma-output.md) |
-| Извлечь дизайн-элементы из источника | [element-extraction.md](element-extraction.md) | — |
-| Финализировать мудборд | [moodboard-templates.md](moodboard-templates.md) | [moodboard-workflow.md](moodboard-workflow.md), [figma-output.md](figma-output.md) |
-| Создать мудборд без визуальных источников | [moodboard-workflow.md](moodboard-workflow.md), [element-extraction.md](element-extraction.md) | [moodboard-templates.md](moodboard-templates.md) |
+| Создать мудборд с нуля (markdown) | [moodboard-workflow.md](moodboard-workflow.md), [element-extraction.md](element-extraction.md) (справочник), [moodboard-templates.md](moodboard-templates.md) | если пользователь просит вдобавок фрейм в Figma: [figma-output.md](figma-output.md) |
+| Создать мудборд в Figma | [moodboard-workflow.md](moodboard-workflow.md), [element-extraction.md](element-extraction.md) (справочник), [moodboard-templates.md](moodboard-templates.md), [figma-output.md](figma-output.md) | — |
+| Собрать коллекцию паттернов (FOMO, онбординг и т.п.) | [moodboard-workflow.md](moodboard-workflow.md), [element-extraction.md](element-extraction.md) (справочник), [moodboard-templates.md](moodboard-templates.md) | если коллекция выдаётся фреймом в Figma с визуальными мокапами: [figma-output.md](figma-output.md) |
+| Собрать коллекцию паттернов в Figma с мокапами | [moodboard-workflow.md](moodboard-workflow.md), [element-extraction.md](element-extraction.md) (справочник), [moodboard-templates.md](moodboard-templates.md), [figma-output.md](figma-output.md) | — |
+| Мудборд по теме без конкретных URL (поисковый режим) | [moodboard-workflow.md](moodboard-workflow.md), [element-extraction.md](element-extraction.md) (справочник), [moodboard-templates.md](moodboard-templates.md) | если выход — фрейм в Figma, а не markdown: [figma-output.md](figma-output.md) |
+| Итерировать существующий мудборд | [moodboard-workflow.md](moodboard-workflow.md), [moodboard-templates.md](moodboard-templates.md) | если у мудборда есть Figma-фрейм: [figma-output.md](figma-output.md); если в итерацию добавляются новые источники: [element-extraction.md](element-extraction.md) (справочник) |
+| Извлечь дизайн-элементы из источника | [element-extraction.md](element-extraction.md) (справочник) | если источников несколько и их нужно свести в одну палитру и типографику: [moodboard-workflow.md](moodboard-workflow.md) |
+| Финализировать мудборд | [moodboard-templates.md](moodboard-templates.md), [moodboard-workflow.md](moodboard-workflow.md) | если у мудборда есть Figma-фрейм: [figma-output.md](figma-output.md) |
+| Создать мудборд без визуальных источников | [moodboard-workflow.md](moodboard-workflow.md), [element-extraction.md](element-extraction.md) (справочник), [moodboard-templates.md](moodboard-templates.md) | если выход — фрейм в Figma, а не markdown: [figma-output.md](figma-output.md) |
 
 ## Рабочий процесс
 

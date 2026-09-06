@@ -17,7 +17,7 @@ when_to_use: >
   Примеры: «подключи Chrome MCP», «проверь, на связи ли браузер», «почему read_page
   не видит кнопку», «как загрузить файл на страницу», «настрой claude --chrome»,
   «Claude in Chrome не подключается».
-version: 1.0.0
+version: 1.1.0
 created: 2026-08-19
 ---
 
@@ -74,22 +74,22 @@ created: 2026-08-19
 
 ## Таблица маршрутизации
 
-> Читай только те файлы, которые нужны под задачу. Не загружай все сразу.
+> Читай файлы под задачу, а не скилл целиком. Колонка «Обязательно» — открыть до начала работы. Колонка «Читать, если» — открыть, когда условие выполнено; условие проверяется по задаче, а не по желанию. Файлы с пометкой `(справочник)` устроены как таблицы для точечного поиска — в них допустим поиск нужной строки вместо чтения целиком.
 
-| Задача | Минимум | Добавить при необходимости |
+| Задача | Обязательно | Читать, если |
 |---|---|---|
-| Подключить браузер, `claude --chrome`, `/chrome` | [setup.md](setup.md) | [troubleshooting.md](troubleshooting.md) |
-| Открыть страницу и прочитать содержимое | [tools-session.md](tools-session.md), [tools-read.md](tools-read.md) | [scenarios.md](scenarios.md) |
-| Кликнуть, заполнить форму, загрузить файл | [tools-act.md](tools-act.md) | [tools-read.md](tools-read.md), [silent-failures.md](silent-failures.md) |
-| Отладить консоль и сетевые запросы | [tools-debug.md](tools-debug.md) | [scenarios.md](scenarios.md), [silent-failures.md](silent-failures.md) |
-| Выполнить JavaScript на странице | [tools-debug.md](tools-debug.md) | [tools-read.md](tools-read.md) |
-| Проверить адаптивную вёрстку, записать GIF | [tools-window-media.md](tools-window-media.md) | [silent-failures.md](silent-failures.md) |
-| Несколько подключённых браузеров, ярлыки | [tools-browsers-shortcuts.md](tools-browsers-shortcuts.md) | — |
-| Инструмент ответил «успешно», но результат неверный | [silent-failures.md](silent-failures.md) | файл нужного инструмента по карте выше |
-| Ошибка, обрыв связи, расширение не отвечает | [troubleshooting.md](troubleshooting.md) | [setup.md](setup.md) |
-| Разрешения, доступ к сайту, плановый режим | [permissions.md](permissions.md) | [troubleshooting.md](troubleshooting.md) |
-| Оценить риск задачи, приватность, prompt injection | [security.md](security.md) | [permissions.md](permissions.md) |
-| Понять, годится ли браузер под задачу | [scenarios.md](scenarios.md) | [security.md](security.md) |
+| Подключить браузер, `claude --chrome`, `/chrome` | [setup.md](setup.md) | если пришло `Browser extension is not connected…`, `/chrome` показывает «Extension: Not detected» или связь оборвалась в работе: [troubleshooting.md](troubleshooting.md) (справочник) |
+| Открыть страницу и прочитать содержимое | [tools-session.md](tools-session.md) (справочник), [tools-read.md](tools-read.md) (справочник) | если прочитанное расходится со снимком экрана или вывод оборван по пределу: [silent-failures.md](silent-failures.md) (справочник) · если ещё не решено, годится ли браузер под эту задачу или чем он отличается от WebFetch: [scenarios.md](scenarios.md) |
+| Кликнуть, заполнить форму, загрузить файл | [tools-act.md](tools-act.md) (справочник), [tools-read.md](tools-read.md) (справочник), [silent-failures.md](silent-failures.md) (справочник) | если действие способно вызвать `alert`, `confirm`, `prompt`, `beforeunload` или нативное окно выбора файла: [troubleshooting.md](troubleshooting.md) (справочник) |
+| Отладить консоль и сетевые запросы | [tools-debug.md](tools-debug.md) (справочник) | если журнал пуст, а события были, либо значение пришло строкой `[BLOCKED: Sensitive key]`: [silent-failures.md](silent-failures.md) (справочник) · если данные снимаются больше чем с одного домена или страницы подряд: [scenarios.md](scenarios.md) |
+| Выполнить JavaScript на странице | [tools-debug.md](tools-debug.md) (справочник) | если код лезет в элемент, которого не видят `read_page`, `get_page_text` и `find` — теневое дерево, чужой кадр: [tools-read.md](tools-read.md) (справочник) |
+| Проверить адаптивную вёрстку, записать GIF | [tools-window-media.md](tools-window-media.md) (справочник) | если после `resize_window` страница отдаёт прежние `innerWidth` и `Viewport`: [silent-failures.md](silent-failures.md) (справочник) · если GIF уйдёт пользователю или за пределы команды: [security.md](security.md) |
+| Несколько подключённых браузеров, ярлыки | [tools-browsers-shortcuts.md](tools-browsers-shortcuts.md) (справочник) | если `list_connected_browsers` не вернул ни одной записи: [troubleshooting.md](troubleshooting.md) (справочник) |
+| Инструмент ответил «успешно», но результат неверный | [silent-failures.md](silent-failures.md) (справочник), файл инструмента по «Карте инструментов» выше | если у симптома есть видимый текст ошибки: [troubleshooting.md](troubleshooting.md) (справочник) |
+| Ошибка, обрыв связи, расширение не отвечает | [troubleshooting.md](troubleshooting.md) (справочник) | если восстановление дошло до версии Claude Code или файла конфигурации native messaging: [setup.md](setup.md) · если отказывает только часть сайтов и это управляемая организация: [permissions.md](permissions.md) |
+| Разрешения, доступ к сайту, плановый режим | [permissions.md](permissions.md) | если вместе с отказом пришёл текст ошибки: [troubleshooting.md](troubleshooting.md) (справочник) · если задача включает вход в аккаунт, ввод чувствительных данных или скачивание файла: [security.md](security.md) |
+| Оценить риск задачи, приватность, prompt injection | [security.md](security.md) | если надо свериться с перечнем неснимаемых запретов продукта или с настройками организации: [permissions.md](permissions.md) |
+| Понять, годится ли браузер под задачу | [scenarios.md](scenarios.md) | если сценарий похож на запрещённый продуктом или на нерекомендуемый — покупки, удаление, капча, регулируемые данные: [permissions.md](permissions.md), [security.md](security.md) |
 
 ## Рабочий процесс
 
@@ -162,7 +162,7 @@ created: 2026-08-19
 
 **Запрос:** «Открой страницу товара и собери название, цену и наличие»
 
-**Маршрут:** [tools-session.md](tools-session.md), [tools-read.md](tools-read.md); при необходимости [scenarios.md](scenarios.md)
+**Маршрут:** [tools-session.md](tools-session.md), [tools-read.md](tools-read.md); если прочитанное расходится со снимком — [silent-failures.md](silent-failures.md)
 
 **Результат:** агент заводит свою вкладку, переходит на адрес, выдерживает паузу, берёт `get_page_text` для текста либо `read_page` с `filter: "interactive"` — если дальше надо взаимодействовать, — и сверяет собранное со снимком экрана, а не полагается на полноту вывода.
 

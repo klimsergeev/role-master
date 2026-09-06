@@ -16,7 +16,7 @@ when_to_use: >
   "сегментируй базу по RFM", "какой North Star для marketplace",
   "построй дерево метрик", "какие guardrail-метрики мониторить",
   "воронка регистрации", "AARRR для SaaS", "профиль сегмента".
-version: 1.2.0
+version: 1.3.0
 created: 2026-05-28
 ---
 
@@ -36,19 +36,19 @@ created: 2026-05-28
 
 ## Таблица маршрутизации
 
-> Читай только те файлы, которые нужны под задачу. Не загружай все сразу.
+> Читай файлы под задачу, а не скилл целиком. Колонка «Обязательно» -- открыть до начала работы. Колонка «Читать, если» -- открыть, когда условие выполнено; условие проверяется по задаче, а не по желанию. Файлы с пометкой `(справочник)` устроены как таблицы для точечного поиска -- в них допустим поиск нужной строки вместо чтения целиком.
 
-| Задача | Минимум | Добавить при необходимости |
+| Задача | Обязательно | Читать, если |
 |---|---|---|
-| Построить воронку, найти drop-off | [funnel-analysis.md](funnel-analysis.md) | [kpi-framework.md](kpi-framework.md) |
-| Оптимизировать конверсию | [funnel-analysis.md](funnel-analysis.md) | [segmentation.md](segmentation.md) |
-| Сегментировать пользователей (RFM, поведение) | [segmentation.md](segmentation.md) | [funnel-analysis.md](funnel-analysis.md) |
+| Построить воронку, найти drop-off | [funnel-analysis.md](funnel-analysis.md) | если воронка считается по уникальным пользователям и сравнивается между периодами разной длины: [kpi-framework.md](kpi-framework.md); если drop-off разрезается не по готовым атрибутам (платформа, гео, источник), а по поведению или RFM: [segmentation.md](segmentation.md) |
+| Оптимизировать конверсию | [funnel-analysis.md](funnel-analysis.md), [kpi-framework.md](kpi-framework.md) | если drop-off различается между группами и оптимизация адресуется конкретной группе: [segmentation.md](segmentation.md) |
+| Сегментировать пользователей (RFM, поведение) | [segmentation.md](segmentation.md) | если сегменты сравниваются по конверсии и воронка строится в разрезе сегмента: [funnel-analysis.md](funnel-analysis.md) |
 | Выбрать тип сегментации | [segmentation.md](segmentation.md) | — |
 | Определить North Star Metric | [kpi-framework.md](kpi-framework.md) | — |
-| Построить дерево метрик / выбрать KPI | [kpi-framework.md](kpi-framework.md) | [funnel-analysis.md](funnel-analysis.md) |
+| Построить дерево метрик / выбрать KPI | [kpi-framework.md](kpi-framework.md) | если input-метрика дерева -- конверсия между шагами (visitors -> cart -> purchase): [funnel-analysis.md](funnel-analysis.md) |
 | Настроить guardrail-метрики | [kpi-framework.md](kpi-framework.md) | — |
-| Применить AARRR-фреймворк | [kpi-framework.md](kpi-framework.md) | [funnel-analysis.md](funnel-analysis.md), [segmentation.md](segmentation.md) |
-| Комплексный продуктовый аудит | [kpi-framework.md](kpi-framework.md), [funnel-analysis.md](funnel-analysis.md) | [segmentation.md](segmentation.md) |
+| Применить AARRR-фреймворк | [kpi-framework.md](kpi-framework.md) | если приоритетная стадия -- Acquisition, Activation или Referral (строится воронка стадии): [funnel-analysis.md](funnel-analysis.md); если приоритетная стадия -- Revenue или Referral (RFM-сегментация): [segmentation.md](segmentation.md) |
+| Комплексный продуктовый аудит | [kpi-framework.md](kpi-framework.md), [funnel-analysis.md](funnel-analysis.md), [segmentation.md](segmentation.md) | — |
 
 ## Рабочий процесс
 

@@ -19,7 +19,7 @@ when_to_use: >
   split tunneling не работает, WireGuard отваливается после сна. Примеры: «настрой
   sing-box на macOS», «конфиг TUIC для Android», «почему .ru идёт через VPN»,
   «перенеси мой WireGuard на iPhone».
-version: 1.0.0
+version: 1.1.0
 created: 2026-07-29
 ---
 
@@ -39,21 +39,21 @@ created: 2026-07-29
 
 ## Таблица маршрутизации
 
-> Читай только те файлы, которые нужны под задачу. Не загружай все сразу.
+> Читай файлы под задачу, а не скилл целиком. Колонка «Обязательно» — открыть до начала работы. Колонка «Читать, если» — открыть, когда условие выполнено; условие проверяется по задаче, а не по желанию. Файлы с пометкой `(справочник)` устроены как таблицы для точечного поиска — в них допустим поиск нужной строки вместо чтения целиком.
 
-| Задача | Минимум | Добавить при необходимости |
+| Задача | Обязательно | Читать, если |
 |---|---|---|
-| Выбрать платформу, понять различия, выбрать клиент | [platforms-overview.md](platforms-overview.md) | — |
-| Настроить с нуля на macOS | [platform-macos.md](platform-macos.md) | [protocol-tuic.md](protocol-tuic.md) или [protocol-wireguard.md](protocol-wireguard.md), [split-tunneling.md](split-tunneling.md) |
-| Настроить с нуля на Android | [platform-android.md](platform-android.md) | [protocol-tuic.md](protocol-tuic.md) или [protocol-wireguard.md](protocol-wireguard.md), [split-tunneling.md](split-tunneling.md) |
-| Настроить с нуля на iOS / iPadOS | [platform-ios.md](platform-ios.md) | [protocol-tuic.md](protocol-tuic.md) или [protocol-wireguard.md](protocol-wireguard.md), [split-tunneling.md](split-tunneling.md) |
-| Понять структуру конфига, что обязательно | [config-basics.md](config-basics.md) | [config-format-versions.md](config-format-versions.md) |
-| Ошибка формата, deprecation warning, миграция версии | [config-format-versions.md](config-format-versions.md) | [troubleshooting.md](troubleshooting.md) |
-| Собрать TUIC-подключение, share link, QR | [protocol-tuic.md](protocol-tuic.md) | [config-basics.md](config-basics.md) |
-| Перенести WireGuard `.conf` в sing-box | [protocol-wireguard.md](protocol-wireguard.md) | [config-basics.md](config-basics.md) |
-| Часть доменов мимо VPN / исключить приложение | [split-tunneling.md](split-tunneling.md) | нужный `platform-*.md` |
-| Подключён, но не работает; ошибка в логах | [troubleshooting.md](troubleshooting.md) | нужный `platform-*.md`, [config-format-versions.md](config-format-versions.md) |
-| Выбрать альтернативный клиент (Hiddify, NekoBox, Shadowrocket) | [platforms-overview.md](platforms-overview.md) | — |
+| Выбрать платформу, понять различия, выбрать клиент | [platforms-overview.md](platforms-overview.md) (справочник) | если версия ядра в самом клиенте отличается от указанной в таблице: [config-format-versions.md](config-format-versions.md) |
+| Настроить с нуля на macOS | [platforms-overview.md](platforms-overview.md) (справочник), [platform-macos.md](platform-macos.md), файл выбранного протокола — [protocol-tuic.md](protocol-tuic.md) или [protocol-wireguard.md](protocol-wireguard.md) | если часть доменов должна идти мимо туннеля: [split-tunneling.md](split-tunneling.md)<br>если версия ядра в клиенте не 1.11.x или конфиг даёт ошибку формата: [config-format-versions.md](config-format-versions.md)<br>если конфиг собирается не по готовому шаблону, а с нуля: [config-basics.md](config-basics.md) (справочник)<br>если профиль запущен, но интернета нет: [troubleshooting.md](troubleshooting.md) (справочник) |
+| Настроить с нуля на Android | [platforms-overview.md](platforms-overview.md) (справочник), [platform-android.md](platform-android.md), файл выбранного протокола — [protocol-tuic.md](protocol-tuic.md) или [protocol-wireguard.md](protocol-wireguard.md) | если протокол WireGuard — готового Android-шаблона нет, конфиг собирается вручную: [config-basics.md](config-basics.md) (справочник), [config-format-versions.md](config-format-versions.md)<br>если часть доменов идёт мимо туннеля или нужна фильтрация по приложениям: [split-tunneling.md](split-tunneling.md)<br>если версия ядра в клиенте не 1.12+: [config-format-versions.md](config-format-versions.md)<br>если профиль запущен, но интернета нет: [troubleshooting.md](troubleshooting.md) (справочник) |
+| Настроить с нуля на iOS / iPadOS | [platforms-overview.md](platforms-overview.md) (справочник), [platform-ios.md](platform-ios.md), файл выбранного протокола — [protocol-tuic.md](protocol-tuic.md) или [protocol-wireguard.md](protocol-wireguard.md) | если часть доменов должна идти мимо туннеля: [split-tunneling.md](split-tunneling.md)<br>если появились deprecation warnings или шаблон нужно привести к формату 1.11.x: [config-format-versions.md](config-format-versions.md)<br>если туннель не поднимается или маршрутизация ведёт себя странно (расхождение источников по `stack` и `strict_route`): [troubleshooting.md](troubleshooting.md) (справочник) |
+| Понять структуру конфига, что обязательно | [config-basics.md](config-basics.md) (справочник) | если версия ядра известна и нужен точный формат DNS-секции: [config-format-versions.md](config-format-versions.md)<br>если конфиг пишется под конкретную платформу: [platform-macos.md](platform-macos.md), [platform-android.md](platform-android.md) или [platform-ios.md](platform-ios.md) |
+| Ошибка формата, deprecation warning, миграция версии | [config-format-versions.md](config-format-versions.md) | если дословного текста ошибки нет в таблицах форматов: [troubleshooting.md](troubleshooting.md) (справочник)<br>если конфиг переносится на другую платформу: [platform-macos.md](platform-macos.md), [platform-android.md](platform-android.md) или [platform-ios.md](platform-ios.md) |
+| Собрать TUIC-подключение, share link, QR | [protocol-tuic.md](protocol-tuic.md) | если нужен полный конфиг, а не только outbound-блок: [config-basics.md](config-basics.md) (справочник) и файл целевой платформы — [platform-macos.md](platform-macos.md), [platform-android.md](platform-android.md) или [platform-ios.md](platform-ios.md)<br>если QR импортируется в SFA, а не в Hiddify: [platform-android.md](platform-android.md)<br>если Hiddify отвечает «unable to determine config format»: [troubleshooting.md](troubleshooting.md) (справочник) |
+| Перенести WireGuard `.conf` в sing-box | [protocol-wireguard.md](protocol-wireguard.md), файл целевой платформы — [platform-macos.md](platform-macos.md), [platform-android.md](platform-android.md) или [platform-ios.md](platform-ios.md) | если целевая платформа Android — готового шаблона нет, конфиг собирается вручную: [config-basics.md](config-basics.md) (справочник), [config-format-versions.md](config-format-versions.md)<br>если часть доменов должна идти мимо туннеля: [split-tunneling.md](split-tunneling.md)<br>если соединение отваливается после сна или таймауты при подключении: [troubleshooting.md](troubleshooting.md) (справочник) |
+| Часть доменов мимо VPN / исключить приложение | [split-tunneling.md](split-tunneling.md) | если конфига ещё нет и его нужно собрать целиком: [platform-macos.md](platform-macos.md), [platform-android.md](platform-android.md) или [platform-ios.md](platform-ios.md)<br>если версия ядра клиента не совпадает с указанной для этой платформы: [config-format-versions.md](config-format-versions.md)<br>если правило добавлено, а bypass-домены всё равно идут через VPN: [troubleshooting.md](troubleshooting.md) (справочник) |
+| Подключён, но не работает; ошибка в логах | [troubleshooting.md](troubleshooting.md) (справочник) | если симптом упирается в платформенные правила (`stack`, `strict_route`, `route_exclude_address`, per-app): [platform-macos.md](platform-macos.md), [platform-android.md](platform-android.md) или [platform-ios.md](platform-ios.md)<br>если в логах ошибка формата или deprecation warning: [config-format-versions.md](config-format-versions.md)<br>если не работает именно bypass: [split-tunneling.md](split-tunneling.md) |
+| Выбрать альтернативный клиент (Hiddify, NekoBox, Shadowrocket) | [platforms-overview.md](platforms-overview.md) (справочник) | если профиль передаётся в Hiddify через share link или QR: [protocol-tuic.md](protocol-tuic.md)<br>если Hiddify не принимает ссылку или работает как прокси, а не VPN: [troubleshooting.md](troubleshooting.md) (справочник) |
 
 ## Рабочий процесс
 

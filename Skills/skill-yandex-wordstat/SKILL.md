@@ -18,7 +18,7 @@ when_to_use: >
   «выгрузи Вордстат по списку фраз», «настрой доступ к Wordstat API», «почему 400
   The from field value should be Monday», «сколько стоит 1000 запросов к Вордстату»,
   «есть ли у Вордстата официальное API».
-version: 1.0.1
+version: 1.1.1
 created: 2026-08-24
 ---
 
@@ -45,22 +45,22 @@ created: 2026-08-24
 
 ## Таблица маршрутизации
 
-> Читай только те файлы, которые нужны под задачу. Не загружай все сразу.
+> Читай файлы под задачу, а не скилл целиком. Колонка «Обязательно» — открыть до начала работы. Колонка «Читать, если» — открыть, когда условие выполнено; условие проверяется по задаче, а не по желанию. Файлы с пометкой `(справочник)` устроены как таблицы для точечного поиска — в них допустим поиск нужной строки вместо чтения целиком.
 
-| Задача | Минимум | Добавить при необходимости |
+| Задача | Обязательно | Читать, если |
 |---|---|---|
-| Первое подключение, получение ключа | [auth-and-setup.md](auth-and-setup.md) | [errors.md](errors.md), [limits-quotas-pricing.md](limits-quotas-pricing.md) |
-| Собрать REST-вызов любого из четырёх методов | [methods.md](methods.md) | [query-language.md](query-language.md), [regions.md](regions.md) |
-| Вызвать по gRPC, разобрать пример `grpcurl`, найти клиент на Go, Java или Node | [grpc.md](grpc.md), [methods.md](methods.md) | [errors.md](errors.md) |
-| Частотность и топ похожих фраз | [methods.md](methods.md) | [query-language.md](query-language.md) |
-| Динамика спроса по времени | [methods.md](methods.md) | [errors.md](errors.md) — границы периода и глубина истории отвергаются отдельными текстами |
-| Распределение по регионам | [methods.md](methods.md), [regions.md](regions.md) | — |
-| Коды и дерево регионов | [regions.md](regions.md) | [methods.md](methods.md) |
-| Операторы в ключевой фразе | [query-language.md](query-language.md) | [methods.md](methods.md) |
-| Посчитать стоимость и время выгрузки | [limits-quotas-pricing.md](limits-quotas-pricing.md) | — |
-| Написать Python-скрипт на прямых HTTP-вызовах | [python-reference.md](python-reference.md) | [methods.md](methods.md), [auth-and-setup.md](auth-and-setup.md) |
-| Работать через Yandex AI Studio SDK | [sdk.md](sdk.md) | [python-reference.md](python-reference.md) |
-| Разобрать ошибку вызова | [errors.md](errors.md) | [methods.md](methods.md), [auth-and-setup.md](auth-and-setup.md) |
+| Первое подключение, получение ключа | [auth-and-setup.md](auth-and-setup.md) | если проверочный вызов вернул 400 или 401: [errors.md](errors.md) (справочник); если следом планируется прогон по списку фраз: [limits-quotas-pricing.md](limits-quotas-pricing.md) |
+| Собрать REST-вызов любого из четырёх методов | [methods.md](methods.md) | если во фразе есть поисковые операторы: [query-language.md](query-language.md); если в запросе задан регион: [regions.md](regions.md) (справочник) |
+| Вызвать по gRPC, разобрать пример `grpcurl`, найти клиент на Go, Java или Node | [grpc.md](grpc.md), [methods.md](methods.md) — ограничений полей в `grpc.md` нет намеренно, они только в `methods.md` | если вызов вернул 400 или 401: [errors.md](errors.md) (справочник) |
+| Частотность и топ похожих фраз | [methods.md](methods.md) | если во фразе есть поисковые операторы: [query-language.md](query-language.md); если задан `regions[]`: [regions.md](regions.md) (справочник) |
+| Динамика спроса по времени | [methods.md](methods.md) | если детализация `PERIOD_WEEKLY` или `PERIOD_MONTHLY`: [query-language.md](query-language.md) — из операторов работает только `+`; если вызов отвергнут по дате: [errors.md](errors.md) (справочник) |
+| Распределение по регионам | [methods.md](methods.md), [regions.md](regions.md) (справочник) — в ответе только идентификаторы, без названий | если названия регионов нужно подставить автоматически: [sdk.md](sdk.md) — флаг `resolve_regions=True` |
+| Коды и дерево регионов | [regions.md](regions.md) (справочник) | если дерево запрашивается вызовом `GetRegionsTree`: [methods.md](methods.md) |
+| Операторы в ключевой фразе | [query-language.md](query-language.md) | если метод и детализация ещё не выбраны: [methods.md](methods.md) — поддержка операторов зависит от метода |
+| Посчитать стоимость и время выгрузки | [limits-quotas-pricing.md](limits-quotas-pricing.md) | если прогон пойдёт скриптом: [python-reference.md](python-reference.md) — троттлинг 36 секунд между вызовами |
+| Написать Python-скрипт на прямых HTTP-вызовах | [python-reference.md](python-reference.md), [methods.md](methods.md) — сниппеты не несут диапазонов и длин полей | если `YC_API_KEY` или `YC_FOLDER_ID` не заданы в окружении или `.env`: [auth-and-setup.md](auth-and-setup.md) |
+| Работать через Yandex AI Studio SDK | [sdk.md](sdk.md) | если нужен `total_count` или дубликаты фраз в `results`: [python-reference.md](python-reference.md) — SDK их теряет |
+| Разобрать ошибку вызова | [errors.md](errors.md) (справочник) | если в тексте отказа названо поле запроса: [methods.md](methods.md); если код 401: [auth-and-setup.md](auth-and-setup.md) |
 | Правовые условия использования данных | [limits-quotas-pricing.md](limits-quotas-pricing.md) | — |
 
 ## Рабочий процесс
@@ -108,7 +108,7 @@ created: 2026-08-24
 
 **Вход:** «Какая частотность у фразы "купить кроссовки" в Москве?»
 
-**Маршрут:** [methods.md](methods.md), при необходимости [regions.md](regions.md) за кодом Москвы `213`.
+**Маршрут:** [methods.md](methods.md); в запросе задан `regions[]` — [regions.md](regions.md) (справочник) за кодом Москвы `213`.
 
 **Результат:** один вызов `GetTop` с `numPhrases: 1`, `regions: ["213"]`. Стоимость 0,02 ₽. В ответе `totalCount` — общее число запросов, содержащих все введённые слова в любом порядке.
 

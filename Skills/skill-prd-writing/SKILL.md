@@ -12,7 +12,7 @@ when_to_use: >
   собрать требования, написать User Stories, определить acceptance criteria.
   Также при запросах: "опиши фичу", "что должно быть в PRD",
   "помоги формализовать требования", "проработай edge-cases".
-version: 3.0.0
+version: 3.1.0
 created: 2026-02-12
 ---
 
@@ -34,16 +34,16 @@ created: 2026-02-12
 
 ## Таблица маршрутизации
 
-> Читай только те файлы, которые нужны под задачу. Не загружай все сразу.
+> Читай файлы под задачу, а не скилл целиком. Колонка «Обязательно» — открыть до начала работы. Колонка «Читать, если» — открыть, когда условие выполнено; условие проверяется по задаче, а не по желанию. Файлы с пометкой `(справочник)` устроены как таблицы для точечного поиска — в них допустим поиск нужной строки вместо чтения целиком.
 
-| Задача | Минимум | Добавить при необходимости |
+| Задача | Обязательно | Читать, если |
 |---|---|---|
-| Создать PRD с нуля | [requirements-gathering.md](requirements-gathering.md), [prd-template.md](prd-template.md) | [scenarios-and-states.md](scenarios-and-states.md) |
-| Дополнить существующий PRD | [prd-template.md](prd-template.md) | [scenarios-and-states.md](scenarios-and-states.md) |
-| Проработать сценарии | [scenarios-and-states.md](scenarios-and-states.md) | -- |
-| Собрать требования (интервью) | [requirements-gathering.md](requirements-gathering.md) | -- |
-| Проверить готовый PRD | [prd-template.md](prd-template.md), [scenarios-and-states.md](scenarios-and-states.md) | [nfr-reference.md](nfr-reference.md) |
-| Добавить нефункциональные требования | [nfr-reference.md](nfr-reference.md) | -- |
+| Создать PRD с нуля | [requirements-gathering.md](requirements-gathering.md), [scenarios-and-states.md](scenarios-and-states.md), [prd-template.md](prd-template.md) | если фича выходит к конечным пользователям, обрабатывает персональные данные или у неё есть требования к скорости, доступности, браузерам или языкам: [nfr-reference.md](nfr-reference.md) (справочник) |
+| Дополнить существующий PRD | [prd-template.md](prd-template.md) | если дополнение затрагивает User Stories, acceptance criteria, сценарии или состояния интерфейса: [scenarios-and-states.md](scenarios-and-states.md); если дополнение затрагивает нефункциональные требования: [nfr-reference.md](nfr-reference.md) (справочник) |
+| Проработать сценарии | [scenarios-and-states.md](scenarios-and-states.md) | если результат вносится в текст PRD и нужны структура секций, MoSCoW и таблица англицизмов: [prd-template.md](prd-template.md) |
+| Собрать требования (интервью) | [requirements-gathering.md](requirements-gathering.md) | если в опрос входят нефункциональные требования — нагрузка, безопасность, доступность, совместимость, локализация: [nfr-reference.md](nfr-reference.md) (справочник) |
+| Проверить готовый PRD | [prd-template.md](prd-template.md), [scenarios-and-states.md](scenarios-and-states.md) | если в PRD есть или должны быть нефункциональные требования: [nfr-reference.md](nfr-reference.md) (справочник) |
+| Добавить нефункциональные требования | [nfr-reference.md](nfr-reference.md) (справочник), [prd-template.md](prd-template.md) | — |
 
 ## Рабочий процесс
 

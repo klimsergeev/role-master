@@ -2,7 +2,7 @@
 name: skill-seo-reference
 description: SEO-справочники — E-E-A-T, Schema.org, keyword research, technical SEO, readability, internal linking, GEO. Для аудита, оптимизации и создания SEO-контента.
 when_to_use: Используй при SEO-аудите, анализе мета-тегов, работе со структурированными данными, исследовании ключевых слов, написании SEO-текстов, оптимизации контента, технической SEO-проверке, оптимизации под AI Overviews и генеративный поиск.
-version: 2.0.0
+version: 2.1.1
 created: 2026-05-01
 ---
 
@@ -20,22 +20,22 @@ created: 2026-05-01
 
 ## Таблица маршрутизации
 
-> Читай только те файлы, которые нужны под задачу. Не загружай все сразу.
+> Читай файлы под задачу, а не скилл целиком. Колонка «Обязательно» — открыть до начала работы. Колонка «Читать, если» — открыть, когда условие выполнено; условие проверяется по задаче, а не по желанию. Файлы с пометкой `(справочник)` устроены как таблицы для точечного поиска — в них допустим поиск нужной строки вместо чтения целиком.
 
-| Задача | Минимум | Добавить при необходимости |
-|---|---|---|
-| SEO-аудит страницы (полный) | [technical-seo.md](technical-seo.md) | [schema-org.md](schema-org.md), [eeat.md](eeat.md) |
-| Структурированные данные | [schema-org.md](schema-org.md) | [technical-seo.md](technical-seo.md) |
-| SEO-статья / оптимизация контента | [keyword-strategy.md](keyword-strategy.md), [readability.md](readability.md) | [featured-snippets.md](featured-snippets.md), [eeat.md](eeat.md) |
+| Задача | Обязательно | Читать, если |
+| --- | --- | --- |
+| SEO-аудит страницы (полный) | [technical-seo.md](technical-seo.md) (справочник), [schema-org.md](schema-org.md) (справочник) | если страница YMYL или содержит авторский контент — статью, обзор, экспертный материал: [eeat.md](eeat.md) (справочник) |
+| Структурированные данные | [schema-org.md](schema-org.md) (справочник) | если разметка сверяется с мета-тегами, canonical и техническим чеклистом страницы: [technical-seo.md](technical-seo.md) (справочник) |
+| SEO-статья / оптимизация контента | [keyword-strategy.md](keyword-strategy.md), [readability.md](readability.md) (справочник) | если статья отвечает на вопросы и претендует на сниппет или цитирование AI: [featured-snippets.md](featured-snippets.md) (справочник); если тематика YMYL или у материала есть указанный автор: [eeat.md](eeat.md) (справочник) |
 | Keyword research / семантическое ядро | [keyword-strategy.md](keyword-strategy.md) | — |
-| Оптимизация под featured snippets / AI Overviews | [featured-snippets.md](featured-snippets.md) | [readability.md](readability.md), [eeat.md](eeat.md) |
-| Оценка E-E-A-T | [eeat.md](eeat.md) | — |
-| Аудит внутренней перелинковки | [internal-linking.md](internal-linking.md) | [technical-seo.md](technical-seo.md) |
-| Проверить мета-теги | [technical-seo.md](technical-seo.md) | — |
-| Чеклист перед публикацией | [readability.md](readability.md), [technical-seo.md](technical-seo.md) | [eeat.md](eeat.md) |
-| Конкурентный анализ SEO | [technical-seo.md](technical-seo.md), [schema-org.md](schema-org.md), [keyword-strategy.md](keyword-strategy.md) | [internal-linking.md](internal-linking.md) |
-| Оптимизация под генеративный поиск (GEO) | [featured-snippets.md](featured-snippets.md), [eeat.md](eeat.md) | [schema-org.md](schema-org.md), [readability.md](readability.md) |
-| Core Web Vitals / техническая производительность | [technical-seo.md](technical-seo.md) | — |
+| Оптимизация под featured snippets / AI Overviews | [featured-snippets.md](featured-snippets.md) (справочник) | если правится структура текста — длина абзацев, подзаголовки, списки: [readability.md](readability.md) (справочник); если оценивается авторитетность источника — авторство, ссылки на первоисточники, YMYL: [eeat.md](eeat.md) (справочник) |
+| Оценка E-E-A-T | [eeat.md](eeat.md) (справочник) | — |
+| Аудит внутренней перелинковки | [internal-linking.md](internal-linking.md) (справочник) | если найдены редиректы, битые ссылки или дубли URL: [technical-seo.md](technical-seo.md) (справочник) |
+| Проверить мета-теги | [technical-seo.md](technical-seo.md) (справочник) | — |
+| Чеклист перед публикацией | [readability.md](readability.md) (справочник), [technical-seo.md](technical-seo.md) (справочник) | если у материала есть автор или тематика YMYL: [eeat.md](eeat.md) (справочник) |
+| Конкурентный анализ SEO | [technical-seo.md](technical-seo.md) (справочник), [schema-org.md](schema-org.md) (справочник), [keyword-strategy.md](keyword-strategy.md) | если сравнивается структура сайтов — pillar-cluster, глубина вложенности, распределение ссылок: [internal-linking.md](internal-linking.md) (справочник) |
+| Оптимизация под генеративный поиск (GEO) | [featured-snippets.md](featured-snippets.md) (справочник), [eeat.md](eeat.md) (справочник) | если на странице есть или планируется разметка: [schema-org.md](schema-org.md) (справочник); если текст переписывается под самодостаточные блоки: [readability.md](readability.md) (справочник) |
+| Core Web Vitals / техническая производительность | [technical-seo.md](technical-seo.md) (справочник) | — |
 
 ## Рабочий процесс
 
@@ -45,7 +45,7 @@ created: 2026-05-01
 
 ### Шаг 2: Загрузить нужные файлы
 
-По таблице маршрутизации загрузи минимально необходимые файлы. Если задача комплексная — добавь дополнительные.
+Найди в таблице строку своей задачи. Файлы из колонки «Обязательно» открой до начала работы. Условия из колонки «Читать, если» проверь по самой задаче — тип страницы, тематика, состав контента, найденные дефекты — и открой файл там, где условие выполнено. В файлах с пометкой `(справочник)` допустим точечный поиск подходящей строки вместо чтения целиком.
 
 ### Шаг 3: Применить справочные данные
 

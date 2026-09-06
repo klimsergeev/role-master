@@ -15,7 +15,7 @@ when_to_use: >
   "почему retention падает на второй неделе", "какой activation metric
   у продукта", "сравни retention по каналам привлечения",
   "retention curve flattens or dies".
-version: 1.0.0
+version: 1.1.0
 created: 2026-05-28
 ---
 
@@ -35,17 +35,17 @@ created: 2026-05-28
 
 ## Таблица маршрутизации
 
-> Читай только те файлы, которые нужны под задачу. Не загружай все сразу.
+> Читай файлы под задачу, а не скилл целиком. Колонка «Обязательно» — открыть до начала работы. Колонка «Читать, если» — открыть, когда условие выполнено; условие проверяется по задаче, а не по желанию. Файлы с пометкой `(справочник)` устроены как таблицы для точечного поиска — в них допустим поиск нужной строки вместо чтения целиком.
 
-| Задача | Минимум | Добавить при необходимости |
+| Задача | Обязательно | Читать, если |
 |---|---|---|
-| Выбрать тип когорты | [cohort-types.md](cohort-types.md) | -- |
-| Построить retention-таблицу | [retention-metrics.md](retention-metrics.md) | [cohort-types.md](cohort-types.md) |
-| Рассчитать retention-метрики | [retention-metrics.md](retention-metrics.md) | -- |
-| Диагностировать retention curve | [curve-diagnosis.md](curve-diagnosis.md) | [retention-metrics.md](retention-metrics.md) |
-| Найти activation metric | [curve-diagnosis.md](curve-diagnosis.md) | [cohort-types.md](cohort-types.md) |
-| Полный когортный анализ с нуля | [cohort-types.md](cohort-types.md), [retention-metrics.md](retention-metrics.md), [curve-diagnosis.md](curve-diagnosis.md) | -- |
-| Сравнить когорты по сегментам | [cohort-types.md](cohort-types.md), [retention-metrics.md](retention-metrics.md) | [curve-diagnosis.md](curve-diagnosis.md) |
+| Выбрать тип когорты | [cohort-types.md](cohort-types.md) (справочник) | если выбрана behavioral когорта под поиск activation metric: [curve-diagnosis.md](curve-diagnosis.md) |
+| Построить retention-таблицу | [retention-metrics.md](retention-metrics.md) (справочник) | если тип когорты и период группировки ещё не зафиксированы: [cohort-types.md](cohort-types.md) (справочник) |
+| Рассчитать retention-метрики | [retention-metrics.md](retention-metrics.md) (справочник) | если считается drop-off между соседними периодами: [curve-diagnosis.md](curve-diagnosis.md) |
+| Диагностировать retention curve | [curve-diagnosis.md](curve-diagnosis.md), [retention-metrics.md](retention-metrics.md) (справочник) | если кривые сравниваются между сегментами, каналами или тарифами: [cohort-types.md](cohort-types.md) (справочник) |
+| Найти activation metric | [curve-diagnosis.md](curve-diagnosis.md), [cohort-types.md](cohort-types.md) (справочник) | если retention-таблица под расчёт lift ещё не построена: [retention-metrics.md](retention-metrics.md) (справочник) |
+| Полный когортный анализ с нуля | [cohort-types.md](cohort-types.md) (справочник), [retention-metrics.md](retention-metrics.md) (справочник), [curve-diagnosis.md](curve-diagnosis.md) | — |
+| Сравнить когорты по сегментам | [cohort-types.md](cohort-types.md) (справочник), [retention-metrics.md](retention-metrics.md) (справочник), [curve-diagnosis.md](curve-diagnosis.md) | — |
 
 ## Рабочий процесс
 

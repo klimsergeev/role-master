@@ -16,7 +16,7 @@ when_to_use: >
   Примеры: "сгенерируй промпт для Suno", "напиши песню в стиле инди-фолк",
   "создай трек для рекламного ролика", "помоги с промптом для Suno",
   "сделай промпт для песни на русском языке", "как продлить трек в Suno".
-version: 1.4.0
+version: 1.5.0
 created: 2026-06-10
 ---
 
@@ -37,22 +37,22 @@ created: 2026-06-10
 
 ## Таблица маршрутизации
 
-> Читай только те файлы, которые нужны под задачу. Не загружай все сразу.
+> Читай файлы под задачу, а не скилл целиком. Колонка «Обязательно» — открыть до начала работы. Колонка «Читать, если» — открыть, когда условие выполнено; условие проверяется по задаче, а не по желанию. Файлы с пометкой `(справочник)` устроены как таблицы для точечного поиска — в них допустим поиск нужной строки вместо чтения целиком.
 
-| Задача | Минимум | Добавить при необходимости |
+| Задача | Обязательно | Читать, если |
 |---|---|---|
-| Сгенерировать промпт для нового трека | [style-reference.md](style-reference.md), [metatags-reference.md](metatags-reference.md) | [lyrics-formatting.md](lyrics-formatting.md), [genre-vocabulary.md](genre-vocabulary.md) |
-| Написать текст песни с метатегами | [metatags-reference.md](metatags-reference.md), [lyrics-formatting.md](lyrics-formatting.md) | [genre-vocabulary.md](genre-vocabulary.md) |
-| Подобрать стиль / жанр | [style-reference.md](style-reference.md), [genre-vocabulary.md](genre-vocabulary.md) | — |
-| Песня на русском языке | [style-reference.md](style-reference.md), [metatags-reference.md](metatags-reference.md), [lyrics-formatting.md](lyrics-formatting.md) | [genre-vocabulary.md](genre-vocabulary.md) |
-| Продлить / доработать трек (Extend, Song Editor) | [platform-workflow.md](platform-workflow.md) | [metatags-reference.md](metatags-reference.md) |
-| Cover / Remix / Add Vocals | [platform-workflow.md](platform-workflow.md) | [style-reference.md](style-reference.md) |
+| Сгенерировать промпт для нового трека | [style-reference.md](style-reference.md), [metatags-reference.md](metatags-reference.md) (справочник), [lyrics-formatting.md](lyrics-formatting.md) | если жанр в запросе не назван или назван размыто («что-нибудь бодрое»): [genre-vocabulary.md](genre-vocabulary.md) (справочник) |
+| Написать текст песни с метатегами | [metatags-reference.md](metatags-reference.md) (справочник), [lyrics-formatting.md](lyrics-formatting.md) | если жанр песни ещё не выбран: [genre-vocabulary.md](genre-vocabulary.md) (справочник) |
+| Подобрать стиль / жанр | [style-reference.md](style-reference.md), [genre-vocabulary.md](genre-vocabulary.md) (справочник) | — |
+| Песня на русском языке | [style-reference.md](style-reference.md), [metatags-reference.md](metatags-reference.md) (справочник), [lyrics-formatting.md](lyrics-formatting.md) | если жанр в запросе не назван или назван размыто: [genre-vocabulary.md](genre-vocabulary.md) (справочник) |
+| Продлить / доработать трек (Extend, Song Editor) | [platform-workflow.md](platform-workflow.md) | если в продолжение или в заменяемую секцию пишутся метатеги и текст: [metatags-reference.md](metatags-reference.md) (справочник) |
+| Cover / Remix / Add Vocals | [platform-workflow.md](platform-workflow.md) | если для кавера или ремикса собирается новое поле Style: [style-reference.md](style-reference.md) |
 | Сгенерировать обложку (Album art) | [platform-workflow.md](platform-workflow.md) | — |
 | Узнать о тарифах / кредитах / возможностях | [platform-workflow.md](platform-workflow.md) | — |
-| Задать тональность / направление гармонии (текстом) | [style-reference.md](style-reference.md) | [metatags-reference.md](metatags-reference.md) |
-| Задать конкретную гармонию / точные аккорды | [platform-workflow.md](platform-workflow.md) (аудио-референс, не текстовый тег) | [style-reference.md](style-reference.md) |
-| Описать голос по аудиозаписи | [voice-analysis.md](voice-analysis.md) | [style-reference.md](style-reference.md) |
-| Вариации промпта (Conservative / Balanced / Experimental) | [style-reference.md](style-reference.md), [metatags-reference.md](metatags-reference.md) | [genre-vocabulary.md](genre-vocabulary.md) |
+| Задать тональность / направление гармонии (текстом) | [style-reference.md](style-reference.md) | если аккорды размечаются прямо в Lyrics скобочными тегами: [metatags-reference.md](metatags-reference.md) (справочник) |
+| Задать конкретную гармонию / точные аккорды | [platform-workflow.md](platform-workflow.md) (аудио-референс, не текстовый тег) | если под этот же трек собирается поле Style: [style-reference.md](style-reference.md) |
+| Описать голос по аудиозаписи | [voice-analysis.md](voice-analysis.md) | если дескрипторы голоса уходят в поле Style: [style-reference.md](style-reference.md) |
+| Вариации промпта (Conservative / Balanced / Experimental) | [style-reference.md](style-reference.md), [metatags-reference.md](metatags-reference.md) (справочник), [lyrics-formatting.md](lyrics-formatting.md) | если среди вариаций есть жанровый гибрид или смена вокального стека: [genre-vocabulary.md](genre-vocabulary.md) (справочник) |
 
 ## Рабочий процесс
 

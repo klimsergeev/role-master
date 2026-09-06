@@ -11,7 +11,7 @@ when_to_use: >
   диаграмму, захватить UI, настроить подключение Desktop или Remote MCP.
   Примеры запросов: "сверстай компонент из Figma", "синхронизируй цвета из Figma",
   "подключи Figma MCP", "создай диаграмму в FigJam".
-version: 2.0.1
+version: 2.1.0
 created: 2026-05-03
 ---
 
@@ -61,17 +61,17 @@ Remote: нужны fileKey и nodeId из URL.
 
 ## Таблица маршрутизации
 
-> Читай только те файлы, которые нужны под задачу. Не загружай все сразу.
+> Читай файлы под задачу, а не скилл целиком. Колонка «Обязательно» — открыть до начала работы. Колонка «Читать, если» — открыть, когда условие выполнено; условие проверяется по задаче, а не по желанию. Файлы с пометкой `(справочник)` устроены как таблицы для точечного поиска — в них допустим поиск нужной строки вместо чтения целиком.
 
-| Задача | Минимум | Добавить при необходимости |
+| Задача | Обязательно | Читать, если |
 |---|---|---|
-| Настроить Desktop MCP | [desktop-setup.md](desktop-setup.md) | — |
-| Настроить Remote MCP | [remote-setup.md](remote-setup.md) | — |
-| Прочитать данные из Figma | [tools-read.md](tools-read.md) | [workflows.md](workflows.md) |
-| Создать/изменить элементы | [tools-write.md](tools-write.md) | [workflows.md](workflows.md) |
-| Сверстать компонент по макету | [workflows.md](workflows.md) | [tools-read.md](tools-read.md) |
-| Настроить Code Connect | [workflows.md](workflows.md) | [tools-read.md](tools-read.md), [tools-write.md](tools-write.md) |
-| Использовать Figma Skills | [mcp-prompts.md](mcp-prompts.md) | — |
+| Настроить Desktop MCP | [desktop-setup.md](desktop-setup.md) | если в задаче есть запись на canvas — Desktop даёт только чтение: [remote-setup.md](remote-setup.md) |
+| Настроить Remote MCP | [remote-setup.md](remote-setup.md) | если Desktop MCP уже настроен и нужен переход или параллельная работа двух серверов: [workflows.md](workflows.md) (сценарий 19) |
+| Прочитать данные из Figma | [workflows.md](workflows.md), [tools-read.md](tools-read.md) (справочник) | если MCP-инструменты недоступны или возвращают пустой результат: [desktop-setup.md](desktop-setup.md) для Desktop, [remote-setup.md](remote-setup.md) для Remote |
+| Создать/изменить элементы | [workflows.md](workflows.md), [mcp-prompts.md](mcp-prompts.md), [tools-write.md](tools-write.md) (справочник), [tools-read.md](tools-read.md) (справочник) | если приходит Permission denied, Rate limit exceeded или Remote MCP не подключён: [remote-setup.md](remote-setup.md) |
+| Сверстать компонент по макету | [workflows.md](workflows.md), [tools-read.md](tools-read.md) (справочник) | если нужна pixel-perfect сверка — результат вёрстки захватывается обратно в Figma: [tools-write.md](tools-write.md) (справочник) |
+| Настроить Code Connect | [workflows.md](workflows.md), [tools-read.md](tools-read.md) (справочник), [tools-write.md](tools-write.md) (справочник) | если маппинг выполняется слеш-командой `/figma-code-connect-components`, а не прямыми вызовами инструментов: [mcp-prompts.md](mcp-prompts.md) |
+| Использовать Figma Skills | [mcp-prompts.md](mcp-prompts.md) | если скилл пишет на canvas (`/figma-use`, `/figma-use-figjam`, `/figma-generate-design`, `/figma-generate-library`): [tools-write.md](tools-write.md) (справочник), [workflows.md](workflows.md) |
 
 ## Что НЕ делать
 
@@ -88,7 +88,7 @@ Remote: нужны fileKey и nodeId из URL.
 
 **Запрос:** "Сверстай кнопку из макета"
 
-**Маршрут:** [workflows.md](workflows.md), при необходимости [tools-read.md](tools-read.md)
+**Маршрут:** [workflows.md](workflows.md), [tools-read.md](tools-read.md) (справочник)
 
 **Результат:** Пользователь выделяет кнопку в Figma. Агент вызывает get_screenshot + get_design_context, адаптирует код под проект.
 

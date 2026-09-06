@@ -9,7 +9,7 @@ when_to_use: >
   Когда задача связана с Ubuntu или Debian — установка/удаление пакетов через apt,
   настройка ufw, удаление старых ядер, PPA, snap, автообновления, Netplan, DNS через
   systemd-resolved, профили AppArmor, cloud-init, обновление релиза Ubuntu.
-version: 2.0.0
+version: 2.1.1
 created: 2026-05-02
 ---
 
@@ -27,20 +27,20 @@ created: 2026-05-02
 
 ## Таблица маршрутизации
 
-> Читай только те файлы, которые нужны под задачу. Не загружай все сразу.
+> Читай файлы под задачу, а не скилл целиком. Колонка «Обязательно» — открыть до начала работы. Колонка «Читать, если» — открыть, когда условие выполнено; условие проверяется по задаче, а не по желанию. Файлы с пометкой `(справочник)` устроены как таблицы для точечного поиска — в них допустим поиск нужной строки вместо чтения целиком.
 
-| Задача | Минимум | Добавить при необходимости |
+| Задача | Обязательно | Читать, если |
 |---|---|---|
-| Установить/удалить пакет, PPA, snap | [package-management.md](package-management.md) | -- |
-| Настроить файрвол (ufw) | [firewall-and-security.md](firewall-and-security.md) | -- |
-| Автообновления безопасности | [firewall-and-security.md](firewall-and-security.md) | [package-management.md](package-management.md) |
-| Удалить старые ядра | [kernel-management.md](kernel-management.md) | -- |
-| Настроить сеть (Netplan) | [networking-netplan.md](networking-netplan.md) | [cloud-init.md](cloud-init.md) |
-| DNS не работает / systemd-resolved | [dns-systemd-resolved.md](dns-systemd-resolved.md) | [networking-netplan.md](networking-netplan.md) |
-| AppArmor блокирует сервис | [apparmor.md](apparmor.md) | -- |
-| Отключить/настроить cloud-init | [cloud-init.md](cloud-init.md) | [networking-netplan.md](networking-netplan.md) |
-| Обновить Ubuntu до новой версии | [release-upgrade.md](release-upgrade.md) | [kernel-management.md](kernel-management.md), [package-management.md](package-management.md) |
-| Hardening Ubuntu-сервера | [firewall-and-security.md](firewall-and-security.md) | [apparmor.md](apparmor.md), [package-management.md](package-management.md) |
+| Установить/удалить пакет, PPA, snap | [package-management.md](package-management.md) (справочник) | если ставится пакет ядра (`linux-image-*`, `linux-generic-hwe-*`): [kernel-management.md](kernel-management.md) |
+| Настроить файрвол (ufw) | [firewall-and-security.md](firewall-and-security.md) | — |
+| Автообновления безопасности | [firewall-and-security.md](firewall-and-security.md) | если `apt-mark showhold` непуст или в `/etc/apt/sources.list.d/` есть сторонние PPA: [package-management.md](package-management.md) (справочник); если включён `Automatic-Reboot` и автообновления ядра заполняют `/boot`: [kernel-management.md](kernel-management.md) |
+| Удалить старые ядра | [kernel-management.md](kernel-management.md) | если apt сломан — «No space left on device», прерванная установка dpkg, занятый lock-файл: [package-management.md](package-management.md) (справочник) |
+| Настроить сеть (Netplan) | [networking-netplan.md](networking-netplan.md) | если в `/etc/netplan/` есть `50-cloud-init.yaml`: [cloud-init.md](cloud-init.md); если в конфиге задаются `nameservers`: [dns-systemd-resolved.md](dns-systemd-resolved.md) (справочник) |
+| DNS не работает / systemd-resolved | [dns-systemd-resolved.md](dns-systemd-resolved.md) (справочник) | если `resolvectl status` не показывает DNS-серверов на интерфейсе: [networking-netplan.md](networking-netplan.md) |
+| AppArmor блокирует сервис | [apparmor.md](apparmor.md) (справочник) | — |
+| Отключить/настроить cloud-init | [cloud-init.md](cloud-init.md) | если отключается сетевая часть cloud-init или сеть после этого поднимается вручную: [networking-netplan.md](networking-netplan.md) |
+| Обновить Ubuntu до новой версии | [release-upgrade.md](release-upgrade.md) | если на `/boot` свободно меньше 500 МБ (`df -h /boot`): [kernel-management.md](kernel-management.md); если `apt-mark showhold` непуст или подключены сторонние PPA: [package-management.md](package-management.md) (справочник) |
+| Hardening Ubuntu-сервера | [firewall-and-security.md](firewall-and-security.md), [apparmor.md](apparmor.md) (справочник) | если в системе есть сторонние PPA или требуется заморозить версии пакетов: [package-management.md](package-management.md) (справочник) |
 
 ## Рабочий процесс
 
@@ -50,7 +50,7 @@ created: 2026-05-02
 
 ### Шаг 2: Загрузить нужные файлы
 
-Загрузи минимально необходимые файлы из таблицы. Если задача затрагивает несколько подсистем (например, сеть + cloud-init) -- загрузи дополнительные.
+Открой всё, что стоит в колонке «Обязательно» для твоей строки таблицы, -- до первой команды. Затем пройди колонку «Читать, если»: условие там проверяется по фактам задачи и системы -- что лежит в `/etc/netplan/`, сколько свободно на `/boot`, непуст ли `apt-mark showhold`. Условие выполнено -- файл открывается, даже если задача выглядит односоставной. Так задача про сеть, у которой в `/etc/netplan/` есть `50-cloud-init.yaml`, тянет за собой [cloud-init.md](cloud-init.md). Файлы с пометкой `(справочник)` смотри точечным поиском подходящей строки, а не целиком.
 
 ### Шаг 3: Уточнить контекст
 
