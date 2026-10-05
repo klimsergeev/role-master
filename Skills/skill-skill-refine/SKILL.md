@@ -19,7 +19,7 @@ when_to_use: >
   правки», «refine this skill». Не для написания скилла с нуля, код-ревью
   репозитория, правки произвольных файлов вне целевого скилла, сбора уроков из
   сессии (это делает skill-session-harvest до него).
-version: 1.2.2
+version: 1.3.0
 created: 2026-07-14
 disable-model-invocation: true
 ---
