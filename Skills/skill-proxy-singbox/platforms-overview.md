@@ -6,13 +6,15 @@
 
 | Платформа | Клиент | Источник | Версия ядра по источникам (дата черновиков — 2026-06-08) |
 |---|---|---|---|
-| macOS | sing-box VT (SFM), издатель nekohasekai | Mac App Store | 1.11.x |
+| macOS | sing-box VT (SFM), издатель nekohasekai | **Не Mac App Store** — автономная сборка: Homebrew Cask (`brew install sfm`) либо `github.com/SagerNet/sing-box/releases`; TestFlight — только спонсорам | У автономной сборки — текущий релиз ядра (на 2026-10-05 это 1.14.2) |
 | Android | sing-box (SFA), издатель nekohasekai, package `io.nekohasekai.sfa` | Google Play, либо APK `github.com/SagerNet/sing-box/releases` → `SFA-*.apk` | 1.12+ |
 | iOS / iPadOS | sing-box VT (SFI) | App Store (доступен в российском App Store) | 1.11.x |
 
 **Версии ядра в таблице — из черновиков-источников (июнь 2026), а не из сторов на текущий момент.** Проверено 2026-07-29: последний стабильный релиз ядра `SagerNet/sing-box` — **v1.13.14** от 2026-06-25 (GitHub Releases API, `prerelease: false`). Версии сборок в App Store и Google Play через веб проверить не удалось: страница App Store отдаёт 404 на fetch, Google Play — только шапку без блока «Версия».
 
 Практический вывод: **не полагайся на «macOS = 1.11.x» как на вечную истину — сверяй версию в самом приложении** (About / Settings). Правила формата для 1.11.x и 1.12+ — в [config-format-versions.md](config-format-versions.md); правил для 1.13.x в источниках нет, и выдумывать их нельзя.
+
+**Магазинного пути установки на macOS больше нет (проверено 2026-10-05).** В официальной документации клиентов для платформ Apple ссылка на App Store зачёркнута, и рядом стоит сообщение, что обновлять приложения в App Store разработчики временно не могут (`docs/clients/apple/index.md` на теге v1.14.2). Поиск в Mac App Store через iTunes Search API (сторфронты US и RU) sing-box для macOS не находит. Практическое следствие: для уже установленной магазинной копии «удалить и поставить заново» необратимо — ставить будет неоткуда.
 
 ## Матрица различий
 
