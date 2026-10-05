@@ -11,7 +11,7 @@ when_to_use: >
   диаграмму, захватить UI, настроить подключение Desktop или Remote MCP.
   Примеры запросов: "сверстай компонент из Figma", "синхронизируй цвета из Figma",
   "подключи Figma MCP", "создай диаграмму в FigJam".
-version: 2.2.0
+version: 2.3.0
 created: 2026-05-03
 ---
 
@@ -72,6 +72,19 @@ Remote: нужны fileKey и nodeId из URL.
 | Сверстать компонент по макету | [workflows.md](workflows.md), [tools-read.md](tools-read.md) (справочник) | если нужна pixel-perfect сверка — результат вёрстки захватывается обратно в Figma: [tools-write.md](tools-write.md) (справочник) |
 | Настроить Code Connect | [workflows.md](workflows.md), [tools-read.md](tools-read.md) (справочник), [tools-write.md](tools-write.md) (справочник) | если маппинг выполняется слеш-командой `/figma-code-connect-components`, а не прямыми вызовами инструментов: [mcp-prompts.md](mcp-prompts.md) |
 | Использовать Figma Skills | [mcp-prompts.md](mcp-prompts.md) | если скилл пишет на canvas (`/figma-use`, `/figma-use-figjam`, `/figma-generate-design`, `/figma-generate-library`): [tools-write.md](tools-write.md) (справочник), [workflows.md](workflows.md) |
+
+## Самопроверка при подключении
+
+При первом обращении к задаче, связанной с Figma, канал проверяется живым вызовом — до того, как агент отвечает по справочнику. Констатация «справочник загружен» самопроверкой не считается.
+
+| Сервер | Вызов | Что подтверждает |
+|---|---|---|
+| Remote | `whoami` | авторизацию, тариф и seat — по ним считаются rate limits (секция выше). Сам вызов вне read-лимитов |
+| Desktop | `get_design_context` | что инструменты сервера видны в этой сессии |
+
+- Инструмент не найден («Unknown tool») или OAuth не пройден → настройка: [desktop-setup.md](desktop-setup.md) для Desktop, [remote-setup.md](remote-setup.md) для Remote.
+- Desktop вернул пустой результат → в Figma ничего не выделено; это не обрыв связи, разбор — [desktop-setup.md](desktop-setup.md).
+- Проверка делается один раз в начале работы, не перед каждым вызовом; повторяется после ошибки или обрыва связи.
 
 ## Что НЕ делать
 
