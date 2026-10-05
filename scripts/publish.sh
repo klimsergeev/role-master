@@ -50,6 +50,11 @@ PRIVATE_SKILLS_DIR="$PROJECT_ROOT/Skills.private"
 PRIVATE_AGENTS_TARGET_DIR="$TARGET_DIR/Agents.private"
 PRIVATE_SKILLS_TARGET_DIR="$TARGET_DIR/Skills.private"
 
+# Каталоги внутри ~/.claude/skills, которые скрипт не удаляет никогда.
+# Префиксное правило skill-* уже защищает их; список — страховка на случай,
+# если служебный каталог Claude Code когда-нибудь получит имя вида skill-*.
+PROTECTED_CLAUDE_SKILL_DIRS=("synced" ".trash")
+
 # GitHub репозиторий для заглушек
 GITHUB_REPO="klimsergeev/role-master"
 GITHUB_BRANCH="main"
@@ -124,7 +129,7 @@ fi
 # Считаем файлы до синхронизации
 BEFORE_COUNT=$(find "$AGENTS_TARGET_DIR" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
 BEFORE_SKILLS_COUNT=$(find "$SKILLS_TARGET_DIR" \( -name "*.md" -o -name "*.skill" \) 2>/dev/null | wc -l | tr -d ' ')
-BEFORE_CLAUDE_SKILLS_COUNT=$(find "$CLAUDE_SKILLS_DIR" -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
+BEFORE_CLAUDE_SKILLS_COUNT=$(find "$CLAUDE_SKILLS_DIR" -mindepth 1 -maxdepth 1 -type d -name "skill-*" 2>/dev/null | wc -l | tr -d ' ')
 
 # Список категорий (папок) — без templates (шаблоны не публикуются)
 CATEGORIES="meta assistants specialists creative"
@@ -666,6 +671,23 @@ sync_to_claude_skills() {
         for skill_dir in "$CLAUDE_SKILLS_DIR"/*/; do
             if [[ -d "$skill_dir" ]]; then
                 local skill_dirname=$(basename "$skill_dir")
+
+                # Удаляем только то, что создаёт сам скрипт: каталоги по схеме skill-*.
+                # Всё остальное (служебный synced Claude Code, сторонние скиллы) не трогаем
+                # и не упоминаем в отчёте.
+                if [[ "$skill_dirname" != skill-* ]]; then continue; fi
+
+                # Явный список защищённых имён — страховка поверх префиксного правила
+                local is_protected=false
+                local protected
+                for protected in "${PROTECTED_CLAUDE_SKILL_DIRS[@]}"; do
+                    if [[ "$skill_dirname" == "$protected" ]]; then
+                        is_protected=true
+                        break
+                    fi
+                done
+                if [[ "$is_protected" == true ]]; then continue; fi
+
                 local is_valid=false
 
                 for valid_skill in "${VALID_SKILLS[@]}"; do
@@ -1282,7 +1304,7 @@ fi
 if [[ "$DRY_RUN" == false ]]; then
     AFTER_COUNT=$(find "$AGENTS_TARGET_DIR" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
     AFTER_SKILLS_COUNT=$(find "$SKILLS_TARGET_DIR" \( -name "*.md" -o -name "*.skill" \) 2>/dev/null | wc -l | tr -d ' ')
-    AFTER_CLAUDE_SKILLS_COUNT=$(find "$CLAUDE_SKILLS_DIR" -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
+    AFTER_CLAUDE_SKILLS_COUNT=$(find "$CLAUDE_SKILLS_DIR" -mindepth 1 -maxdepth 1 -type d -name "skill-*" 2>/dev/null | wc -l | tr -d ' ')
     echo -e "${GREEN}✅ Публикация завершена!${NC}"
     echo "   Опубликовано агентов: $AFTER_COUNT"
     echo "   Опубликовано скиллов: $AFTER_SKILLS_COUNT"
