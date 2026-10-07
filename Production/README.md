@@ -48,7 +48,7 @@
 | **data-aggregator** | `Agents/assistants/data-aggregator.md` | Извлечение структурированных данных из веб-страниц в JSON |
 | **message-writer** | `Agents/assistants/message-writer.md` | Ассистент по написанию сообщений в инфостиле |
 | **project-logger** | `Agents/assistants/project-logger.md` | Секретарь проектной документации для портфолио |
-| **research-analyst** | `Agents/assistants/research-analyst.md` | Аналитик-исследователь для глубокого анализа и исследований |
+| **research-analyst** | `Agents/assistants/research-analyst.md` | Аналитик-исследователь — сбор, проверка и систематизация фактов из первоисточников |
 | **shopping-assistant** | `Agents/assistants/shopping-assistant.md` | Персональный консультант по подбору товаров — ресёрч, визуальный отбор, руководство для покупки |
 | **travel-agent** | `Agents/assistants/travel-agent.md` | Персональный ИИ-турагент-советник — ведёт от выбора направления до дебрифа с обязательной верификацией фактов |
 
@@ -127,7 +127,7 @@
 
 - **Ролей:** 25
 - **Скиллов:** 38
-- **Последнее обновление:** 2026-10-06 14:40
+- **Последнее обновление:** 2026-10-07 17:13
 
 ---
 
