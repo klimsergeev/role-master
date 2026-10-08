@@ -222,6 +222,8 @@ filters=ym:s:isRobot=='No'
 - `ym:s:anyGoalReaches` — достижения любой цели
 - `ym:s:anyGoalConversionRate` — конверсия любой цели
 
+Название цели — свободный текст и не говорит, что цель считает. Прежде чем брать цель мерой, открой её условия (`GET /management/v1/counter/{counterId}/goal/{goalId}`, поля `type` и `conditions`) и сверь число `goal<goal_id>reaches` за период с ожидаемым: цель-событие может почти не срабатывать, а цель-URL — ловить посторонние страницы.
+
 **E-commerce:**
 - `ym:s:ecommercePurchases` — покупки
 - `ym:s:ecommerce<currency>ConvertedRevenue` — доход
@@ -229,6 +231,10 @@ filters=ym:s:isRobot=='No'
 - `ym:s:ecommerce<currency>ConvertedRevenuePerVisit` — доход на визит
 - `ym:s:productPurchasedQuantity` — количество купленных товаров
 - `ym:s:productBasketsQuantity` — добавления в корзину
+- `ym:s:productImpressions` — просмотры карточки товара (ecommerce-действие `detail`, в формате GA4 — `view_item`)
+- `ym:s:productInListImpressions` — просмотры товара в списке (действие `impressions`)
+
+Просмотры карточки товара считай по ecommerce, а не по адресам страниц: `dimensions=ym:s:productID&metrics=ym:s:productImpressions` даёт топ карточек одним запросом. Подсчёт через `ym:pv:URLPath` + `ym:pv:pageviews` смешивает с карточкой всё, что живёт по тем же или похожим адресам, и искажает топ в разы. Не путай имена: `productImpressions` — карточка, `productInListImpressions` — показ в списке, хотя по названию кажется наоборот.
 
 **Демография:**
 - `ym:s:manPercentage`, `ym:s:womanPercentage` — процент М/Ж
