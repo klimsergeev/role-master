@@ -31,7 +31,7 @@
 | Источник | Формулировка |
 |---|---|
 | Справка Anthropic | «Claude in Chrome is not supported on other Chromium-based web browsers or mobile devices» |
-| Анонс от 12 августа 2026 | «Claude in Chrome doesn't run on other Chromium browsers or on mobile yet» |
+| Анонс Anthropic | «Claude in Chrome doesn't run on other Chromium browsers or on mobile yet» |
 | Дока Claude Code | «Chrome integration works with Google Chrome and Microsoft Edge. Claude Code also detects the extension and sets up the connection in other Chromium-based browsers, including Brave, Arc, Vivaldi, and Opera» |
 
 Расхождение объясняется разными поверхностями продукта. **Итог:** боковая панель — только Chrome; связка «Claude Code ↔ расширение» документирована для Chrome и Edge, а Brave, Arc, Vivaldi и Opera поддерживаются стороной Claude Code, но справкой Anthropic не заявлены. Дока Claude Code перечисляет для них конкретные пути к файлу конфигурации хоста — см. ниже.

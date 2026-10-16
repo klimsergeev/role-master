@@ -29,7 +29,7 @@
 - **Automatic action screening.** «When Claude works on its own, it checks each action for risk and for hidden malicious instructions before running it.» Работает в режиме автоматического подтверждения.
 - **Ongoing red teaming.** «Human security researchers continuously probe for vulnerabilities.»
 
-Анонс от 12 августа 2026 добавляет отдельную проверку действия на соответствие исходной задаче: «Before anything consequential, like submitting a form, sending a message, or downloading a file, a separate check reviews the action against what you originally asked for and blocks anything that doesn't match.»
+Анонс Anthropic добавляет отдельную проверку действия на соответствие исходной задаче: «Before anything consequential, like submitting a form, sending a message, or downloading a file, a separate check reviews the action against what you originally asked for and blocks anything that doesn't match.»
 
 ---
 
