@@ -862,8 +862,10 @@ sync_skills() {
                     # Удаляем старый архив, чтобы zip не дописывал в него
                     rm -f "$archive_file"
                     # Создаём zip-архив с папкой-обёрткой (skill-name/SKILL.md, ...)
+                    # -X: без extra-полей UT и ux. В UT лежит время последнего доступа к файлу,
+                    # и без флага любое чтение скилла меняет архив побайтово при том же содержимом
                     local parent_dir=$(dirname "$skill_src_dir")
-                    (cd "$parent_dir" && zip -q -r "$archive_file" "$dir_name")
+                    (cd "$parent_dir" && zip -q -r -X "$archive_file" "$dir_name")
                 fi
 
                 echo -e "   ${GREEN}✓${NC} ${dir_name}.skill"
@@ -1034,8 +1036,10 @@ sync_private_skills() {
                 # Удаляем старый архив, чтобы zip не дописывал в него
                 rm -f "$archive_file"
                 # Создаём zip-архив с папкой-обёрткой (skill-name/SKILL.md, ...)
+                # -X: без extra-полей UT и ux. В UT лежит время последнего доступа к файлу,
+                # и без флага любое чтение скилла меняет архив побайтово при том же содержимом
                 local parent_dir=$(dirname "$skill_src_dir")
-                (cd "$parent_dir" && zip -q -r "$archive_file" "$dir_name")
+                (cd "$parent_dir" && zip -q -r -X "$archive_file" "$dir_name")
             fi
 
             echo -e "   ${GREEN}✓${NC} ${dir_name}.skill"
