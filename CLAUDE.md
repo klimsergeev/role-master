@@ -24,7 +24,7 @@ Roles/  Skills/  ──publish.sh──►  Production/{Agents,Dialog,Skills}/  
 | `Production/Dialog/` | заглушки-загрузчики для веб-Claude | да |
 | `Production/Skills/` | опубликованные скиллы (`.skill`-архивы и `.md`) | да |
 | `Production/README.md` | каталог библиотеки, **генерируется целиком** | да |
-| `scripts/publish.sh` | скрипт публикации, 1330 строк | да |
+| `scripts/publish.sh` | скрипт публикации, 1366 строк | да |
 | `Roles.private/`, `Skills.private/` | приватные исходники (плоско, без категорий) | **нет** |
 | `Production/Agents.private/`, `Production/Skills.private/` | их публикация | **нет** |
 | `Production/env/` | `.env` с токенами для скиллов | **нет** |
@@ -56,18 +56,19 @@ Roles/  Skills/  ──publish.sh──►  Production/{Agents,Dialog,Skills}/  
 Что делает:
 
 - `Roles/<категория>/*.md` → `Production/Agents/<категория>/` (`rsync --delete`), плюс `~/.claude/agents/agent-{name}.md`, где `{name}` берётся из frontmatter.
-- Для каждой публичной роли генерирует заглушку `Production/Dialog/<категория>/<имя>.md` — 26 строк с raw-ссылкой на GitHub (`klimsergeev/role-master`, ветка `main`, константы в `scripts/publish.sh:54-55`). Приватные роли заглушек не получают.
+- Для каждой публичной роли генерирует заглушку `Production/Dialog/<категория>/<имя>.md` — 36 строк с raw-ссылкой на GitHub (`klimsergeev/role-master`, ветка `main`, константы в `scripts/publish.sh:59-60`). Приватные роли заглушек не получают.
 - `Skills/skill-*/` → zip-архив `Production/Skills/skill-*.skill`; `Skills/skill-*.md` → копия `.md`. В `~/.claude/skills/<имя>/` копируется вся директория скилла через `rsync -a --delete`.
 - Перегенерирует `Production/README.md` целиком из frontmatter источников.
 
-Что исключается: категория `templates` (`CATEGORIES="meta assistants specialists creative"`, `scripts/publish.sh:129-130`), `skill-template` (явные `continue` в восьми местах), директории-скиллы без `SKILL.md` (пропускаются молча).
+Что исключается: категория `templates` (`CATEGORIES="meta assistants specialists creative"`, `scripts/publish.sh:134-135`), `skill-template` (явные `continue` в восьми местах), директории-скиллы без `SKILL.md` (пропускаются молча).
 
 **Ловушки, о которых нужно знать:**
 
-- Фильтр frontmatter действует **только на плоских скиллах-`.md`**. Из них вырезается всё, кроме `name description license allowed-tools compatibility metadata when_to_use` (список — `scripts/publish.sh:702`), так что `version`, `created`, `updated`, `disable-model-invocation` в опубликованном `.md` отсутствуют и он не равен исходнику побайтово. Функция `filter_skill_frontmatter` вызывается ровно дважды и оба раза на пути плоского `.md` — публичного (`:790`) и приватного (`:964`). **Скиллы-директории фильтр не проходят:** они пакуются `zip -q -r` как есть (`:834`, `:1006`), и `version` доезжает в `.skill`-архив нетронутым (проверено на `skill-yandex-wordstat.skill` 25.08.2026).
+- Фильтр frontmatter действует **только на плоских скиллах-`.md`**. Из них вырезается всё, кроме `name description license allowed-tools compatibility metadata when_to_use` (список — `scripts/publish.sh:734`), так что `version`, `created`, `updated`, `disable-model-invocation` в опубликованном `.md` отсутствуют и он не равен исходнику побайтово. Функция `filter_skill_frontmatter` вызывается ровно дважды и оба раза на пути плоского `.md` — публичного (`:822`) и приватного (`:998`). **Скиллы-директории фильтр не проходят:** они пакуются `zip -q -r -X` как есть (`:868`, `:1042`), и `version` доезжает в `.skill`-архив нетронутым (проверено на `skill-yandex-wordstat.skill` 25.08.2026).
 - Скрипт удаляет `rm -rf` любую поддиректорию `~/.claude/skills/`, имя которой не совпало со скиллом из `Skills/` или `Skills.private/`. Фильтра по префиксу `skill-` там нет — сторонние скиллы, установленные помимо проекта, будут стёрты.
 - Резервных копий, подтверждений и отката в скрипте нет; предохранители — только `--dry` и `--test-dir`.
 - Шапка-комментарий скрипта неполна: не упоминает `--test-dir`, `--help`, фильтрацию frontmatter и то, что приватные артефакты тоже уезжают в `~/.claude/`. При расхождении шапки и кода прав код.
+- Архив скилла пересобирается и попадает в diff, если у файла скилла сменилось время изменения при том же содержимом — например, после `git checkout --` или удаления `__pycache__`. Флаг `-X` убрал из архивов время последнего доступа, из-за которого раньше пересобирались скиллы после простого чтения; время изменения в архиве остаётся. Шумный архив отличается от правки так: распаковать оба и сравнить `diff -rq` — пусто значит шум, его откатывают `git checkout --` перед коммитом.
 - `Production/env/` скрипт не создаёт и о нём не знает (0 совпадений по `grep`) — это вручную поддерживаемая директория с токенами.
 
 ## Формат роли
@@ -106,7 +107,7 @@ Claude Code предзагружает перечисленные скиллы �
 
 **Поле не работает в веб-Claude и в Cursor.** Поэтому блок «Самопроверка при запуске» в теле роли остаётся страховкой, а под заголовком H1 каждой роли с полем стоит заметка о границах механизма. Три вещи — поле, заметка и секция самопроверки — добавляются и удаляются вместе.
 
-`publish.sh` фронтматтер ролей не фильтрует (фильтр `filter_skill_frontmatter` вызывается только на путях скиллов, `:790` и `:964`), поле доезжает и в `Production/Agents/`, и в `~/.claude/agents/` нетронутым.
+`publish.sh` фронтматтер ролей не фильтрует (фильтр `filter_skill_frontmatter` вызывается только на путях скиллов, `:822` и `:998`), поле доезжает и в `Production/Agents/`, и в `~/.claude/agents/` нетронутым.
 
 Тело: `# [Эмодзи] Название — слоган` → `Идентичность` (Кто ты / Миссия / Ключевые компетенции) → `Принципы работы` (Как ты работаешь / Правила принятия решений в форме ЕСЛИ→ТО / Формат выдачи) → специфичные секции → `Примеры` (минимум два: типовой и edge-case) → `Ограничения` последней секцией. Эталон — `Roles/templates/role-template.md`.
 
@@ -141,7 +142,7 @@ created: YYYY-MM-DD
 Проверено 2026-08-11:
 
 - Прецедент: `Skills/skill-travel-agent/scripts/travelpayouts_probe.py` — 148 строк, только стандартная библиотека (`json`, `os`, `ssl`, `sys`, `urllib`, `datetime`), без `package.json` и установки зависимостей. Плюс `Skills/skill-humanizer-ru/LICENSE` — тоже не Markdown.
-- `publish.sh` не фильтрует по расширению: директория-скилл идёт в архив через `zip -q -r` (`scripts/publish.sh:834`) и в `~/.claude/skills/` через `rsync -a --delete` (`scripts/publish.sh:602`). Скрипт физически доезжает до пользователя — подтверждено `unzip -l Production/Skills/skill-travel-agent.skill`.
+- `publish.sh` не фильтрует по расширению: директория-скилл идёт в архив через `zip -q -r -X` (`scripts/publish.sh:868`) и в `~/.claude/skills/` через `rsync -a --delete` (`scripts/publish.sh:617`). Скрипт физически доезжает до пользователя — подтверждено `unzip -l Production/Skills/skill-travel-agent.skill`.
 
 Практические следствия при добавлении скрипта в скилл: держись стандартной библиотеки, потому что установку зависимостей контракт скилла не предусматривает; не рассчитывай на автозапуск — хуки харнесса это не содержание скилла.
 
