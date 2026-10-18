@@ -110,15 +110,20 @@ Figma Remote MCP подключён.
 Пользователь: [email из whoami]
 Plan: [plan из whoami]
 
-Доступные инструменты (19):
-- Чтение: get_design_context, get_screenshot, get_metadata, get_variable_defs
-- Code Connect: get_code_connect_map, add_code_connect_map, get_code_connect_suggestions, send_code_connect_mappings
-- Создание: use_figma [beta], generate_figma_design, create_new_file, generate_diagram
+Доступные инструменты:
+- Чтение: get_design_context, get_screenshot, get_metadata, get_variable_defs, get_figjam, get_libraries, get_motion_context, download_assets
+- Code Connect: get_code_connect_map, add_code_connect_map, get_code_connect_suggestions, send_code_connect_mappings, get_context_for_code_connect, list_file_components_for_code_connect
+- Создание и запись: use_figma [beta], generate_figma_design, create_new_file, generate_diagram, upload_assets, generate_image (платный — расходует AI-кредиты Figma), export_video, send_code_to_figma
 - Поиск: search_design_system
-- Служебные: whoami, create_design_system_rules, get_figjam, get_libraries, get_context_for_code_connect, upload_assets
+- Шейдеры: list_shaders, list_file_shaders, get_shader, create_shader, update_shader
+- Генеративные плагины: list_generative_plugins, get_generative_plugin, create_generative_plugin, update_generative_plugin
+- Weave (запуск расходует кредиты Weave): weave_list_tools, weave_get_tool_inputs, weave_run_tool, weave_get_tool_run_output, weave_cancel_tool_run, weave_find_model, weave_run_model, weave_get_model_run_output, weave_upload_asset
+- Служебные: whoami
 
 Проверка: "создай прямоугольник в файле [fileKey]" (требует Edit permission)
 ```
+
+Перечень сверен со схемами инструментов Remote-сервера в сессии; состав сервера меняется, поэтому в выдаче пользователю перечисляй то, что пришло в схемах текущей сессии, а не этот список. Наблюдение: инструмента `create_design_system_rules` в схеме Remote-сервера нет. Параметры инструментов, у которых нет карточки в [tools-read.md](tools-read.md) и [tools-write.md](tools-write.md), — по их схемам в сессии.
 
 ## Примеры
 
@@ -133,7 +138,7 @@ Plan: [plan из whoami]
 4. Allow Access в браузере
 5. Проверка через `whoami`
 
-**Результат:** Подключение активно, 19 инструментов доступны.
+**Результат:** Подключение активно, инструменты сервера видны в сессии — состав сверен со схемами.
 
 ### Пример 2: Глобальная настройка для всех проектов
 

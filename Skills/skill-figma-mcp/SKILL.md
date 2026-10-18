@@ -3,15 +3,16 @@ name: skill-figma-mcp
 description: >
   Справочник Figma MCP — инструменты, настройка подключения (Desktop и Remote),
   workflows для дизайн-to-код, Code Connect, диаграммы, write-операции на canvas.
-  Покрывает 19 MCP tools, 8+ Figma Skills (MCP prompts), типичные задачи
-  фронтенд-разработки и продуктового дизайна с Figma.
+  Покрывает инструменты Desktop и Remote MCP, загрузку и выгрузку изображений,
+  8+ Figma Skills (MCP prompts), типичные задачи фронтенд-разработки и продуктового
+  дизайна с Figma.
 when_to_use: >
   Когда нужно работать с Figma через MCP: сверстать по макету, получить токены
   дизайн-системы, создать элементы на canvas, настроить Code Connect, сгенерировать
   диаграмму, захватить UI, настроить подключение Desktop или Remote MCP.
   Примеры запросов: "сверстай компонент из Figma", "синхронизируй цвета из Figma",
   "подключи Figma MCP", "создай диаграмму в FigJam".
-version: 2.4.0
+version: 2.5.0
 created: 2026-05-03
 ---
 
@@ -19,7 +20,7 @@ created: 2026-05-03
 
 ## Назначение
 
-Справочник для работы с Figma через MCP-серверы. Описывает настройку подключения, 19 инструментов (10 Desktop, 19 Remote), 8+ Figma Skills и типичные workflows для фронтенд-разработки и продуктового дизайна.
+Справочник для работы с Figma через MCP-серверы. Описывает настройку подключения, инструменты Desktop и Remote MCP (перечень инструментов Remote — в [remote-setup.md](remote-setup.md)), 8+ Figma Skills и типичные workflows для фронтенд-разработки и продуктового дизайна.
 
 ## Desktop vs Remote
 
@@ -27,7 +28,7 @@ created: 2026-05-03
 |----------------|---------|--------|
 | URL | `127.0.0.1:3845/mcp` | `mcp.figma.com/mcp` |
 | Требует Figma Desktop | Да | Нет |
-| Инструментов | 10 | 19 |
+| Инструменты | Чтение и Code Connect, без записи на canvas | Чтение, запись на canvas, Code Connect, загрузка и выгрузка изображений и другие — перечень в [remote-setup.md](remote-setup.md) |
 | Write-to-canvas | Нет (REST API, read-only) | Полный (Plugin API) |
 | Rate limits | Нет | Да (см. ниже) |
 | Авторизация | Автоматически через Desktop | OAuth в браузере |
