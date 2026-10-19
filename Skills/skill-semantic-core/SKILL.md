@@ -11,9 +11,8 @@ when_to_use: >
   Schema.org разметки, проверке структуры заголовков, сравнении страниц, аудите
   Open Graph и Twitter Cards. Триггеры: «проверь семантику», «проанализируй YAML»,
   «аудит страницы», «проверь мета-теги в YAML», «сравни страницы».
-version: 2.0.1
+version: 2.0.2
 created: 2026-02-20
-allowed-tools: Bash(python *)
 ---
 
 # Semantic Core
