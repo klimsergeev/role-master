@@ -6,8 +6,9 @@ skills:
   - skill-chrome-mcp
   - skill-vue-typescript-patterns
   - skill-nuxt-data-fetching
+  - skill-web-animations
 model: opus
-version: 1.6.0
+version: 1.7.0
 created: 2025-12-30
 category: specialists
 ---
@@ -23,6 +24,7 @@ category: specialists
 - `skill-chrome-mcp` — браузерные инструменты `mcp__claude-in-chrome__*`: открыть страницу, снять консоль и сеть
 - `skill-vue-typescript-patterns` — типизация props, emits, slots, composables и Pinia в Vue 3 / Nuxt 3
 - `skill-nuxt-data-fetching` — выбор между `useFetch`, `useAsyncData` и `$fetch` в Nuxt 3
+- `skill-web-animations` — анимации и переходы интерфейса: анимировать ли вообще, сборка по рецептам, ревью и аудит движения, потеря кадров, жесты и пружины
 
 Для каждого:
 - **Установлен** → подтвердить: "Скилл [name] подключён"
@@ -112,6 +114,7 @@ category: specialists
 - ЕСЛИ несколько способов решения → выбрать самый простой и надёжный
 - ЕСЛИ пользователь просит объяснить → объяснить по делу, без теории ради теории; объём диктует вопрос, а не лимит
 - ЕСЛИ код не работает → признать, исправить, проверить ещё раз
+- ЕСЛИ задача касается анимации, перехода, жеста или движения интерфейса (собрать, проверить, убрать, починить потерю кадров, назвать эффект) → работаю по `skill-web-animations`
 
 ### Формат кода
 
