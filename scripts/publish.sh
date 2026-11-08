@@ -7,6 +7,10 @@
 # Использование:
 #   ./scripts/publish.sh          — публикует все роли и скиллы
 #   ./scripts/publish.sh --dry    — показывает что будет скопировано (без изменений)
+#   ./scripts/publish.sh --rebuild-archives — пересобирает все .skill-архивы
+#                                  скиллов-директорий, даже если содержимое скилла
+#                                  не менялось (без флага архив пересобирается
+#                                  только при изменении содержимого)
 #
 # Структура Production:
 #   Production/
@@ -62,6 +66,7 @@ GITHUB_BRANCH="main"
 # Проверка аргументов
 DRY_RUN=false
 TEST_DIR=false
+REBUILD_ARCHIVES=false
 for arg in "$@"; do
     case "$arg" in
         --dry)
@@ -70,11 +75,15 @@ for arg in "$@"; do
         --test-dir)
             TEST_DIR=true
             ;;
+        --rebuild-archives)
+            REBUILD_ARCHIVES=true
+            ;;
         --help)
-            echo "Использование: ./scripts/publish.sh [--dry] [--test-dir] [--help]"
-            echo "  --dry       Показать что будет скопировано (без изменений)"
-            echo "  --test-dir  Публикация в .tmp-publish/ (тестовый режим)"
-            echo "  --help      Показать эту справку"
+            echo "Использование: ./scripts/publish.sh [--dry] [--test-dir] [--rebuild-archives] [--help]"
+            echo "  --dry               Показать что будет скопировано (без изменений)"
+            echo "  --test-dir          Публикация в .tmp-publish/ (тестовый режим)"
+            echo "  --rebuild-archives  Пересобрать все .skill-архивы, даже без изменений содержимого"
+            echo "  --help              Показать эту справку"
             exit 0
             ;;
     esac
@@ -82,6 +91,10 @@ done
 
 if [[ "$DRY_RUN" == true ]]; then
     echo -e "${YELLOW}🔍 Режим просмотра (dry run) — изменения не будут применены${NC}\n"
+fi
+
+if [[ "$REBUILD_ARCHIVES" == true ]]; then
+    echo -e "${YELLOW}♻️  Принудительная пересборка всех .skill-архивов (--rebuild-archives)${NC}\n"
 fi
 
 # Переопределяем пути для тестового режима
@@ -788,6 +801,130 @@ filter_skill_frontmatter() {
 }
 
 # =============================================================================
+# .skill-архивы скиллов-директорий
+# =============================================================================
+#
+# Архив пересобирается, только если содержимое скилла отличается от содержимого
+# текущего архива. Содержимое — это:
+#   1) набор путей: все файлы и директории, включая папку-обёртку skill-name/;
+#   2) байты каждого файла;
+#   3) признак исполняемости файла владельцем.
+# Время изменения, часовой пояс, порядок записей и служебные поля заголовков zip
+# в сравнение не входят: от них зависят байты архива, но не его содержимое.
+# Остальные биты прав не сравниваются: git хранит только признак исполняемости,
+# остальное задаёт umask при checkout.
+#
+# Сборка идёт с TZ=UTC: zip пишет время изменения файла в DOS-формате как местное
+# время без часового пояса, и без фиксированного пояса один и тот же файл получал
+# бы в архиве разные метки на машинах с разным поясом. Время изменения файлов
+# в архив пишется настоящее.
+#
+# --rebuild-archives пропускает сравнение и пересобирает все архивы.
+
+# Временная директория текущей операции с архивом; удаляется и при ошибке
+_ARCHIVE_WORK_DIR=""
+
+cleanup_archive_work_dir() {
+    if [[ -n "$_ARCHIVE_WORK_DIR" ]]; then
+        rm -rf "$_ARCHIVE_WORK_DIR"
+        _ARCHIVE_WORK_DIR=""
+    fi
+}
+trap cleanup_archive_work_dir EXIT
+# Прерывание переводим в exit, чтобы сработала уборка из trap EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
+# Сравнивает директорию скилла с архивом по содержимому
+# Использование: skill_archive_matches_source skill_src_dir archive_file work_dir
+# Код возврата: 0 — содержимое совпадает, 1 — отличается, 2 — архив не читается
+skill_archive_matches_source() {
+    local skill_src_dir="$1"
+    local archive_file="$2"
+    local work_dir="$3"
+    local parent_dir
+    local dir_name
+    parent_dir=$(dirname "$skill_src_dir")
+    dir_name=$(basename "$skill_src_dir")
+
+    # 1. Набор путей: записи архива против путей, которые zip -r взял бы с диска.
+    #    Оба списка сортируются побайтно, порядок записей и обхода не влияет.
+    unzip -Z1 "$archive_file" > "$work_dir/archive-paths.raw" 2>/dev/null || return 2
+    LC_ALL=C sort "$work_dir/archive-paths.raw" > "$work_dir/archive-paths"
+    (
+        cd "$parent_dir" || exit 1
+        find "$dir_name" -type d | sed 's|$|/|'
+        find "$dir_name" ! -type d
+    ) | LC_ALL=C sort > "$work_dir/source-paths"
+    cmp -s "$work_dir/archive-paths" "$work_dir/source-paths" || return 1
+
+    # 2. Байты файлов: распаковка и побайтное сравнение дерева
+    mkdir "$work_dir/unpacked"
+    unzip -qq -o "$archive_file" -d "$work_dir/unpacked" > /dev/null 2>&1 || return 2
+    diff -rq "$work_dir/unpacked/$dir_name" "$skill_src_dir" > /dev/null 2>&1 || return 1
+
+    # 3. Признак исполняемости владельцем: списки исполняемых файлов.
+    #    zipinfo -T -s: права, версия, ОС, размер, тип, метод, время, имя —
+    #    имя начинается после седьмого поля и может содержать пробелы.
+    zipinfo -T -s "$archive_file" 2>/dev/null \
+        | sed -n 's/^-..x[^ ]* \{1,\}[^ ]\{1,\} \{1,\}[^ ]\{1,\} \{1,\}[^ ]\{1,\} \{1,\}[^ ]\{1,\} \{1,\}[^ ]\{1,\} \{1,\}[^ ]\{1,\} //p' \
+        | LC_ALL=C sort > "$work_dir/archive-exec"
+    (cd "$parent_dir" && find "$dir_name" -type f -perm -u+x) \
+        | LC_ALL=C sort > "$work_dir/source-exec"
+    cmp -s "$work_dir/archive-exec" "$work_dir/source-exec" || return 1
+
+    return 0
+}
+
+# Собирает .skill-архив директории-скилла или оставляет текущий, если содержимое
+# скилла не изменилось. Архив собирается во временный файл и заменяет старый
+# только после успешного zip; при ошибке старый архив остаётся.
+# Использование: publish_skill_archive skill_src_dir archive_file
+publish_skill_archive() {
+    local skill_src_dir="$1"
+    local archive_file="$2"
+    local parent_dir
+    local dir_name
+    local status
+    local rc=0
+    parent_dir=$(dirname "$skill_src_dir")
+    dir_name=$(basename "$skill_src_dir")
+
+    _ARCHIVE_WORK_DIR=$(mktemp -d)
+    local work_dir="$_ARCHIVE_WORK_DIR"
+
+    if [[ "$REBUILD_ARCHIVES" == true ]]; then
+        status="пересобран (--rebuild-archives)"
+    elif [[ ! -f "$archive_file" ]]; then
+        status="собран"
+    else
+        skill_archive_matches_source "$skill_src_dir" "$archive_file" "$work_dir" || rc=$?
+        case "$rc" in
+            0)
+                cleanup_archive_work_dir
+                echo -e "   ${GREEN}✓${NC} ${dir_name}.skill — без изменений"
+                return 0
+                ;;
+            1)
+                status="пересобран"
+                ;;
+            *)
+                echo -e "   ${YELLOW}!${NC} ${dir_name}.skill — архив не читается, собираю заново"
+                status="пересобран"
+                ;;
+        esac
+    fi
+
+    # -X: без extra-полей UT и ux (в UT лежит время последнего доступа).
+    # TZ=UTC: метки времени в архиве не зависят от часового пояса машины.
+    (cd "$parent_dir" && TZ=UTC zip -q -r -X "$work_dir/new.skill" "$dir_name")
+    mv -f "$work_dir/new.skill" "$archive_file"
+    cleanup_archive_work_dir
+
+    echo -e "   ${GREEN}✓${NC} ${dir_name}.skill — ${status}"
+}
+
+# =============================================================================
 # Синхронизация Skills
 # =============================================================================
 
@@ -856,19 +993,14 @@ sync_skills() {
                     continue
                 fi
 
-                local archive_file="$SKILLS_TARGET_DIR/${dir_name}.skill"
-
                 if [[ "$DRY_RUN" == false ]]; then
-                    # Удаляем старый архив, чтобы zip не дописывал в него
-                    rm -f "$archive_file"
-                    # Создаём zip-архив с папкой-обёрткой (skill-name/SKILL.md, ...)
-                    # -X: без extra-полей UT и ux. В UT лежит время последнего доступа к файлу,
-                    # и без флага любое чтение скилла меняет архив побайтово при том же содержимом
-                    local parent_dir=$(dirname "$skill_src_dir")
-                    (cd "$parent_dir" && zip -q -r -X "$archive_file" "$dir_name")
+                    # zip-архив с папкой-обёрткой (skill-name/SKILL.md, ...),
+                    # пересобирается только при изменении содержимого скилла
+                    publish_skill_archive "$skill_src_dir" "$SKILLS_TARGET_DIR/${dir_name}.skill"
+                else
+                    echo -e "   ${GREEN}✓${NC} ${dir_name}.skill"
                 fi
 
-                echo -e "   ${GREEN}✓${NC} ${dir_name}.skill"
                 SYNCED_COUNT=$((SYNCED_COUNT + 1))
             fi
         done < <(find "$SKILLS_SOURCE_DIR" -maxdepth 1 -name "skill-*" -type d -print0 2>/dev/null)
@@ -1030,19 +1162,14 @@ sync_private_skills() {
                 continue
             fi
 
-            local archive_file="$PRIVATE_SKILLS_TARGET_DIR/${dir_name}.skill"
-
             if [[ "$DRY_RUN" == false ]]; then
-                # Удаляем старый архив, чтобы zip не дописывал в него
-                rm -f "$archive_file"
-                # Создаём zip-архив с папкой-обёрткой (skill-name/SKILL.md, ...)
-                # -X: без extra-полей UT и ux. В UT лежит время последнего доступа к файлу,
-                # и без флага любое чтение скилла меняет архив побайтово при том же содержимом
-                local parent_dir=$(dirname "$skill_src_dir")
-                (cd "$parent_dir" && zip -q -r -X "$archive_file" "$dir_name")
+                # zip-архив с папкой-обёрткой (skill-name/SKILL.md, ...),
+                # пересобирается только при изменении содержимого скилла
+                publish_skill_archive "$skill_src_dir" "$PRIVATE_SKILLS_TARGET_DIR/${dir_name}.skill"
+            else
+                echo -e "   ${GREEN}✓${NC} ${dir_name}.skill"
             fi
 
-            echo -e "   ${GREEN}✓${NC} ${dir_name}.skill"
             SYNCED_COUNT=$((SYNCED_COUNT + 1))
         fi
     done < <(find "$PRIVATE_SKILLS_DIR" -maxdepth 1 -name "skill-*" -type d -print0 2>/dev/null)
