@@ -1,5 +1,5 @@
 ---
-name: skill-prompt-claude
+name: skill-prompt-engineering
 description: >
   Процедуры и справочные значения для текста промптов к текущим моделям
   Claude — Fable 5.1, Opus 5.5, Sonnet 5.5, Haiku 5.5. Написать системный
@@ -20,11 +20,11 @@ when_to_use: >
   варианта промпта», «какой официальный блок против ранних остановок»,
   prompt engineering, system prompt, CLAUDE.md, reasoning_extraction. Не для
   промптов к генераторам изображений и к моделям других вендоров.
-version: 1.0.0
+version: 2.0.0
 created: 2026-11-09
 ---
 
-# Prompt Claude
+# Prompt Engineering
 
 ## Назначение
 
