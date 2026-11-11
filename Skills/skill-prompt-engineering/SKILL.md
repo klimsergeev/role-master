@@ -1,10 +1,10 @@
 ---
 name: skill-prompt-engineering
 description: >
-  Процедуры и справочные значения для текста промптов к текущим текстовым моделям двух семейств: Claude (Fable 5.1, Opus 5.5, Sonnet 5.5, Haiku 5.5) и Gemini (Gemini 4 Carbon, Gemini 4 Argon, Gemini 3.8 Flash, 3.6 Flash, 3.5 Flash-Lite, 3.1 Flash-Lite). Написать системный промпт или системную инструкцию приложения и агента; тексты Claude Code (CLAUDE.md, правила, субагенты, SKILL.md) и Gemini CLI (GEMINI.md, system.md, навыки, субагенты); задание субагенту; описания функций и полей схем; проверить и улучшить промпт; перенести промпт на другую версию модели внутри семейства; аудит на устаревшие приёмы; для Gemini — параметры запроса, связанные с текстом; для Claude — отладка промпта на тестах. Официальные блоки вендоров дословно, с условием применения.
+  Процедуры и справочные значения для текста промптов к текущим моделям трёх семейств: Claude (Fable 5.1, Opus 5.5, Sonnet 5.5, Haiku 5.5), Gemini (Gemini 4 Carbon и Argon, 3.8 Flash, 3.6 Flash, 3.5 и 3.1 Flash-Lite) и GPT (GPT-6 Astra, 6.1 Sol, 6.1 Terra, 6 Luna, 6 Sol, GPT-5.3-Codex). Системный промпт или developer-сообщение приложения и агента; тексты Claude Code (CLAUDE.md, правила, субагенты, SKILL.md), Gemini CLI (GEMINI.md, system.md, навыки, субагенты) и Codex (AGENTS.md, скиллы, субагенты); инструкции ChatGPT; задание субагенту; описания функций и полей схем; проверить и улучшить промпт; перенести на другую версию внутри семейства; аудит на устаревшие приёмы; для Gemini и GPT — параметры запроса, связанные с текстом; для Claude — отладка на тестах. Официальные блоки вендоров дословно, с условием применения.
 when_to_use: >
-  Когда пишут, правят, переносят или проверяют текст для модели Claude или Gemini. Примеры: «напиши системный промпт для агента», «улучши этот промпт», «почему модель игнорирует инструкцию», «перенеси промпт с Opus 5 на Opus 5.5», «системная инструкция для Gemini 3.8 Flash», «перенеси промпт с Gemini 2.5 на Gemini 3.8 Flash», «напиши GEMINI.md», «Gemini игнорирует системную инструкцию», «проверь скиллы на устаревшие приёмы», «составь задание субагенту», «как проверить промпт на тестах», prompt engineering, system prompt, system instruction, CLAUDE.md, thinking_level. Не для промптов к генераторам изображений (включая Nano Banana) и к моделям других семейств, не для переноса промпта между Claude и Gemini.
-version: 3.0.0
+  Когда пишут, правят, переносят или проверяют текст для модели Claude, Gemini или GPT. Примеры: «напиши системный промпт для агента», «улучши этот промпт», «почему модель игнорирует инструкцию», «перенеси промпт с Opus 5 на Opus 5.5», «системная инструкция для Gemini 3.8 Flash», «developer-сообщение для GPT-6.1 Sol», «перенеси промпт с GPT-5.6 на GPT-6», «напиши AGENTS.md для Codex», «GPT-6 лишний раз переспрашивает», «проверь скиллы на устаревшие приёмы», prompt engineering, system prompt, thinking_level, reasoning.effort. Не для промптов к генераторам изображений (Nano Banana, GPT Image) и к моделям других семейств, не для переноса промпта между семействами.
+version: 3.1.0
 created: 2026-11-09
 ---
 
@@ -12,14 +12,14 @@ created: 2026-11-09
 
 ## Назначение
 
-Скилл задаёт процедуры и официальные значения для текста промптов к текущим моделям Claude и Gemini: написание, проверка, перенос между версиями внутри семейства, аудит на устаревшие приёмы, для Claude — отладка на тестах. Применяется к системным промптам и системным инструкциям приложений и агентов, к текстам агентных сред Claude Code и Gemini CLI и к заданиям, которые агент передаёт субагенту.
+Скилл задаёт процедуры и официальные значения для текста промптов к текущим моделям Claude, Gemini и GPT: написание, проверка, перенос между версиями внутри семейства, аудит на устаревшие приёмы, для Claude — отладка на тестах. Применяется к системным промптам, системным инструкциям и developer-сообщениям приложений и агентов, к текстам агентных сред Claude Code, Gemini CLI и Codex, к инструкциям ChatGPT и к заданиям, которые агент передаёт субагенту.
 
 ## Принципы
 
-1. Охват — текст промпта для текущих моделей двух семейств; перечень моделей — в `models.md` папки семейства (`claude/` или `gemini/`). Параметры запроса для Claude (effort, режимы мышления, принудительный вызов инструментов, temperature, заданное начало ответа) в скилл не входят. Для Gemini параметры, связанные с текстом, — в [gemini/parameters.md](gemini/parameters.md); остальные не входят.
+1. Охват — текст промпта для текущих моделей трёх семейств; перечень моделей — в `models.md` папки семейства (`claude/`, `gemini/` или `gpt/`). Параметры запроса для Claude (effort, режимы мышления, принудительный вызов инструментов, temperature, заданное начало ответа) в скилл не входят. Для Gemini и GPT параметры, связанные с текстом, — в [gemini/parameters.md](gemini/parameters.md) и [gpt/parameters.md](gpt/parameters.md); остальные не входят.
 2. Текст промпта включает значения `description` и имена функций, их параметров и полей схем структурированного вывода.
 3. Скилл работает с моделью, названной в запросе, и не выбирает ни модель, ни семейство.
-4. Утверждения о моделях и блоки — официальные значения вендора семейства. Факты, блоки и приёмы одного семейства в промпт для другого не переносятся; перенос промпта между семействами скилл не выполняет. Приём, измеренный на одной модели, на другой перепроверяется.
+4. Утверждения о моделях и блоки — официальные значения вендора семейства. Факты, блоки и приёмы одного семейства в промпт для другого не переносятся; перенос промпта между семействами скилл не описывает. Приём, измеренный на одной модели, на другой перепроверяется.
 5. Официальные блоки вендора вставляются дословно, на английском; меняются только плейсхолдеры, а у блока, помеченного в строке «Когда» как шаблон для доработки, — ещё части, на которые указывает эта строка.
 6. Где источники расходятся, приводятся все позиции; скилл между ними не выбирает.
 7. Неустановленное значение называется неустановленным. Дата сверки значений — в каждом файле папки семейства.
@@ -41,18 +41,20 @@ created: 2026-11-09
 | Проверить или улучшить промпт для Gemini | [review-prompt.md](review-prompt.md), [gemini/principles.md](gemini/principles.md), [gemini/models.md](gemini/models.md) (справочник), [gemini/official-blocks.md](gemini/official-blocks.md) (справочник), [gemini/legacy-patterns.md](gemini/legacy-patterns.md) (справочник) | если текст передаётся через Gemini API или Google Cloud: [gemini/parameters.md](gemini/parameters.md) (справочник); если у модели есть функции, встроенные инструменты или структурированный вывод либо текст задаёт агента: [gemini/agents-and-tools.md](gemini/agents-and-tools.md); если текст — `GEMINI.md`, `system.md`, SKILL.md навыка, определение субагента или файл контекста расширения Gemini CLI: [gemini/gemini-cli-artifacts.md](gemini/gemini-cli-artifacts.md); если текст — задание субагенту Gemini CLI: [gemini/delegation-task.md](gemini/delegation-task.md) |
 | Перенести промпт на другую версию Gemini | [migrate-prompt.md](migrate-prompt.md), [gemini/migrations.md](gemini/migrations.md), [gemini/models.md](gemini/models.md) (справочник), [gemini/legacy-patterns.md](gemini/legacy-patterns.md) (справочник), [gemini/official-blocks.md](gemini/official-blocks.md) (справочник), [gemini/principles.md](gemini/principles.md) | если текст передаётся через Gemini API или Google Cloud: [gemini/parameters.md](gemini/parameters.md) (справочник); если у модели есть функции, встроенные инструменты или структурированный вывод либо текст задаёт агента: [gemini/agents-and-tools.md](gemini/agents-and-tools.md); если переносимый текст — артефакт Gemini CLI: [gemini/gemini-cli-artifacts.md](gemini/gemini-cli-artifacts.md) |
 | Аудит промптов и навыков для Gemini на устаревшие приёмы | [audit-legacy.md](audit-legacy.md), [gemini/legacy-patterns.md](gemini/legacy-patterns.md) (справочник), [gemini/official-blocks.md](gemini/official-blocks.md) (справочник), [gemini/principles.md](gemini/principles.md) | если в охвате есть `GEMINI.md`, `system.md`, навыки или определения субагентов Gemini CLI: [gemini/gemini-cli-artifacts.md](gemini/gemini-cli-artifacts.md); если в охвате есть `AGENTS.md` управляемых агентов, описания функций или схемы структурированного вывода: [gemini/agents-and-tools.md](gemini/agents-and-tools.md); если в охвате есть код запросов к Gemini API или Google Cloud: [gemini/parameters.md](gemini/parameters.md) (справочник) |
+| Написать новый промпт для GPT | [write-prompt.md](write-prompt.md), [gpt/principles.md](gpt/principles.md), [gpt/models.md](gpt/models.md) (справочник), [gpt/official-blocks.md](gpt/official-blocks.md) (справочник), [gpt/legacy-patterns.md](gpt/legacy-patterns.md) (справочник) | если текст передаётся через API OpenAI: [gpt/parameters.md](gpt/parameters.md) (справочник); если у модели есть функции, скиллы или структурированный вывод либо текст задаёт агента: [gpt/agents-and-tools.md](gpt/agents-and-tools.md); если текст — `AGENTS.md`, SKILL.md скилла или определение субагента Codex: [gpt/codex-artifacts.md](gpt/codex-artifacts.md) |
+| Написать задание субагенту Codex | [gpt/delegation-task.md](gpt/delegation-task.md), [gpt/principles.md](gpt/principles.md), [gpt/official-blocks.md](gpt/official-blocks.md) (справочник) | если субагент задан файлом определения Codex: [gpt/codex-artifacts.md](gpt/codex-artifacts.md); если задание ставит долгую автономную задачу или поручает проверить работу: [gpt/agents-and-tools.md](gpt/agents-and-tools.md); если названа модель субагента: [gpt/models.md](gpt/models.md) (справочник) |
+| Проверить или улучшить промпт для GPT | [review-prompt.md](review-prompt.md), [gpt/principles.md](gpt/principles.md), [gpt/models.md](gpt/models.md) (справочник), [gpt/official-blocks.md](gpt/official-blocks.md) (справочник), [gpt/legacy-patterns.md](gpt/legacy-patterns.md) (справочник) | если текст передаётся через API OpenAI: [gpt/parameters.md](gpt/parameters.md) (справочник); если у модели есть функции, скиллы или структурированный вывод либо текст задаёт агента: [gpt/agents-and-tools.md](gpt/agents-and-tools.md); если текст — `AGENTS.md`, SKILL.md скилла или определение субагента Codex: [gpt/codex-artifacts.md](gpt/codex-artifacts.md); если текст — задание субагенту Codex: [gpt/delegation-task.md](gpt/delegation-task.md) |
+| Перенести промпт на другую версию GPT | [migrate-prompt.md](migrate-prompt.md), [gpt/migrations.md](gpt/migrations.md), [gpt/models.md](gpt/models.md) (справочник), [gpt/legacy-patterns.md](gpt/legacy-patterns.md) (справочник), [gpt/official-blocks.md](gpt/official-blocks.md) (справочник), [gpt/principles.md](gpt/principles.md) | если текст передаётся через API OpenAI: [gpt/parameters.md](gpt/parameters.md) (справочник); если у модели есть функции, скиллы или структурированный вывод либо текст задаёт агента: [gpt/agents-and-tools.md](gpt/agents-and-tools.md); если переносимый текст — артефакт Codex: [gpt/codex-artifacts.md](gpt/codex-artifacts.md) |
+| Аудит промптов и скиллов для GPT на устаревшие приёмы | [audit-legacy.md](audit-legacy.md), [gpt/legacy-patterns.md](gpt/legacy-patterns.md) (справочник), [gpt/official-blocks.md](gpt/official-blocks.md) (справочник), [gpt/principles.md](gpt/principles.md) | если в охвате есть `AGENTS.md`, скиллы или определения субагентов Codex: [gpt/codex-artifacts.md](gpt/codex-artifacts.md); если в охвате есть описания функций, описания скиллов или схемы структурированного вывода: [gpt/agents-and-tools.md](gpt/agents-and-tools.md); если в охвате есть код запросов к API OpenAI: [gpt/parameters.md](gpt/parameters.md) (справочник) |
 
 ## Рабочий процесс
 
 ### Шаг 1: Определить семейство и модель
 
 - ЕСЛИ модель не названа и не выводится из материалов заказчика → запросить; строку таблицы до ответа не выбирать.
-- ЕСЛИ модель другого вендора → скилл её не покрывает, сообщить.
-- ЕСЛИ модель генерации изображений, включая Nano Banana → это задача скилла skill-prompt-tti, сообщить.
-- ЕСЛИ модель из покрываемого семейства, но её нет в `models.md` семейства → писать по правилам ближайшей покрываемой версии: покрываемой модели той же линии (у Claude — Fable, Opus, Sonnet, Haiku; у Gemini — Flash, Flash-Lite, Gemini 4) с ближайшим номером версии. В результат — предупреждение, что правила взяты у названной покрываемой модели и для целевой не проверены. ЕСЛИ покрываемой модели той же линии нет или ближайших две (Gemini 4 Carbon и Gemini 4 Argon) → назвать покрываемые модели семейства и спросить, по правилам какой писать.
+- ЕСЛИ модель из покрываемого семейства, но её нет в `models.md` семейства → писать по правилам ближайшей покрываемой версии: покрываемой модели той же линии (у Claude — Fable, Opus, Sonnet, Haiku; у Gemini — Flash, Flash-Lite, Gemini 4; у GPT — Astra, Sol, Terra, Luna, Codex) с ближайшим номером версии. В результат — предупреждение, что правила взяты у названной покрываемой модели и для целевой не проверены. ЕСЛИ покрываемой модели той же линии нет или ближайших две (Gemini 4 Carbon и Gemini 4 Argon) → назвать покрываемые модели семейства и спросить, по правилам какой писать.
 - ЕСЛИ в задаче несколько текстов для разных моделей → каждый текст по семейству той модели, которая его читает.
-- ЕСЛИ просят перенести промпт с модели одного семейства на модель другого → перенос между семействами скилл не выполняет, сообщить.
-- ЕСЛИ просят отладку на тестах для Gemini → методика скилла только для Claude, сообщить; официальные приёмы отладки Gemini — раздел «Отладка промпта» в [gemini/principles.md](gemini/principles.md), работа идёт по строке «Проверить или улучшить промпт для Gemini».
+- ЕСЛИ просят отладку на тестах для Gemini или GPT → методика отладки на тестах в скилле описана только для Claude; официальные приёмы отладки — раздел «Отладка промпта» в [gemini/principles.md](gemini/principles.md) или [gpt/principles.md](gpt/principles.md), работа идёт по строке «Проверить или улучшить промпт» этого семейства; для GPT прогон оценок до и после правки — шаг раздела «Порядок переноса» в [gpt/migrations.md](gpt/migrations.md).
 
 ### Шаг 2: Определить задачу
 
@@ -68,7 +70,7 @@ created: 2026-11-09
 
 ### Шаг 5: Сверить блоки
 
-ЕСЛИ в результат вставлены официальные блоки → сверить каждый с `official-blocks.md` папки семейства ([claude/official-blocks.md](claude/official-blocks.md) или [gemini/official-blocks.md](gemini/official-blocks.md)) посимвольно, кроме заменённых плейсхолдеров и частей, доработанных по строке «Когда».
+ЕСЛИ в результат вставлены официальные блоки → сверить каждый с `official-blocks.md` папки семейства ([claude/official-blocks.md](claude/official-blocks.md), [gemini/official-blocks.md](gemini/official-blocks.md) или [gpt/official-blocks.md](gpt/official-blocks.md)) посимвольно, кроме заменённых плейсхолдеров и частей, доработанных по строке «Когда».
 
 ### Шаг 6: Результат
 
@@ -80,8 +82,8 @@ created: 2026-11-09
 
 - Не пересказывать официальный блок своими словами и не выдавать пересказ за официальный текст.
 - Не добавлять официальный блок, если условие из его строки «Когда» не выполнено.
-- Не переносить блоки, приёмы и значения между семействами: блок Anthropic в системную инструкцию Gemini, шаблон Google с `MUST` в промпт Claude, правило об отказе `reasoning_extraction` на Gemini.
-- Не называть модели, значения и параметры Gemini по памяти вместо файлов скилла.
+- Не переносить блоки, приёмы и значения между семействами: блок Anthropic в системную инструкцию Gemini, шаблон Google с `MUST` в промпт Claude, правило об отказе `reasoning_extraction` на Gemini, блок OpenAI о прозе вместо списков в промпт Claude или Gemini, официальный блок Claude или Gemini в developer-сообщение GPT.
+- Не называть модели, значения и параметры Gemini и GPT по памяти вместо файлов скилла.
 - Не применять к моделям Claude техники, написанные для Claude 3, там, где они расходятся с правилами скилла, а также заданное начало ответа и рассуждение в тегах `<thinking>`: для текущих моделей Claude они не поддерживаются или рискованны.
 - Не задавать рамку вызова инструмента делегирования — какого субагента вызвать и какие поля вызова заполнить: скилл о тексте задания.
 
@@ -119,10 +121,18 @@ created: 2026-11-09
 
 **Результат:** системная инструкция с персоной, ограничениями и форматом в начале, без даты и места, противоречащих поиску; описания функций и их параметров как часть текста; без опоры на температуру и предзаполнение; перечень параметров, на которые опирается текст (уровень рассуждения; расхождение о том, переносится ли системная инструкция между взаимодействиями); блоков из [claude/official-blocks.md](claude/official-blocks.md) нет.
 
-### Пример 5: Модель изображений Gemini
+### Пример 5: Типовой сценарий для GPT
 
-**Запрос:** «Напиши промпт для Nano Banana: фото товара на белом фоне».
+**Запрос:** «Developer-сообщение для агента поддержки на GPT-6.1 Sol через Responses API; у агента функции поиска заказа и оформления возврата, возврат — только с подтверждением клиента».
 
-**Маршрут:** шаг 1 рабочего процесса — модель генерации изображений.
+**Маршрут:** строка «Написать новый промпт для GPT»: [write-prompt.md](write-prompt.md), [gpt/principles.md](gpt/principles.md), [gpt/models.md](gpt/models.md), [gpt/official-blocks.md](gpt/official-blocks.md), [gpt/legacy-patterns.md](gpt/legacy-patterns.md); плюс [gpt/parameters.md](gpt/parameters.md), потому что текст идёт через API OpenAI, и [gpt/agents-and-tools.md](gpt/agents-and-tools.md), потому что у модели есть функции.
 
-**Результат:** скилл сообщает, что промпты к генераторам изображений, включая Nano Banana, — задача скилла skill-prompt-tti, и промпт не пишет.
+**Результат:** developer-сообщение с назначением, целью, критериями успеха, границами решений (оформить возврат — только после подтверждения клиента) и правилами остановки; описания функций с назначением, побочными эффектами и поведением при ошибке; блоки «Политика автономии» и «Условия остановки» по их условиям; перечень параметров, на которые опирается текст (`instructions` передаётся в каждом запросе, уровень `none` у GPT-6.1 Sol не поддерживается, схема ответа — структурированным выводом); блоков из [claude/official-blocks.md](claude/official-blocks.md) и [gemini/official-blocks.md](gemini/official-blocks.md) нет.
+
+### Пример 6: Перенос со снимаемой модели
+
+**Запрос:** «Перенеси системный промпт нашего классификатора обращений с GPT-4o на GPT-6 Luna».
+
+**Маршрут:** строка «Перенести промпт на другую версию GPT»: [migrate-prompt.md](migrate-prompt.md), [gpt/migrations.md](gpt/migrations.md), [gpt/models.md](gpt/models.md), [gpt/legacy-patterns.md](gpt/legacy-patterns.md), [gpt/official-blocks.md](gpt/official-blocks.md), [gpt/principles.md](gpt/principles.md); плюс [gpt/parameters.md](gpt/parameters.md), если промпт идёт через API OpenAI. Исходная модель вне охвата: в [gpt/migrations.md](gpt/migrations.md) её строка называет GPT-6 Luna официальной заменой, а советов о тексте для этой модели в скилле нет.
+
+**Результат:** новый текст, собранный по разделу «Порядок переноса» и разделу GPT-6 Luna (схема ответа — структурированным выводом, параметры сэмплирования убраны, если уровень рассуждения выше `none`); перечень изменений с основаниями; эффект подтверждается оценками до и после правки.
