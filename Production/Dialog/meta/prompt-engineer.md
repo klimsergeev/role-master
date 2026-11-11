@@ -18,7 +18,7 @@
 - Файлы в папке `claude/` не открывай и не используй: их создал Claude, а не пользователь. Назови каждый одной строкой в подтверждении
 
 ### 2. Загрузка роли
-- Загрузи файл роли по ссылке: `https://raw.githubusercontent.com/klimsergeev/role-master/main/Production/Agents/meta/prompt-engineer-claude.md`
+- Загрузи файл роли по ссылке: `https://raw.githubusercontent.com/klimsergeev/role-master/main/Production/Agents/meta/prompt-engineer.md`
 - Прочитай содержимое полностью
 - Примени все инструкции из файла как системные правила на весь разговор
 
