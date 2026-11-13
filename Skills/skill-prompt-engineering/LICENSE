@@ -11,3 +11,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ---
 
 Часть правил и сведений папки `gpt/` этого скилла — о моделях Codex, обрезке результатов инструментов, порядке вызовов в истории, метапромптинге и промптах в ChatGPT — адаптирована из OpenAI Cookbook: https://github.com/openai/openai-cookbook. Cookbook распространяется по лицензии MIT; уведомление об авторском праве и текст разрешения выше относятся к этим материалам.
+
+---
+
+Beta Testing License
+
+Copyright (c) 2025 X.AI LLC
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+1. The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+2. Beta Disclaimer: The Software is provided in a pre-release, beta form and is not a final product. It may contain bugs, errors, or incomplete features, and is intended solely for testing and evaluation purposes.
+3. No Support: No support, maintenance, or updates will be provided for the Software. Use of the Software is at your own risk.
+
+The Software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the Software or the use or other dealings in the Software
+
+---
+
+Три блока защиты от внедрения инструкций в файле `grok/official-blocks.md` этого скилла и описание этой защиты в `grok/agents-and-tools.md` взяты из примера защиты от внедрения инструкций в xAI Cookbook: https://github.com/xai-org/xai-cookbook. Cookbook распространяется по лицензии xAI Beta Testing License; уведомление об авторском праве и текст разрешения выше относятся к этим материалам.

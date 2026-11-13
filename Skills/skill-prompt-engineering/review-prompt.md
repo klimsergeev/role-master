@@ -2,9 +2,9 @@
 
 ## Назначение
 
-Процедура проверки готового текста для текущей модели Claude, Gemini или GPT по официальным техникам и особенностям модели, с таблицей находок и исправленной версией.
+Процедура проверки готового текста для текущей модели Claude, Gemini, GPT или Grok по официальным техникам и особенностям модели, с таблицей находок и исправленной версией.
 
-Файлы семейства лежат в папке `claude/`, `gemini/` или `gpt/`; ниже они названы по имени файла, папку задаёт семейство целевой модели.
+Файлы семейства лежат в папке `claude/`, `gemini/`, `gpt/` или `grok/`; ниже они названы по имени файла, папку задаёт семейство целевой модели.
 
 ## Шаг 1. Собрать вводные
 
@@ -12,9 +12,10 @@
 - Целевая модель и её семейство. ЕСЛИ не названа → запросить. ЕСЛИ модель из покрываемого семейства, но её нет в `models.md` → правило ближайшей покрываемой версии из первого шага рабочего процесса `SKILL.md`. ЕСЛИ промпт переносится с другой модели → это задача переноса, процедура в [migrate-prompt.md](migrate-prompt.md).
 - Назначение промпта и для кого результат.
 - Известные сбои: что модель делает не так. ЕСЛИ сбои названы → каждый сбой сопоставить со строками `models.md` и индексом `official-blocks.md` семейства в шаге 3.
-- Вид текста: системный промпт или developer-сообщение; текст агентной среды — файл текстов агентной среды семейства ([claude/claude-code-artifacts.md](claude/claude-code-artifacts.md), [gemini/gemini-cli-artifacts.md](gemini/gemini-cli-artifacts.md) или [gpt/codex-artifacts.md](gpt/codex-artifacts.md)); инструкции ChatGPT — раздел «Инструкции ChatGPT» в [gpt/principles.md](gpt/principles.md); задание субагенту — `delegation-task.md` семейства.
+- Вид текста: системный промпт или developer-сообщение; текст агентной среды — файл текстов агентной среды семейства ([claude/claude-code-artifacts.md](claude/claude-code-artifacts.md), [gemini/gemini-cli-artifacts.md](gemini/gemini-cli-artifacts.md), [gpt/codex-artifacts.md](gpt/codex-artifacts.md) или [grok/grok-build-artifacts.md](grok/grok-build-artifacts.md)); инструкции ChatGPT — раздел «Инструкции ChatGPT» в [gpt/principles.md](gpt/principles.md); задание субагенту — `delegation-task.md` семейства.
 - Для Gemini: передаётся ли текст через API (тогда [gemini/parameters.md](gemini/parameters.md)) и есть ли функции, встроенные инструменты или структурированный вывод (тогда [gemini/agents-and-tools.md](gemini/agents-and-tools.md)).
 - Для GPT: передаётся ли текст через API OpenAI (тогда [gpt/parameters.md](gpt/parameters.md)) и есть ли функции, скиллы или структурированный вывод (тогда [gpt/agents-and-tools.md](gpt/agents-and-tools.md)).
+- Для Grok: передаётся ли текст через API xAI (тогда [grok/parameters.md](grok/parameters.md)) и есть ли функции, серверные инструменты или структурированный вывод (тогда [grok/agents-and-tools.md](grok/agents-and-tools.md)).
 
 ## Шаг 2. Прочитать текст целиком
 
@@ -72,7 +73,7 @@
 - Перечень добавленных и удалённых официальных блоков с местом вставки.
 - Предупреждение, если правила взяты у ближайшей покрываемой версии.
 
-Для моделей Claude что правка улучшила поведение модели, подтверждает только прогон на тестах — процедура в [claude/prompt-debugging.md](claude/prompt-debugging.md). Для Gemini и GPT методики отладки на тестах в скилле нет.
+Для моделей Claude что правка улучшила поведение модели, подтверждает только прогон на тестах — процедура в [claude/prompt-debugging.md](claude/prompt-debugging.md). Для Gemini, GPT и Grok методики отладки на тестах в скилле нет.
 
 ## Пример (Claude)
 
