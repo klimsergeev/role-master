@@ -11,7 +11,7 @@ when_to_use: >
   timeout, обрезанные ответы), проверить безопасность .blend файлов.
   Примеры: "подключи Blender MCP", "создай low-poly сцену", "Blender не
   подключается", "почему ответ Blender обрезается".
-version: 3.1.0
+version: 3.2.0
 created: 2026-05-03
 ---
 
@@ -26,13 +26,13 @@ created: 2026-05-03
 1. **Blender MCP отдаёт тяжёлые ответы.** Информация о сцене и viewport-скриншоты попадают в контекст целиком — подними `MAX_MCP_OUTPUT_TOKENS`, иначе большие ответы обрезаются.
 2. **3D через MCP = итеративная работа.** Каркас, материалы, свет, камера — каждый шаг отдельно. Никогда не one-shot.
 3. **Начинай с `get scene info`.** Перед любой работой со сценой — сначала посмотри, что в ней есть.
-4. **Два сервера, один порт.** Official connector (Blender Foundation) и community (ahujasid) несовместимы — port 9876 принимает только одно подключение.
+4. **Два сервера, один порт.** Official connector (Blender Lab) и community (ahujasid) несовместимы: сервер одного не работает с аддоном другого, и port 9876 принимает только одно подключение.
 
 ## Official vs Community
 
 | Параметр | Official (Blender Foundation) | Community (ahujasid) |
 |----------|-------------------------------|----------------------|
-| Установка | One-click через директорию Claude | `uvx blender-mcp` + ручной конфиг |
+| Установка | Desktop и Cowork — one-click через директорию Claude; Claude Code — `uv run` из репозитория Blender Lab | `uvx blender-mcp` + ручной конфиг |
 | Blender | 4.2+ | 3.0+ |
 | Asset-интеграции | Нет | Poly Haven, Sketchfab, Hyper3D |
 | Telemetry | Не задокументирована | По умолчанию вкл., отключается |
@@ -63,6 +63,7 @@ created: 2026-05-03
 
 ### Шаг 1: Определи сценарий подключения
 
+Сначала проверь, какой аддон уже стоит в Blender (Edit → Preferences → Add-ons: Maintainer, Version, File), и подключай сервер того же типа.
 ЕСЛИ нужна настройка с нуля — читай [setup.md](tools/blender/setup.md).
 ЕСЛИ подключение уже работает — переходи к шагу 2.
 
@@ -102,7 +103,7 @@ Workflows и промптинг — в [workflows.md](tools/blender/workflows.md
 
 **Маршрут:** [troubleshooting.md](tools/blender/troubleshooting.md), [setup.md](tools/blender/setup.md)
 
-**Результат:** Агент проверяет: кнопка Connect нажата в Blender, порт 9876 свободен, путь к `uvx` абсолютный. Рекомендует отправить тривиальный первый запрос.
+**Результат:** Агент проверяет: какой аддон стоит в Blender и совпадает ли с ним тип сервера, запущен ли сервер в Blender, порт 9876 свободен, путь к `uvx` абсолютный. Рекомендует отправить тривиальный первый запрос.
 
 ### Пример 3: Композиция MCP
 

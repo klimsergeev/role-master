@@ -12,6 +12,7 @@
 | Первая команда падает | "Connection error" при первом промпте | Отправить тривиальный `get scene info` |
 | Port 9876 занят | "Connection refused" | `BLENDER_PORT=9001` в env конфига + в N-панели Blender |
 | Два клиента одновременно | Второй молча не работает | Закрыть один из клиентов (Cursor / Claude Desktop) |
+| Сервер не того типа (official ↔ community) | Порт 9876 принимает соединение, но `claude mcp list` — `connection timed out after 30000ms`, `get_addon_status` — `Incomplete JSON response received` | Проверить аддон в Preferences → Add-ons (Maintainer, Version, File) и подключить сервер того же типа; открытый порт не доказывает совместимость |
 | Timeout на сложной операции | Ответ обрывается | Разбить на шаги, использовать sequential-thinking MCP |
 | Claude не видит tools | Иконка коннектора пустая | Удалить и заново добавить MCP-сервер, обновить addon.py |
 | Большие выходы обрезаются | Warning в Claude Code | `MAX_MCP_OUTPUT_TOKENS=50000` |
@@ -21,12 +22,13 @@
 
 ## Чеклист при "не подключается"
 
-1. В Blender N-панель: кнопка "Connect to Claude" нажата?
-2. Claude Desktop перезапущен полностью (меню, не Cmd-W)?
-3. `addon.py` обновлен до последней версии?
-4. Логи Blender: Window, Toggle System Console (macOS: запустить Blender из терминала)
-5. Другой MCP-клиент не занимает порт 9876?
-6. ЕСЛИ community: путь к `uvx` абсолютный в конфиге?
+1. Какой аддон стоит: Edit → Preferences → Add-ons, строки Maintainer, Version, File. Blender Lab — официальный, к нему сервер из репозитория Blender Lab; ahujasid — сервер сообщества, `uvx blender-mcp`.
+2. Сервер в Blender запущен: у официального — Preferences → Add-ons → MCP, статус «Server is running»; у сообщества — N-панель, BlenderMCP, Connect to Claude.
+3. Claude Desktop перезапущен полностью (меню, не Cmd-W)?
+4. `addon.py` обновлен до последней версии?
+5. Логи Blender: Window, Toggle System Console (macOS: запустить Blender из терминала)
+6. Другой MCP-клиент не занимает порт 9876?
+7. ЕСЛИ community: путь к `uvx` абсолютный в конфиге?
 
 ## Безопасность
 

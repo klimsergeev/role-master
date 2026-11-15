@@ -26,7 +26,7 @@
 | 3 | Claude Desktop: Customize, Connectors, Browse, Blender, Add |
 | 4 | Открыть blender.org/lab/mcp-server/ в браузере |
 | 5 | Перетащить install-link в Blender **дважды** (1-й: lab-репозиторий, 2-й: аддон) |
-| 6 | В Blender: N-панель, вкладка BlenderMCP, Connect to Claude |
+| 6 | В Blender: Edit → Preferences → Add-ons → MCP, кнопка Start MCP Server (или Auto Start); статус «Server is running». Вкладки BlenderMCP в N-панели у официального расширения нет — это интерфейс сервера сообщества |
 | 7 | В Claude Desktop: иконка коннектора покажет Blender-инструменты |
 
 ## Сценарий B: Claude Code + Community-сервер
@@ -42,6 +42,20 @@
 | 5 | `claude mcp list` — проверить |
 | 6 | Blender: N-панель, BlenderMCP, Connect to Claude |
 | 7 | `/mcp` в Claude Code — проверить статус |
+
+## Сценарий D: Claude Code + Official Connector
+
+Расширение Blender Lab в Blender — это мост на порту 9876, а MCP-сервер — отдельный пакет из папки `mcp/` репозитория Blender Lab; команда `uvx blender-mcp` ставит сервер сообщества, а не официальный.
+
+| Шаг | Команда / действие |
+|-----|---------------------|
+| 1 | Установить расширение Blender Lab «MCP» (сценарий A, шаги 4–5) |
+| 2 | `git clone https://projects.blender.org/lab/blender_mcp` в любую папку |
+| 3 | `brew install uv`, если `uv` нет |
+| 4 | `claude mcp add blender -s local -- /opt/homebrew/bin/uv --directory <абсолютный путь к клону>/mcp run blender-mcp` |
+| 5 | Blender: Preferences → Add-ons → MCP → Start MCP Server |
+| 6 | Перезапустить сессию Claude Code: инструменты MCP подгружаются при старте сессии |
+| 7 | `claude mcp list` — `✔ Connected` |
 
 ## Сценарий C: Claude Cowork + Community-сервер
 
