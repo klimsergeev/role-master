@@ -29,7 +29,7 @@ Roles/  Skills/  ──publish.sh──►  Production/{Agents,Dialog,Skills}/  
 | `Production/Agents.private/`, `Production/Skills.private/` | их публикация | **нет** |
 | `Production/env/` | `.env` с токенами для скиллов | **нет** |
 | `Updates/` | рабочая зона: планы, черновики, разборы инцидентов | **нет** |
-| `.claude/` | настройки и `rules/anti-bias.md` | **нет** |
+| `.claude/` | настройки `settings.json`, правила `rules/anti-bias.md`, конвейер создания скиллов `workflows/` | да, кроме личных настроек `settings.local.json` |
 
 Состав библиотеки здесь намеренно не зафиксирован числами: он меняется с каждым новым артефактом. Структура же постоянна: роли лежат по четырём категориям (`meta`, `assistants`, `specialists`, `creative`) плюс `templates`, которая не публикуется; скиллы бывают двух видов — директория с `SKILL.md` и плоский `.md`; у ролей и скиллов есть приватный контур, не попадающий в git.
 

@@ -28,5 +28,6 @@ _Notes.md
 
 # Agent-Specific
 .cursor/
-.claude/
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
 .codex/
