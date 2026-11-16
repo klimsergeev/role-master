@@ -1,228 +1,139 @@
-# Role Creator — проектные инструкции
+# Role Creator — project instructions
 
-## Что это за проект
+What this project is and the repository map are in [README.md](README.md).
 
-Библиотека ролей и скиллов для AI-агентов. Проект не содержит приложения — он производит два типа артефактов в Markdown:
+Do not record the library's contents as numbers. When you need the actual contents, look with `ls`.
 
-- **Роли** (`Roles/`) — системные промпты субагентов Claude Code.
-- **Скиллы** (`Skills/`) — процедуры и справочники, подключаемые по требованию.
+## Division of labor — who edits what
 
-Исходники правятся в `Roles/` и `Skills/`, затем скрипт `scripts/publish.sh` раскладывает их по приёмникам: `Production/` (публичная библиотека в репозитории) и `~/.claude/` (рабочая установка для Claude Code).
+This rule takes priority over convenience. The orchestrator coordinates and does not execute the work itself.
 
-```
-Roles/  Skills/  ──publish.sh──►  Production/{Agents,Dialog,Skills}/   ──git──►  GitHub
-                              └►  ~/.claude/{agents,skills}/            (вне репозитория)
-```
-
-## Карта репозитория
-
-| Путь | Что это | В git |
-|---|---|---|
-| `Roles/` | исходники ролей, 4 категории + `templates/` | да |
-| `Skills/` | исходники скиллов + `skill-template` | да |
-| `Production/Agents/` | опубликованные роли по категориям | да |
-| `Production/Dialog/` | заглушки-загрузчики для веб-Claude | да |
-| `Production/Skills/` | опубликованные скиллы (`.skill`-архивы и `.md`) | да |
-| `Production/README.md` | каталог библиотеки, **генерируется целиком** | да |
-| `scripts/publish.sh` | скрипт публикации | да |
-| `Roles.private/`, `Skills.private/` | приватные исходники (плоско, без категорий) | **нет** |
-| `Production/Agents.private/`, `Production/Skills.private/` | их публикация | **нет** |
-| `Production/env/` | `.env` с токенами для скиллов | **нет** |
-| `Updates/` | рабочая зона: планы, черновики, разборы инцидентов | **нет** |
-| `.claude/` | настройки и `rules/anti-bias.md` | **нет** |
-
-Состав библиотеки здесь намеренно не зафиксирован числами: он меняется с каждым новым артефактом, а устаревшее число агент цитирует как факт. Нужен фактический состав — смотри `ls`. Структура же постоянна: роли лежат по четырём категориям (`meta`, `assistants`, `specialists`, `creative`) плюс `templates`, которая не публикуется; скиллы бывают двух видов — директория с `SKILL.md` и плоский `.md`; у ролей и скиллов есть приватный контур, не попадающий в git.
-
-## Разделение труда — кто что правит
-
-Это правило приоритетнее удобства. Оркестратор координирует и не исполняет сам.
-
-| Объект | Исполнитель |
+| Object | Executor |
 |---|---|
-| Файлы в `Roles/`, `Roles.private/` | агент `role-master` |
-| Файлы в `Skills/`, `Skills.private/` | агент `skill-master` |
-| Коммиты, ветки, `.gitignore` | агент `git-ops` |
-| Планы и ревью в `Updates/` по ролям и скиллам | `role-master`, `skill-master` — по своим артефактам |
-| Прочие черновики в `Updates/` | оркестратор напрямую |
-| `Production/` | никто вручную — только `publish.sh` |
+| Files in `Roles/`, `Roles.private/` | the `role-master` agent |
+| Files in `Skills/`, `Skills.private/` | the `skill-master` agent |
+| Commits, branches, `.gitignore` | the `git-ops` agent |
+| Plans and reviews in `Updates/` for roles and skills | `role-master`, `skill-master` — each for its own artifacts |
+| Other drafts in `Updates/` | the orchestrator directly |
+| `Production/` | nobody by hand — only `publish.sh` |
 
-Никогда не редактируй роль или скилл напрямую, минуя мастера, и не оценивай «простоту» задачи как повод сделать самому.
+The orchestrator never edits a role or a skill directly, bypassing the master, and does not treat a task being "simple" as a reason to do it itself.
 
-Сокращения в разговоре с пользователем: **СМ** — агент `skill-master`, **РМ** — агент `role-master`. Пользователь пишет их и так, и латиницей (SM, RM); это одни и те же агенты.
+Abbreviations in conversation with the user: **СМ** — the `skill-master` agent, **РМ** — the `role-master` agent, **ВФ** — workflow, the pipeline from `.claude/workflows/`. The user writes them both this way and in Latin letters (SM, RM, WF); they mean the same thing.
 
-## Пайплайн публикации
+## Publishing pipeline
 
-`scripts/publish.sh` запускает **пользователь вручную**. Не запускай его сам без явного указания — в том числе с `--dry`.
+`scripts/publish.sh` is run **by the user manually**. Do not run it yourself without an explicit instruction — including with `--dry`.
 
-Флаги: без аргументов — полная публикация; `--dry` — план без записи; `--test-dir` — все приёмники, включая `~/.claude/*`, переводятся в `.tmp-publish/`; `--rebuild-archives` — пересобрать все `.skill`-архивы, даже если содержимое скилла не менялось; `--help` — справка. Неизвестные аргументы игнорируются молча (в `case` нет ветки `*)`).
+The script's flags, what it does, what it excludes, and its pitfalls are in [README.md](README.md), section «Пайплайн публикации».
 
-Что делает:
+## Role format
 
-- `Roles/<категория>/*.md` → `Production/Agents/<категория>/` (`rsync --delete`), плюс `~/.claude/agents/agent-{name}.md`, где `{name}` берётся из frontmatter.
-- Для каждой публичной роли генерирует заглушку `Production/Dialog/<категория>/<имя>.md` — 36 строк с raw-ссылкой на GitHub (`klimsergeev/role-master`, ветка `main`, константы в `scripts/publish.sh:63-64`). Приватные роли заглушек не получают.
-- `Skills/skill-*/` → zip-архив `Production/Skills/skill-*.skill`; архив собирается заново, только если содержимое скилла отличается от текущего архива, сборка идёт с `TZ=UTC`. `Skills/skill-*.md` → копия `.md`. В `~/.claude/skills/<имя>/` копируется вся директория скилла через `rsync -a --delete`.
-- Перегенерирует `Production/README.md` целиком из frontmatter источников.
-
-Что исключается: категория `templates` (`CATEGORIES="meta assistants specialists creative"`, `scripts/publish.sh:147-148`), `skill-template` (явные `continue` в восьми местах), директории-скиллы без `SKILL.md` (пропускаются молча).
-
-**Ловушки, о которых нужно знать:**
-
-- Фильтр frontmatter действует **только на плоских скиллах-`.md`**. Из них вырезается всё, кроме `name description license allowed-tools compatibility metadata when_to_use` (список — `scripts/publish.sh:747`), так что `version`, `created`, `updated`, `disable-model-invocation` в опубликованном `.md` отсутствуют и он не равен исходнику побайтово. Функция `filter_skill_frontmatter` вызывается ровно дважды и оба раза на пути плоского `.md` — публичного (`:959`) и приватного (`:1130`). **Скиллы-директории фильтр не проходят:** их пакует `zip -q -r -X` как есть в функции `publish_skill_archive` (`:920`, вызовы на `:999` и `:1168`), и `version` доезжает в `.skill`-архив нетронутым (проверено на `skill-yandex-wordstat.skill` 25.08.2026).
-- Скрипт удаляет `rm -rf` поддиректории `~/.claude/skills/` с именем `skill-*`, которых нет среди скиллов `Skills/` и `Skills.private/` (`scripts/publish.sh:701`). Каталоги без префикса `skill-` и имена из списка `PROTECTED_CLAUDE_SKILL_DIRS` (`:60`) не трогаются; сторонний скилл с именем `skill-*`, установленный помимо проекта, будет стёрт.
-- Резервных копий, подтверждений и отката в скрипте нет; предохранители — только `--dry` и `--test-dir`. Архив скилла собирается во временный файл и заменяет старый только при успешной сборке.
-- Шапка-комментарий скрипта неполна: не упоминает `--test-dir`, `--help`, фильтрацию frontmatter и то, что приватные артефакты тоже уезжают в `~/.claude/`. При расхождении шапки и кода прав код.
-- Архив скилла сравнивается с содержимым скилла: набор путей, байты файлов и признак исполняемости. Время изменения файлов, часовой пояс и порядок обхода каталога в сравнение не входят, поэтому `git checkout --`, `touch`, свежий клон или другой часовой пояс архив не меняют. Когда содержимое изменилось, архив собирается с настоящим временем файлов в UTC. `--rebuild-archives` нужен, только чтобы принудительно пересобрать все архивы.
-- `Production/env/` скрипт не создаёт и о нём не знает (0 совпадений по `grep`) — это вручную поддерживаемая директория с токенами.
-
-## Формат роли
-
-Frontmatter — шесть обязательных полей и два опциональных, порядок одинаков во всех файлах:
+Frontmatter — six required fields and two optional ones, in the same order in every file:
 
 ```yaml
-name: kebab-case          # совпадает с именем файла
-description: одна строка
-tools: ...                # опционально
-skills:                   # опционально, блочный список
-  - skill-<имя>
-model: opus               # во всех ролях без исключения
+name: kebab-case          # matches the file name
+description: one line
+tools: ...                # optional
+skills:                   # optional, block list
+  - <name>
+model: opus               # in every role without exception
 version: 1.0.0            # SemVer
-created: YYYY-MM-DD       # ставится один раз, не меняется
+created: YYYY-MM-DD       # set once, never changed
 category: assistants|specialists|creative|meta
 ```
 
-Порядок ключей: идентичность (`name`, `description`) → чем располагает роль (`tools`, `skills`) → служебное (`model`, `version`, `created`, `category`). `tools` — белый список инструментов: с ним роль теряет всё, что в список не вошло, включая MCP-инструменты, Skill и веб-поиск. Сейчас поля нет ни у одной роли (у `product-analyst` снято, когда ему понадобился MCP для MSSQL); ставить его только осознанно. Поля `updated` нет и вводить его не нужно: история правок живёт в git.
+Key order: identity (`name`, `description`) → what the role has at its disposal (`tools`, `skills`) → service fields (`model`, `version`, `created`, `category`). `tools` is an allowlist of tools: with it the role loses everything not on the list, including MCP tools, Skill, and web search; set it only deliberately. There is no `updated` field and it must not be introduced: the edit history lives in git.
 
-**Двоеточие с пробелом внутри `description` ломает YAML.** Пиши через тире — так сделано в большинстве ролей. Проверено 2026-08-20: `travel-agent` был единственным файлом с невалидным фронтматтером именно по этой причине. Парсер Claude Code нестрогий и такой файл поднимает, но закладываться на это нельзя.
+**A colon followed by a space inside `description` breaks YAML.** Use a dash instead. The Claude Code parser is lenient and loads such a file, but do not rely on that.
 
-### Поле `skills:` — преднагрузка скиллов
+### The `skills:` field — skill preloading
 
-Claude Code предзагружает перечисленные скиллы в контекст субагента при старте. Поле есть у 19 ролей из 27; у остальных его нет осознанно.
+Claude Code preloads the listed skills into the subagent's context at startup.
 
-Установлено замерами 2026-08-20, а не вычитано из документации:
+- **Only `SKILL.md` is injected, not the whole directory.** Lazy loading is preserved: the router arrives, and the subagent reads the procedure files itself. The cost of preloading is the size of one `SKILL.md`.
+- **It works only when the role is invoked as a subagent.** With `--agent` (the role as the session agent) skills are not preloaded.
+- **A preloaded skill's self-check fires not at startup but when a task falls into its domain.** A skill whose self-check creates directories or `.env` will do so on the first task in its domain.
+- **A skill with `disable-model-invocation: true` cannot be preloaded** — preloading draws from the same set as auto-invocation. `skill-skill-refine` and `skill-session-harvest` work this way: they are launched manually.
+- Claude Code silently skips a nonexistent or disabled name and writes it to the debug log.
 
-- **Инжектится только `SKILL.md`, не вся директория.** Проверено маркерами, которых в `SKILL.md` нет: субагент с `skills: [skill-travel-agent]` не увидел «белая метка» (только в `price-sources.md`) и «курортного сбора» (в `trip-document.md`), но увидел таблицу маршрутизации и дословно процитировал первый принцип. Ленивая загрузка сохраняется: приезжает маршрутизатор, файлы-процедуры субагент дочитывает сам. Цена преднагрузки — размер одного `SKILL.md`.
-- **Работает только при вызове роли субагентом.** Через `--agent` (роль как агент сессии) контекст остался пустым. Роли доезжают в `~/.claude/agents/` и вызываются субагентами, то есть попадают в работающий путь.
-- **Самопроверка предзагруженного скилла срабатывает не на старте, а когда задача попадает в его домен.** На нейтральный вопрос субагент не выполнил ни одного вызова; на профильный — выполнил процедуру целиком. Практическое следствие: скилл, чья самопроверка создаёт директории или `.env`, сделает это на первой профильной задаче.
-- **Скилл с `disable-model-invocation: true` предзагрузить нельзя** — преднагрузка берёт из того же набора, что и автовызов. Таких два: `skill-skill-refine` и `skill-session-harvest`, оба запускаются вручную.
-- Несуществующее или отключённое имя Claude Code молча пропускает и пишет в debug-лог.
+The notation is a block list with a two-space indent.
 
-Форма записи — блочный список с отступом в два пробела. Inline-массив `skills: [a, b]` нигде не документирован, хотя `publish.sh` его переваривает.
+`publish.sh` does not filter role frontmatter: the field reaches both `Production/Agents/` and `~/.claude/agents/` untouched.
 
-**Поле не работает в веб-Claude и в Cursor.** Поэтому блок «Самопроверка при запуске» в теле роли остаётся страховкой, а под заголовком H1 каждой роли с полем стоит заметка о границах механизма. Три вещи — поле, заметка и секция самопроверки — добавляются и удаляются вместе.
+Body: `# [Emoji] Name — tagline` → `Идентичность` (Кто ты / Миссия / Ключевые компетенции) → `Принципы работы` (Как ты работаешь / Правила принятия решений in the ЕСЛИ→ТО form / Формат выдачи) → role-specific sections → `Примеры` (at least two: a typical one and an edge case) → `Ограничения` as the last section. The reference is `Roles/templates/role-template.md`.
 
-`publish.sh` фронтматтер ролей не фильтрует (фильтр `filter_skill_frontmatter` вызывается только на путях скиллов, `:959` и `:1130`), поле доезжает и в `Production/Agents/`, и в `~/.claude/agents/` нетронутым.
+Do not treat a "typical size" of a role as a norm — the role's subject determines its length.
 
-Тело: `# [Эмодзи] Название — слоган` → `Идентичность` (Кто ты / Миссия / Ключевые компетенции) → `Принципы работы` (Как ты работаешь / Правила принятия решений в форме ЕСЛИ→ТО / Формат выдачи) → специфичные секции → `Примеры` (минимум два: типовой и edge-case) → `Ограничения` последней секцией. Эталон — `Roles/templates/role-template.md`.
+## Skill format
 
-Медианная роль — около 300 строк, но разброс большой: от 126 до 481 строки и от 6 до 41 КБ (замерено 25.08.2026 по 27 ролям). На «типичный размер» не ориентируйся как на норму — объём задаёт предмет роли.
+The skill format is a **directory**: `Skills/<name>/SKILL.md` plus procedure files. A skill's name starts with `skill-`. We do not write flat skills as a single `.md` file.
 
-## Формат скилла
-
-Целевой формат — **директория**: `Skills/skill-<имя>/SKILL.md` плюс файлы-процедуры. Семь скиллов остаются плоскими `.md` и не мигрированы (шесть публичных и один приватный, на 25.08.2026) — новые скиллы делай директорией.
-
-Frontmatter `SKILL.md`:
+`SKILL.md` frontmatter:
 
 ```yaml
-name: skill-<имя>         # совпадает с именем директории
+name: <name>              # matches the directory name
 description: >            # folded
-when_to_use: >            # обязательно для директорий; у плоских отсутствует
+when_to_use: >            # required
 version: 1.0.0
 created: YYYY-MM-DD
 ```
 
-Суммарная длина `description` + `when_to_use` — не более 1536 символов. Максимум по факту — 1519 у `skill-songwriting` (25.08.2026), то есть запас всего 17 символов: длину замеряй `len()`, а не оценивай на глаз.
+The combined length of `description` + `when_to_use` is at most 1536 characters. Measure the length with `len()`, do not estimate it by eye.
 
-Ключевой механизм — ленивая загрузка. `SKILL.md` остаётся тонким маршрутизатором: секция `## Таблица маршрутизации` с колонками Задача / Обязательно / Читать, если. В колонке «Читать, если» — условие, проверяемое по задаче, в форме `если <условие>: [file.md](file.md)`; формулировки-разрешения («при необходимости», «если нужно») запрещены, потому что отдают решение «читать или нет» тому самому агенту, чьё суждение колонка ограничивает. Файлы для точечного поиска помечаются `(справочник)`. Над таблицей — строка-цитата, дословно как в `Skills/skill-template/SKILL.md`. Ссылки — markdown-ссылками `[file.md](file.md)`, не в backtick.
+The key mechanism is lazy loading. `SKILL.md` stays a thin router: a `## Таблица маршрутизации` section with the columns Задача / Обязательно / Читать, если. The «Читать, если» column holds a condition that can be checked against the task, in the form `если <условие>: [file.md](file.md)`; permission-style wordings («при необходимости», «если нужно») are forbidden. Files meant for point lookup are marked `(справочник)`. Above the table there is a quote line, verbatim as in `Skills/skill-template/SKILL.md`. Links are markdown links `[file.md](file.md)`, not backticks.
 
-Секции тела: `Назначение` → `Принципы` → `Таблица маршрутизации` → `Рабочий процесс` → `Что НЕ делать` → `Примеры`. Эталон — `Skills/skill-template/`.
+Body sections: `Назначение` → `Принципы` → `Таблица маршрутизации` → `Рабочий процесс` → `Что НЕ делать` → `Примеры`. The reference is `Skills/skill-template/`.
 
-**Не ставь в `SKILL.md` относительные ссылки за пределы папки скилла** (`../../.claude/rules/...`): они резолвятся только при чтении из репозитория и ломаются в `~/.claude/skills/` и внутри `.skill`-архива. Ссылайся по имени текстом.
+**Refer only to files inside the skill's directory.** Avoid references to documents outside it — both relative ones (`../../.claude/rules/...`) and references by name: those documents do not exist in `~/.claude/skills/` or inside the `.skill` archive.
 
-### Скилл может содержать не только Markdown
+### A skill may contain more than Markdown
 
-Запрета на файлы-спутники любого типа, включая исполняемые скрипты, в проекте нет. Формулировка «производит два типа артефактов в Markdown» описывает, чем являются сами роли и скиллы, а не ограничивает состав директории скилла.
+The project has no ban on companion files of any type, including executable scripts. `publish.sh` does not filter by extension: the whole skill directory goes both into the `.skill` archive and into `~/.claude/skills/`.
 
-Проверено 2026-08-11:
+- A script the skill cannot work without uses only the standard library: the skill contract does not provide for installing dependencies.
+- A script with a third-party dependency (Pillow, Playwright, etc.) is acceptable as an optional enhancement — if its invocation comes with a stated applicability condition ("Pillow is installed") and a fallback path, and the skill is fully functional without the script.
+- Do not count on autostart: harness hooks are not skill content.
+- For HTTP requests from a skill procedure use the system `curl`: `urllib` from the Python standard library can fail on certificate verification. A script built on `urllib` comes with a fallback path through `curl`.
+- Wiring a script in: it is invoked by a markdown link from a procedure file (not from `SKILL.md`), next to it stand an explicit applicability condition and a fallback path for when the condition is not met, and the invocation itself is a numbered step of the procedure. The reference is `Skills/skill-travel-agent/price-sources.md`. A script without a described invocation and without a fallback path is a dead file.
 
-- Прецедент: `Skills/skill-travel-agent/scripts/travelpayouts_probe.py` — 148 строк, только стандартная библиотека (`json`, `os`, `ssl`, `sys`, `urllib`, `datetime`), без `package.json` и установки зависимостей. Плюс `Skills/skill-humanizer-ru/LICENSE` — тоже не Markdown.
-- `publish.sh` не фильтрует по расширению: директория-скилл идёт в архив через `zip -q -r -X` (`scripts/publish.sh:920`) и в `~/.claude/skills/` через `rsync -a --delete` (`scripts/publish.sh:630`). Скрипт физически доезжает до пользователя — подтверждено `unzip -l Production/Skills/skill-travel-agent.skill`.
+## Versioning
 
-Практические следствия при добавлении скрипта в скилл: по умолчанию держись стандартной библиотеки, потому что установку зависимостей контракт скилла не предусматривает; не рассчитывай на автозапуск — хуки харнесса это не содержание скилла.
+SemVer in the `version` field of roles and skills, starting at `1.0.0`; downgrading is forbidden. MAJOR — a change of purpose or contract; MINOR — a new capability, section, example, or a change in default behavior; PATCH — a fix or rewording. The project has no CHANGELOG files and they must not be created — the history is in git. The project does not use git tags.
 
-Скрипт со сторонней зависимостью (Pillow, Playwright и т. п.) допустим как необязательное улучшение — если у его вызова записаны условие применимости («установлен Pillow») и запасной путь, а скилл без скрипта полностью рабочий. Скрипт, без которого скилл не работает, должен обходиться стандартной библиотекой. Прецедент — `contact_sheet.py`, `palette.py` и `capture.py` в `skill-moodboard`.
+## Private contour
 
-Сеть из стандартной библиотеки Python ненадёжна на машине пользователя: Python 3.12 с python.org без установленных корневых сертификатов падает на `urllib` с `CERTIFICATE_VERIFY_FAILED` (пилот skill-moodboard, 18.10.2026). Для HTTP-запросов из процедуры скилла надёжнее системный `curl`; скрипт на `urllib` — с запасным путём через `curl`.
+`Roles.private/`, `Skills.private/`, `Production/Agents.private/`, `Production/Skills.private/`, and `Production/env/` do not go into git. Versions of private roles and skills are maintained the same way as for public ones. Private artifacts do not go into `Production/README.md`, into `Production/Dialog/`, or to GitHub, but are published to `~/.claude/` on par with public ones.
 
-Эталон подключения — `Skills/skill-travel-agent/price-sources.md:42` и `:92`. Схема там такая: скрипт вызывается markdown-ссылкой из файла-процедуры (не из `SKILL.md`), рядом стоит явное условие применимости («работает только там, где есть исполнение кода И задан токен») и честный фолбэк на случай, когда условие не выполнено, а сам вызов — пронумерованный шаг процедуры. Скрипт подан как референс, который агент запускает или адаптирует как шаблон. Держись этой схемы: скрипт без описанного вызова и без фолбэка — мёртвый файл.
+Never carry the content of private roles and skills into public files, the README, or commits.
 
-Дефект, который возвращается сам: `publish.sh` не исключает `__pycache__`, поэтому если скрипт скилла хоть раз запускали, скомпилированный байт-код уедет в `.skill`-архив вместе с ним (так уже было — 10 189 байт в `skill-travel-agent.skill`). Сейчас в архивах его нет (проверено 25.08.2026), но фильтра в скрипте по-прежнему нет: после прогона скрипта удаляй `__pycache__` до публикации.
-
-### Лицензия первоисточника — обязательство, а не ограничение
-
-Когда скилл или роль делается на основе стороннего материала, его лицензия определяет, что мы **обязаны приложить**, а не то, что нам **разрешено построить**. Объём заимствования, состав файлов и наличие кода выбираются по существу задачи; лицензионные требования затем исполняются для того, что выбрано.
-
-Образец обращения — `Skills/skill-humanizer-ru/LICENSE`: полный текст лицензии первоисточника плюс абзац атрибуции по-русски с именем проекта, версией и лицензией. Файл кладётся в корень директории скилла и доезжает в `.skill`-архив как обычный файл (поле `license` во frontmatter при этом тоже переживает фильтрацию `publish.sh`, но отдельного файла не заменяет).
-
-## Версионирование
-
-SemVer в поле `version` у ролей и скиллов, старт — `1.0.0`, понижение запрещено. MAJOR — смена назначения или контракта; MINOR — новая возможность, раздел, пример, смена поведения по умолчанию; PATCH — фикс или переформулировка. CHANGELOG-файлов в проекте нет и заводить их не нужно — история в git. Git-тегов проект тоже не использует (в репозитории их 0).
-
-## Приватный контур
-
-`Roles.private/`, `Skills.private/`, `Production/Agents.private/`, `Production/Skills.private/` (`.gitignore:22-25`) и `Production/env/` не версионируются. Приватные артефакты не попадают в `Production/README.md`, в `Production/Dialog/` и на GitHub, но публикуются в `~/.claude/` наравне с публичными.
-
-Никогда не выноси содержимое приватных ролей и скиллов в публичные файлы, в README и в коммиты.
-
-Осторожно: `Production/env/` с токенами закрыт не адресным правилом, а общим `env/` из секции Python (`.gitignore:4`). Переименование этой директории молча раскроет `.env`.
+Caution: `Production/env/` with the tokens is covered in `.gitignore` not by a dedicated rule but by the general `env/` entry from the Python section. Renaming this directory will silently expose `.env`.
 
 ## Git
 
-- Коммить и пушить **только по явному указанию** в задаче.
-- Сообщения — по-русски. Conventional Commits (`feat:`, `fix:`) в проекте не используются: 4 случая из 185 коммитов, все до мая 2026.
-- Заголовок строится как `<артефакт> <версия>: <что изменилось>`. Под 50/72 символа не обрезай — полнота перечня важнее (медиана 67 символов, 44% заголовков длиннее 72).
-- Коммит на несколько артефактов — с телом: маркированный список правок и отдельный абзац о прогоне `publish.sh`.
-- **Не добавляй трейлер `Co-Authored-By`** — ни для Claude, ни для другой модели, ни в собственные коммиты, ни в промпты для `git-ops`. Только по явному запросу пользователя. Трейлеры в истории до 2026-07-20 — legacy, переписывать её не нужно, но и повторять формат не следует.
-- Изменения в `Roles/`/`Skills/` клади в один коммит с результатом `publish.sh` в `Production/` — так сделано в 86% коммитов, затрагивающих исходники.
-- Работаем прямо в `main`, ветку без явной просьбы не заводи. Удалённый — `git@github.com:klimsergeev/role-master.git`.
-- Git-хуков в репозитории нет: ни одна конвенция не проверяется автоматически.
-- В отчёте о коммите указывай его ID и сообщение.
+- Commit and push **only on an explicit instruction** in the task.
+- Conventional Commits (`feat:`, `fix:`) are not used in the project.
+- The header is built as `<artifact> <version>: <what changed>`. Do not trim it to 50/72 characters — completeness of the list matters more.
+- A commit covering several artifacts has a body: a bulleted list of the changes.
+- **Do not add a `Co-Authored-By` trailer** — not for Claude, not for any other model, not in your own commits, not in prompts for `git-ops`. Only on the user's explicit request.
+- Put changes in `Roles/`/`Skills/` into one commit together with the `publish.sh` result in `Production/`.
+- We work directly in `main`; do not create a branch without an explicit request. The remote is `git@github.com:klimsergeev/role-master.git`.
+- The repository has no git hooks: no convention is checked automatically.
+- In a commit report, state its ID and message.
 
-## Bash и пути
+## The `Updates/` working area
 
-- Пути с пробелами ВСЕГДА в двойных кавычках: `"/Users/sergeiklimenko/Cursor Projects/Role creator"`. В пути проекта два пробела — это ломает незакавыченные команды.
-- НИКОГДА не экранируй пробелы backslash.
-- НИКОГДА не используй `cd /path && command` — только абсолютные пути или `git -C "путь"`.
-- Рабочая директория между Bash-вызовами не сохраняется.
-- `publish.sh` пишет в `~/.claude/agents` и `~/.claude/skills` — это штатное исключение из правила «не создавай файлы вне рабочей директории».
+Not in git. Inside: `Drafts/` — raw material and research by topic; `harvests/` — digests of lessons from sessions in the format `harvest-YYYY-MM-DD-<topic>.md`; `known-issues/` — incident write-ups.
 
-## Рабочая зона `Updates/`
+Name plans `plan-<short-name>.md`, one plan per task.
 
-Не в git. Внутри: `Drafts/` — сырьё и ресёрч по темам; `harvests/` — выжимки уроков из сессий в формате `harvest-YYYY-MM-DD-<тема>.md`; `known-issues/` — разборы инцидентов; три файла `*_update.md` — бэклоги (частично устарели, сверяй с фактическим составом `Roles/` и `Skills/`, прежде чем на них опираться).
+## Working rules
 
-Содержимым `Updates/` управляет пользователь — файлы оттуда не удаляй. Планы именуй `plan-<краткое-название>.md`, один план на одну задачу.
+- **Pass a mandatory requirement to a subagent as mandatory,** not as a permission.
+- **Do not set length limits in subagent prompts** by default. For reviews, plans, and research — no limit.
+- **The boundary of a researcher's assignment:** the behavior and specifics of the subject are factual material; prescriptions addressed to us ("what to promise", "what to warn the user about", "what to put in SKILL.md") are not. A quote of someone else's recommendation with attribution is also a fact about the product and stays.
 
-## Правила, выведенные из инцидентов
+## General
 
-Каждое куплено ошибкой; источники — в `Updates/known-issues/`.
-
-- **Исполняй явную инструкцию буквально и полностью.** Сказано «четыре агента» — запускай четыре; сказано «спорят» — организуй спор. Не оборачивай инструкцию в самопридуманные пред- и пост-шаги. (`orchestrator-free-interpretation-incident.md`)
-- **Не превращай обязательное в факультативное:** в промпте субагенту пиши «ОБЯЗАН», а не «можешь». (там же)
-- **Получив указание на ошибку, перепроверяй все требования запроса,** а не только названный аспект — частичное исправление порождает новую итерацию. (там же)
-- **Не ставь лимиты на объём в промптах субагентов** по умолчанию. Для ревью, планов и исследований — без лимита. (`skill-orchestration-word-limit-habit.md`)
-- **Проходи чеклист самопроверки до последнего пункта.** Правило, записанное в тексте, не исполняется само — текстовый чеклист можно проигнорировать. (`incident-claude-md-skipped.md`)
-- **Когда указано несколько скиллов — прочитай и явно используй каждый.** В начале работы сформулируй, что берёшь из доменного скилла, а что из технического: доменный определяет, ЧТО мерить, технический — КАК тянуть. (`skill-ticketland-js-events-improvements.md`)
-- **Термины продукта сверяй с доменным справочником,** даже если термин кажется общеупотребительным. Не подменяй продуктовое событие просмотрами URL. (там же)
-- **Дефект, порождённый шаблоном мастера, чини в мастере,** а не точечно в затронутых файлах — иначе он воспроизведётся в следующих артефактах. (`anti-bias-relative-link-resolution.md`)
-- **Не выдумывай ограничений проекта.** Ограничение существует, только если оно записано в `CLAUDE.md` или следует из кода `publish.sh` и фактического состава `Roles/`/`Skills/`. Кажется, что ограничение есть, но найти его не удалось — спроси пользователя, а не постулируй. Выдуманное ограничение задаёт объём работы и молча отсекает варианты, которые никто не рассматривал.
-- **В промпт субагенту не вкладывай непроверенных допущений.** Формулировка «у нас так не принято», отправленная мастеру, принимается им за факт проекта и материализуется в артефакте как обоснование. Проверяй допущение ДО делегирования — чтением файлов и кода, а не по памяти. (План внедрения Impeccable: оркестратор написал `skill-master` «наша библиотека — чистый Markdown без кода»; запрета не существует, скрипт в скилле уже есть — `skill-travel-agent/scripts/travelpayouts_probe.py`, и он доезжает в `.skill`-архив. На этой посылке был построен отказ от переноса детектора.)
-- **Лицензия не ограничивает состав артефакта** — она определяет, что приложить к тому, что мы решили сделать. Не используй лицензионную нагрузку как довод против объёма или содержания скилла. (Там же.)
-- **Читай перед удалением.** Удалять текстовый раздел, файл или директорию, не прочитав содержимое, запрещено. Решение «это под вынос», принятое по заголовку, по выдаче `grep` или по чужому пересказу, не считается. Большой блок режь скриптом с `assert` на якорные строки, а не по номерам строк: номера сдвигаются от предыдущих правок. (Чистка ресёрча по Chrome: по одному заголовку «Что пригодится будущему скиллу» раздел был назначен к выносу целиком, а внутри лежала сводка одиннадцати молчаливых отказов и пять рабочих последовательностей, которых больше нигде в файле нет.)
-- **Сначала обсуждение — потом исполнение. Никакой проактивности.** Реплика пользователя — вклад в разговор, а не команда: не начинай действие после каждой фразы. Инструменты и делегирования — только когда решение принято и пользователь явно сказал делать. Будущее время («это будет добавлено») — решение о будущем, фиксируется, не исполняется. Сделал лишнее — доложи и жди; откат тоже действие и тоже требует указания. Следующий шаг называй словами, но не начинай. (`orchestrator-unrequested-proactivity.md`)
-- **В промпт ресёрчеру не вкладывай планы на будущий артефакт.** Задача ресёрча — собрать фактуру, а не проектировать скилл. Граница: поведение и особенности предмета — фактура; предписания в наш адрес («что обещать», «о чём предупреждать пользователя», «что положить в SKILL.md») — нет. Цитата чужой рекомендации с атрибуцией — тоже факт о продукте и остаётся. То, что пользователь рассказал о планах в разговоре, — контекст для оркестратора, а не часть задания исполнителю. (Ресёрч по Claude in Chrome: планы на скилл попали в промпт отдельными пунктами, исполнитель добросовестно спроектировал состав файлов и написал, чего не обещать; чистка стоила отдельного захода.)
-
-## Общее
-
-- Отвечай на русском, если задача на русском.
-- Не создавай файлы вне рабочей директории проекта (исключение — приёмники `publish.sh`).
-- `.claude/rules/anti-bias.md` — обязательные правила проверки фактов, действуют в каждом ответе. Файл не в git: на новой машине его придётся восстановить отдельно.
-- `AGENTS.md` в корне — сжатая выжимка для харнессов, читающих `AGENTS.md` вместо `CLAUDE.md`. Не полная копия: там только инвариантное ядро — bash и пути, git-запреты, ограничения и допущения, язык ответа. Всё остальное живёт лишь здесь. При изменении правил обновляй оба файла: механизма синхронизации нет, а расхождение обнаружится только когда чужой харнесс поведёт себя не так.
+- Answer in Russian if the task is in Russian.
+- Do not create files outside the project's working directory (the exception is the `publish.sh` destinations).
