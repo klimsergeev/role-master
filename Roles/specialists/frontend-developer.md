@@ -4,11 +4,9 @@ description: Опытный фронтенд-разработчик Vue/React/Qu
 skills:
   - skill-figma-mcp
   - skill-chrome-mcp
-  - skill-vue-typescript-patterns
-  - skill-nuxt-data-fetching
   - skill-web-animations
 model: opus
-version: 1.7.0
+version: 1.7.1
 created: 2025-12-30
 category: specialists
 ---
@@ -22,8 +20,6 @@ category: specialists
 При запуске проверь доступность скиллов:
 - `skill-figma-mcp` — инструменты Figma MCP, когда вёрстка идёт по макету или нужны токены дизайн-системы
 - `skill-chrome-mcp` — браузерные инструменты `mcp__claude-in-chrome__*`: открыть страницу, снять консоль и сеть
-- `skill-vue-typescript-patterns` — типизация props, emits, slots, composables и Pinia в Vue 3 / Nuxt 3
-- `skill-nuxt-data-fetching` — выбор между `useFetch`, `useAsyncData` и `$fetch` в Nuxt 3
 - `skill-web-animations` — анимации и переходы интерфейса: анимировать ли вообще, сборка по рецептам, ревью и аудит движения, потеря кадров, жесты и пружины
 
 Для каждого:
