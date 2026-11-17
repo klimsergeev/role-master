@@ -1,48 +1,96 @@
 ---
 name: sm-research
-description: Research a subject from its sources and write a report of facts and verbatim material that answers the questions of an assignment. Use when an assignment gives a subject, questions, allowed sources, and a report path.
+description: Research the topics of an assignment from their sources with WebFetch and write a report that answers every question in your own words, at the size the question needs. Use when an assignment gives a subject, topics with what to find and questions, allowed sources, and a report path.
 ---
 
 # Research
 
-Collect what the sources say about the subject and write it into the report file. The work ends at the report: leave out conclusions, recommendations, and ideas about how the material should be used.
+Collect what the sources say on the topics of the assignment and write it into the report file. The work ends at the report: leave out conclusions, recommendations, and ideas about how the material should be used.
+
+## The assignment
+
+The assignment gives:
+
+- the name of the assignment, in the line `Subject:`;
+- the topics in order, each in a line `Topic N (main):` or `Topic N (secondary):`, followed by its `Find:` line and its `Questions:`; the questions are numbered through all topics;
+- the allowed sources, in the line `Allowed sources:`;
+- the path of the report, in the line `Report path:`; when you cannot write files, the assignment says instead where your report will be saved.
+
+Work through the topics in the order of the assignment. The `Find:` line of a topic bounds every question of that topic: look for what it names and stop where it says the search stops. In every `secondary` topic, look up only what its `Find:` line names.
 
 ## Scope
 
-- Answer the questions that were asked, in the scope they were asked. Do not widen the subject, add neighbouring topics, or answer questions nobody asked.
+- Answer the questions that were asked, in the scope they were asked. Do not widen a topic, add neighbouring topics, or answer questions nobody asked.
 - Use only the sources the assignment allows.
-- When the assignment gives an earlier report, add to it instead of repeating it.
 - When you come across a part of the subject that was not asked about, do not research it. Name it in one line under "Outside the assignment".
 - Nobody can answer questions while you work. When a question can be read in more than one way, take the reading that fits the subject and say in one line which reading you took.
 
-## A question about what the subject consists of
+## Reading the sources
 
-Answer with the source's own structure, copied verbatim and in full: the table of contents of the documentation, the chapter list of a book, the menu or feature list of a product. Do not summarise it. When the subject has several sources, give the structure of each under its name.
-
-## Sources
-
+- Read the sources only with WebFetch. Use WebSearch only to find the address of a page.
+- Do not use Bash for the network, `curl`, downloading HTML, or cloning or downloading repositories, in any case. Take what a repository holds from its README and its pages on the web, through WebFetch.
 - Write down only what you have read in the source itself. A search snippet, your memory, or a blog, forum answer, or tutorial that retells the source is only a pointer to it.
-- Take verbatim texts, numbers, names, and exact wording from the raw text of the page, downloaded with `curl`. WebFetch returns a retelling of the page, not its text.
-- When a tool returns a page cut off at its size limit, download the whole document and find the section in it.
+- When WebFetch has not returned everything the answer needs, ask WebFetch for exactly the facts you need, open a narrower page or section, find another page by search, or open a public archive or a documentation mirror, again with WebFetch. When none of this works, put the question under "Not established" with what you tried.
 - State nothing more strongly than the source does. A fact from the documentation of one version is not a fact about another version.
 - When the assignment names no version, use the current one and say which it is.
-- Use WebFetch, WebSearch, and `curl`. Do not use a browser of any kind.
-- When a page is blocked or a tool refuses its address, try a public archive, a documentation mirror, a search for verbatim phrases from the page, or opening the page from search results. Do not get around a site's protection: no spoofed User-Agent or browser, no bypassing of a 403, a paywall, a captcha, or a mandatory login.
-- When something cannot be established, say so under "Not established" and name what you tried.
-- Read and write files only inside the project. Read the output of `curl` directly; when a page must be saved to search it, save it next to the report and leave it there. Do not clone repositories and do not download or run installers.
+- Do not use a browser of any kind.
+- Do not get around a site's protection: no spoofed User-Agent or browser, no bypassing of a 403, a paywall, a captcha, or a mandatory login.
+- In the project, open no file except this one, and write only the report file at the path in the assignment. Create no other file: no saved pages, no notes, no drafts. Do not download or run installers.
+
+## What an answer looks like
+
+- An answer is ready when someone can do what the question asks from the answer alone, without opening the source. Leave out everything that is not needed for that.
+- Every answer has three parts: what the thing is and how it works, briefly; what it cannot be used without — the steps, parameters, and values the question asks about, exactly those; the conditions and limits — when it does not work.
+- An answer holds no history or origin of the subject, no neighbouring capabilities nobody asked about, no full list of every parameter and option when the question is how to do one thing, and nothing already said under another question.
+- The answer to a map question — what the subject consists of — is a list of the source's sections: the name of every section and one line on what it holds. Do not retell what the sections contain.
+- Write the facts in your own words, in English. Give names, values, commands, and error codes exactly as the source gives them. The report holds no quotations and no ready-made texts from the sources.
+
+<examples>
+<example>
+Illustration only: the tool "Lumen" and all its values are invented, so take none of them as data.
+
+Question: How do you set the size limit of the Lumen package cache?
+
+An answer of the right kind:
+
+`lumen config set cache.max_size <size>` sets the limit of the local folder where Lumen keeps downloaded packages; when the folder grows past the limit, Lumen deletes the oldest packages.
+
+- The value is a number with `MB` or `GB`, for example `500MB`. The default is `1GB`.
+- The new limit applies from the next command.
+- The limit cannot be set below `50MB`. With `--offline`, the cache is never trimmed.
+
+An answer of the wrong kind:
+
+Caching appeared in Lumen 2 after users complained about slow installs. The cache has fourteen settings: `cache.max_size`, `cache.dir`, `cache.ttl`, `cache.compress`, and ten more, each described below. `cache.max_size` takes a number with `MB` or `GB` and defaults to `1GB`. The command `lumen cache clean` empties the cache at once.
+
+What is extra in the second answer: the history of the feature, the full list of cache settings, and the `clean` command — the question asked how to set one limit.
+</example>
+<example>
+Illustration only: the tool "Lumen" and its documentation are invented.
+
+Question: What does the Lumen documentation consist of?
+
+An answer of the right kind:
+
+- Getting started — installing Lumen and the first project.
+- Configuration — the configuration file and every setting.
+- Commands — every command with its flags.
+- Troubleshooting — error codes and what causes them.
+
+An answer of the wrong kind lists the same sections and under each one retells what it says: the installation steps, the settings with their defaults, the commands with their flags. What is extra: the content of the sections — a map answer names every section and says in one line what it holds.
+</example>
+</examples>
 
 ## Report
 
 Write the report in English, to the path given in the assignment. Add each answer to the file as soon as it is finished. Create and change the file only with the Write and Edit tools. When you have no tools for writing files, return the complete report as your answer, in the same format.
 
 ```markdown
-# [Subject]
+# [Name of the assignment from the Subject line]
 
 ## [First question, copied verbatim from the assignment]
 
-[The answer, in whatever size and form the question needs: prose, a list, a table, a set of prompts.]
-
-[Verbatim material from the source, as a block, in full, in its original language.]
+[The answer, in three parts.]
 
 ## [Second question, copied verbatim from the assignment]
 
@@ -57,15 +105,14 @@ Write the report in English, to the path given in the assignment. Add each answe
 - [Name of what you noticed].
 ```
 
-- Section headings are the questions of the assignment, copied verbatim and in the same order.
-- Put the source's own text in a quote block or a fenced block, apart from your words. Give ready-made texts such as prompts, templates, and configuration examples in full, in their original language, untranslated, with a line above saying what the text is and what it belongs to.
+- Section headings are the questions of the assignment, copied verbatim, without their numbers, in the same order, through all topics.
 - Mark with `[inferred]` anything the source does not state directly and you worked out yourself.
 - When sources disagree, give every position and do not choose between them.
 - When a fact holds only for a particular version or condition, say which.
 - Leave out the "Not established" or "Outside the assignment" section when it would be empty.
 - The report holds nothing else: no source addresses or source lists, no dates of link checks, no account of how you worked, no references to files on disk.
 
-Two general rules of this project do not apply to this report: foreign-language quotes are given without a Russian translation, and the report has no «Что перепроверено» section. The fact-checking rules themselves apply in full: check every fact against its source before writing it down, and never invent data.
+Two of the project's rules do not apply to this work. The report has no «Что перепроверено» section. Of the fact-checking rules, the instructions to download with `curl` a page cut off at its size limit, or a page a tool refused to open, do not apply: take the WebFetch path from "Reading the sources" instead. The other fact-checking rules apply in full.
 
 ## Finishing
 
