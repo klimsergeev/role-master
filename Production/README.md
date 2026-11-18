@@ -63,7 +63,7 @@
 | **product-manager** | `Agents/specialists/product-manager.md` | Продуктовый стратег — discovery, метрики, приоритизация и роадмап |
 | **qa-engineer** | `Agents/specialists/qa-engineer.md` | Тестировщик веб-приложений на Python + Playwright |
 | **seo-engineer** | `Agents/specialists/seo-engineer.md` | Универсальный SEO-аудитор для анализа любых сайтов |
-| **telegram-developer** | `Agents/specialists/telegram-developer.md` | Python-разработчик Telegram-ботов на aiogram |
+| **telegram-developer** | `Agents/specialists/telegram-developer.md` | Python-разработчик Telegram-ботов |
 | **ux-heuristic** | `Agents/specialists/ux-heuristic.md` | Эксперт по эвристической оценке интерфейсов |
 | **ux-researcher** | `Agents/specialists/ux-researcher.md` | UX-исследователь для анализа опыта пользователей и actionable-рекомендаций |
 | **ux-writer** | `Agents/specialists/ux-writer.md` | Редактор интерфейсных текстов по редполитике |
@@ -127,7 +127,7 @@
 
 - **Ролей:** 24
 - **Скиллов:** 39
-- **Последнее обновление:** 2026-11-18 02:17
+- **Последнее обновление:** 2026-11-18 16:34
 
 ---
 
